@@ -4,6 +4,8 @@ package com.xbongbong.dingxbb.model;
 import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.dao.ApiDocDao;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
+import com.xbongbong.dingxbb.entity.ApiVersionEntity;
+import com.xbongbong.dingxbb.entity.SysModuleEntity;
 import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo;
 import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo;
 import com.xbongbong.dingxbb.pojo.ApiDocWrongCodePojo;
@@ -24,6 +26,10 @@ public class ApiDocModel extends BaseModel implements IModel {
 
     @Autowired
     private ApiDocDao dao;
+    @Autowired
+    private ApiVersionModel apiVersionModel;
+    @Autowired
+    private SysModuleModel sysModuleModel;
 
     public Integer insert(Object entity) {
         Integer now = DateUtil.getInt();
@@ -83,7 +89,7 @@ public class ApiDocModel extends BaseModel implements IModel {
         Map<String, Object> params = new HashMap<>();
         params.put("orderByStr", "id DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params.put("del", 0);
-        List<ApiVersionEntity> apiVersionList = apiVersionModel.getEntityList(params);
+        List<ApiVersionEntity> apiVersionList = apiVersionModel.findEntitys(params);
         List<String> versionList = new ArrayList<>();
         for (ApiVersionEntity apiVersion : apiVersionList) {
             versionList.add(apiVersion.getVersion());
@@ -100,9 +106,9 @@ public class ApiDocModel extends BaseModel implements IModel {
         Map<String, Object> params = new HashMap<>();
         params.put("orderByStr", "id DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params.put("del", 0);
-        List<ApiModuleEntity> apiModuleList = apiModuleModel.getEntityList(params);
+        List<SysModuleEntity> apiModuleList = sysModuleModel.findEntitys(params);
         List<String> moduleList = new ArrayList<>();
-        for (ApiModuleEntity apiModule : apiModuleList) {
+        for (SysModuleEntity apiModule : apiModuleList) {
             moduleList.add(apiModule.getModule());
         }
         return moduleList;

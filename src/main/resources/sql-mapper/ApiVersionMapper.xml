@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ApiVersionDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ApiVersionEntity">
+		<result property="id" column="id" />
+		<result property="version" column="version" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ApiVersionEntity">
+  		INSERT INTO tb_api_version ( 
+			id,version,del			
+  		) VALUES (
+			#{id},#{version},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ApiVersionEntity" >
+		UPDATE
+			tb_api_version
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="version!=null">, version = #{version} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_api_version
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_api_version
+		SET
+			del = 1
+		<where>
+			id = #{key}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		FROM
+			tb_api_version INNER JOIN 
+		
+			(SELECT id  FROM tb_api_version 
+			<where> <include refid="compareParamColumns" /> </where>
+			<if test="param.orderByStr!=null"> order by ${param.orderByStr} </if>	
+			<if test="param.start!=null and param.pageNum!=null"> LIMIT #{param.start},#{param.pageNum} </if>
+		 
+			 ) as  index_id 
+		
+		using(id)
+			<if test="param.groupByStr!=null"> group by ${param.groupByStr} </if>
+			<if test="param.orderByStrGroup!=null"> order by ${param.orderByStrGroup} </if>	
+			<if test="param.startGroup!=null and param.pageNumGroup!=null"> LIMIT #{param.startGroup},#{param.pageNumGroup} </if>
+    		 
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_api_version
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.version!=null">
+  			AND  version = #{param.version}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+ 		
+	</sql>
+	
+	<!-- mybatis-config.xml 
+	<typeAlias alias="ApiVersionEntity" 	type="com.xbongbong.dingxbb.entity.ApiVersionEntity" />
+	<mapper resource="sql-mapper/ApiVersionMapper.xml" />
+	-->
+	<!-- spring-dao-beans.xml
+	<bean id="ApiVersionDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    	<property name="mapperInterface" value="com.xbongbong.dingxbb.dao.ApiVersionDao" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean>
+	-->
+</mapper>

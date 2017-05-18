@@ -134,15 +134,15 @@ public class ApiDocController extends BasicController {
         }
         // 下面是向文件file2里面写数据
         String markdownContent = apiDocModel.formatMarkdownContent(apiDoc);
-        modelMap.put("markdown", markdownContent);
         try {
             FileWriter fileWriter = new FileWriter(apiDocFile);
-            markdownContent = markdownContent.replaceAll("<br />", "\n");
-            fileWriter.write(markdownContent);
+            fileWriter.write(markdownContent.replaceAll("<br />", "\n"));
             fileWriter.close(); // 关闭数据流
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        modelMap.put("markdown", markdownContent);
         returnSuccessJsonData(request, response, modelMap);
     }
 

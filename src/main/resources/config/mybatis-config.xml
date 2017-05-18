@@ -35,6 +35,10 @@
 		<typeAlias alias="CompanyEntity" 	type="com.xbongbong.dingxbb.entity.CompanyEntity" />
 		<!-- Api 文档 -->
 		<typeAlias alias="ApiDocEntity" 	type="com.xbongbong.dingxbb.entity.ApiDocEntity" />
+		<!-- Api 版本 -->
+		<typeAlias alias="ApiVersionEntity" 	type="com.xbongbong.dingxbb.entity.ApiVersionEntity" />
+		<!-- Api 模块 -->
+		<typeAlias alias="SysModuleEntity" 	type="com.xbongbong.dingxbb.entity.SysModuleEntity" />
     </typeAliases>  
      
     <mappers> 
@@ -71,6 +75,10 @@
 		<mapper resource="sql-mapper/CompanyMapper.xml" />
 		<!-- Api 文档 -->
 		<mapper resource="sql-mapper/ApiDocMapper.xml" />
+		<!-- Api 版本 -->
+		<mapper resource="sql-mapper/ApiVersionMapper.xml" />
+		<!-- Api 模块 -->
+		<mapper resource="sql-mapper/SysModuleMapper.xml" />
     </mappers>
 		
 </configuration>
