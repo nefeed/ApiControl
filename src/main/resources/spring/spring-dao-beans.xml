@@ -143,17 +143,17 @@
         <property name="mapperInterface" value="com.xbongbong.dingxbb.dao.CompanyDao"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-
+    <!-- 接口文档 -->
     <bean id="ApiDocDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xbongbong.dingxbb.dao.ApiDocDao"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-
+    <!-- 接口版本 -->
     <bean id="ApiVersionDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xbongbong.dingxbb.dao.ApiVersionDao"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-
+    <!-- 系统模块 -->
     <bean id="SysModuleDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.xbongbong.dingxbb.dao.SysModuleDao"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
