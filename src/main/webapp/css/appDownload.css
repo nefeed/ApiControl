@@ -1,0 +1,152 @@
+/**********global css**********/
+body{
+    font-family: "Microsoft Yahei","simHei",Arial, sans-serif;
+    font-size: 12px;
+}
+.container{
+    width: 1000px;
+    margin:0 auto;
+}
+.pull-left{float: left}
+.pull-right{float: right}
+.clear-fix{clear: both}
+a{text-decoration: none}
+/**********appHeader**********/
+.appHeader{
+    background:#1a1a1a;
+    overflow: hidden;
+}
+.appHeader .logo{
+    display: block;
+    width: 88px;
+    height: 56px;
+    margin-left: 53px;
+    background: url("../images/appDownload/logo.png") 0 0 no-repeat;
+}
+.navLeft{
+    margin-left: 42px;
+    overflow: hidden;
+}
+.navRight{
+    margin-right: 40px;
+    overflow: hidden;
+}
+.navLeft li,.navRight li{
+    float: left;
+    overflow: hidden;
+    color:#ffffff;
+    line-height: 56px;
+}
+.navLeft li a,.navRight li a{
+    display: block;
+    padding:0px 15px;
+    line-height: 56px;
+    font-size: 17px;
+    color:#ffffff;
+}
+.navLeft li a:hover,.navRight li a:hover{
+    background: #3f3f3f;
+}
+/**********appBanner**********/
+.appBanner{
+    height: 354px;
+    background: url("../images/appDownload/banner_bg.jpg") center top no-repeat;
+}
+.appBanner .container{
+    height: inherit;
+    position: relative;
+}
+.appFace{
+    width: 349px;
+    height: 438px;
+    position: absolute;
+    top:48px;right: 98px;
+    z-index: 1;
+    background: url("../images/appDownload/banner_phone.png") 0 0 no-repeat;
+}
+.appDownload{
+    height: 180px;
+    background: #ffffff;
+}
+.appEwmBox{
+    margin-top: 11px;
+    overflow: hidden;
+}
+.appIphoneEwm{margin-left: 15px;}
+.appEwm .tip{
+    padding-left: 26px;
+    font-size: 17px;
+    line-height: 20px;
+    color: #626262;
+}
+.appEwm .ewmImg{text-align: center}
+.appEwm .weixinTip{
+    background: url("../images/appDownload/icon_weixin.png") 0 0 no-repeat;
+}
+.appEwm .iphoneTip{
+    background: url("../images/appDownload/icon_apple.png") 0 0 no-repeat;
+}
+.appDownloadBtn{
+    width: 223px;
+    height: 60px;
+    margin:19px 0 0 60px;
+    position: relative;
+    z-index: 2;
+    background: url("../images/appDownload/download_btn.png") 0 0 no-repeat;
+}
+.appDownloadBtn .downloadBtn{
+    display: block;
+    width: 223px;
+    font-size: 19px;
+    line-height: 60px;
+    color: #ffffff;
+    text-indent: 64px;
+    background: url("../images/appDownload/icon_appstore.png") 32px 14px no-repeat;
+}
+/**********appDescription**********/
+.appDesc{
+    background: #d8d8d8;
+    overflow: hidden;
+    padding:20px 0;
+}
+.appDesc ul{
+    overflow: hidden;
+}
+.appDesc ul li{
+    float: left;
+    margin-right:45px;
+    width: 303px;
+}
+.appDesc ul .no-margin{margin-right: 0}
+.appDesc ul li div{
+    width: 100%;
+    height: 183px;
+}
+.appDesc .descUser{background: url("../images/appDownload/desc_user.png") 0 0 no-repeat}
+.appDesc .descMail{background: url("../images/appDownload/desc_mail.png") 0 0 no-repeat}
+.appDesc .descChat{background: url("../images/appDownload/desc_chat.png") 0 0 no-repeat}
+.appDesc p{
+    font-size: 13px;
+    color: #535353;
+    padding:8px;
+    line-height: 16px;
+    text-indent: 2em;
+}
+/**********appFooter**********/
+.appFooter{
+    padding:16px 0 26px 0;
+    background: #f0f0f0;
+}
+.footerNav,.copyright{
+    text-align: center;
+}
+.footerNav a{
+    color: #009e96;
+    font-size: 13px;
+    margin-right: 8px;
+}
+.footerNav .no-margin{margin-right: 0}
+.copyright{
+    color: #707070;
+    margin-top: 8px;
+}

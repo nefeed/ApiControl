@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<!--[if IE 8]> <html class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!--> <html class="no-js"> <!--<![endif]-->
+
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>管理后台 | #if($title) $!title #else 销帮帮 #end</title>
+		
+	<!-- BEGIN GLOBAL MANDATORY STYLES -->
+	
+    <link href="/css/lib/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/metronic/style-metro.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/metronic/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/metronic/style-responsive.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/metronic/uniform.default.css" rel="stylesheet" type="text/css">
+	<link href="/css/lib/metronic/themes/light.css" rel="stylesheet" type="text/css" id="style_color">
+
+	
+    <!-- END GLOBAL MANDATORY STYLES -->
+	
+	<link rel="shortcut icon" href="/images/favicon.ico" />
+	
+	<!-- BEGIN CORE PLUGINS -->
+
+	<script src="https://dn-xbongbong.qbox.me/center/js/lib/jquery-1.7.2.min.js" type="text/javascript"></script>
+	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+	<script src="https://dn-xbongbong.qbox.me/center/js/lib/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+	<script src="https://dn-xbongbong.qbox.me/center/js/lib/bootstrap.min.js" type="text/javascript"></script>
+
+	
+	<!--[if lt IE 9]>
+
+	<script src="/js/lib/excanvas.min.js"></script>
+	<script src="/js/lib/respond.min.js"></script>  
+
+	<![endif]-->   
+	
+	<!-- END CORE PLUGINS -->
+</head>
+
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body class="page-header-fixed">
+	
+	<!-- BEGIN HEADER -->
+	#parse("layout/header.vm")
+	<!-- END HEADER -->
+	
+	<!-- BEGIN CONTAINER -->
+    <div class="page-container">
+		
+        <!-- BEGIN SIDEBAR -->
+        #parse("layout/siderbar.vm")
+        <!-- END SIDEBAR -->
+		
+        <!-- BEGIN PAGE -->
+        <div class="page-content">
+			
+            <!-- BEGIN PAGE CONTAINER-->
+			<div class="container-fluid">
+				<div class="page-content-body">
+					$screen_content
+				</div>
+			</div>
+            <!-- END PAGE CONTAINER-->
+			
+        </div>
+        <!-- END PAGE -->
+		
+    </div>
+    <!-- END CONTAINER -->
+	
+	<!-- BEGIN FOOTER -->
+	#parse("layout/footer.vm")
+    <!-- END FOOTER -->
+	
+	#parse("include/commonModal.vm")
+	
+	<!-- BEGIN OTHER CORE PLUGINS -->
+	
+	<script src="/js/lib/jquery/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="/js/lib/jquery/jquery.blockui.min.js" type="text/javascript"></script>  
+	<script src="/js/lib/jquery/jquery.cookie.min.js" type="text/javascript"></script>
+	<script src="/js/lib/jquery/jquery.uniform.min.js" type="text/javascript" ></script>
+	
+	<script src="/js/lib/metronic/app.js" type="text/javascript"></script>
+	<script src="/js/lib/metronic/ui-general.js"></script>
+	<script src="/js/background/common.js" type="text/javascript"></script>
+	
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+    
+    <script>
+        jQuery(document).ready(function() {    
+           App.init(); // initlayout and core plugins,侧边栏下拉二级菜单
+		   //UIGeneral.init();
+		   $('.page-sidebar .ajaxify.start').click();
+        });
+    </script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+	
+	<!-- END OTHER CORE PLUGINS -->
+	
+</body>
+
+
+	
+	

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.RedundantFieldDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.RedundantFieldEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="refType" column="ref_type" />
+		<result property="refId" column="ref_id" />
+		<result property="templateId" column="template_id" />
+		<result property="attr1" column="attr1" />
+		<result property="attr2" column="attr2" />
+		<result property="attr3" column="attr3" />
+		<result property="attr4" column="attr4" />
+		<result property="attr5" column="attr5" />
+		<result property="attr6" column="attr6" />
+		<result property="attr7" column="attr7" />
+		<result property="attr8" column="attr8" />
+		<result property="attr9" column="attr9" />
+		<result property="attr10" column="attr10" />
+		<result property="attr11" column="attr11" />
+		<result property="attr12" column="attr12" />
+		<result property="attr13" column="attr13" />
+		<result property="attr14" column="attr14" />
+		<result property="attr15" column="attr15" />
+		<result property="attr16" column="attr16" />
+		<result property="attr17" column="attr17" />
+		<result property="attr18" column="attr18" />
+		<result property="attr19" column="attr19" />
+		<result property="attr20" column="attr20" />
+		<!-- 销售阶段code -->
+		<result property="salesStageCode" column="sales_stage_code" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldEntity">
+  		INSERT INTO tb_redundant_field ( 
+			id,corpid,ref_type,ref_id,template_id,attr1,attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15,attr16,attr17,attr18,attr19,attr20,sales_stage_code			
+  		) VALUES (
+			#{id},#{corpid},#{refType},#{refId},#{templateId},#{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},#{attr16},#{attr17},#{attr18},#{attr19},#{attr20},#{salesStageCode}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldEntity" >
+		UPDATE
+			tb_redundant_field
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="refType!=null">, ref_type = #{refType} </if>
+			 <if test="refId!=null">, ref_id = #{refId} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="attr1!=null">, attr1 = #{attr1} </if>
+			 <if test="attr2!=null">, attr2 = #{attr2} </if>
+			 <if test="attr3!=null">, attr3 = #{attr3} </if>
+			 <if test="attr4!=null">, attr4 = #{attr4} </if>
+			 <if test="attr5!=null">, attr5 = #{attr5} </if>
+			 <if test="attr6!=null">, attr6 = #{attr6} </if>
+			 <if test="attr7!=null">, attr7 = #{attr7} </if>
+			 <if test="attr8!=null">, attr8 = #{attr8} </if>
+			 <if test="attr9!=null">, attr9 = #{attr9} </if>
+			 <if test="attr10!=null">, attr10 = #{attr10} </if>
+			 <if test="attr11!=null">, attr11 = #{attr11} </if>
+			 <if test="attr12!=null">, attr12 = #{attr12} </if>
+			 <if test="attr13!=null">, attr13 = #{attr13} </if>
+			 <if test="attr14!=null">, attr14 = #{attr14} </if>
+			 <if test="attr15!=null">, attr15 = #{attr15} </if>
+			 <if test="attr16!=null">, attr16 = #{attr16} </if>
+			 <if test="attr17!=null">, attr17 = #{attr17} </if>
+			 <if test="attr18!=null">, attr18 = #{attr18} </if>
+			 <if test="attr19!=null">, attr19 = #{attr19} </if>
+			 <if test="attr20!=null">, attr20 = #{attr20} </if>
+			 <!-- 销售阶段code -->
+			 <if test="salesStageCode!=null">, sales_stage_code = #{salesStageCode} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<select id="getByRefTypeAndRefId" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field
+		<where>
+			corpid = #{corpid} AND ref_type = #{refType} AND ref_id = #{refId}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_redundant_field
+		SET
+			del = 1
+		<where>
+			id = #{key}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_redundant_field
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.refType!=null">
+  			AND  ref_type = #{param.refType}
+  		</if>
+  		<if test="param.refId!=null">
+  			AND  ref_id = #{param.refId}
+  		</if>
+  		<if test="param.refIdIn!=null">
+  			AND ref_id IN
+	  		<foreach item="item" index="index" collection="param.refIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.attr1!=null">
+  			AND  attr1 = #{param.attr1}
+  		</if>
+  		<if test="param.attr2!=null">
+  			AND  attr2 = #{param.attr2}
+  		</if>
+  		<if test="param.attr3!=null">
+  			AND  attr3 = #{param.attr3}
+  		</if>
+  		<if test="param.attr4!=null">
+  			AND  attr4 = #{param.attr4}
+  		</if>
+  		<if test="param.attr5!=null">
+  			AND  attr5 = #{param.attr5}
+  		</if>
+  		<if test="param.attr6!=null">
+  			AND  attr6 = #{param.attr6}
+  		</if>
+  		<if test="param.attr7!=null">
+  			AND  attr7 = #{param.attr7}
+  		</if>
+  		<if test="param.attr8!=null">
+  			AND  attr8 = #{param.attr8}
+  		</if>
+  		<if test="param.attr9!=null">
+  			AND  attr9 = #{param.attr9}
+  		</if>
+  		<if test="param.attr10!=null">
+  			AND  attr10 = #{param.attr10}
+  		</if>
+  		<if test="param.attr11!=null">
+  			AND  attr11 = #{param.attr11}
+  		</if>
+  		<if test="param.attr12!=null">
+  			AND  attr12 = #{param.attr12}
+  		</if>
+  		<if test="param.attr13!=null">
+  			AND  attr13 = #{param.attr13}
+  		</if>
+  		<if test="param.attr14!=null">
+  			AND  attr14 = #{param.attr14}
+  		</if>
+  		<if test="param.attr15!=null">
+  			AND  attr15 = #{param.attr15}
+  		</if>
+  		<if test="param.attr16!=null">
+  			AND  attr16 = #{param.attr16}
+  		</if>
+  		<if test="param.attr17!=null">
+  			AND  attr17 = #{param.attr17}
+  		</if>
+  		<if test="param.attr18!=null">
+  			AND  attr18 = #{param.attr18}
+  		</if>
+  		<if test="param.attr19!=null">
+  			AND  attr19 = #{param.attr19}
+  		</if>
+  		<if test="param.attr20!=null">
+  			AND  attr20 = #{param.attr20}
+  		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,19 @@
+html{color:#000;background:#e5e5e5}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}
+table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}
+ol,ul{list-style:none}caption,th{text-align:left}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}
+sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;*font-size:100%}
+legend{color:#000}a{padding:0;margin:0;line-height:14px}li{list-style:none}img{border:0}body{color:#626262;font-family:"Microsoft Yahei","simHei",Helvetica,Arial,sans-serif;font-size:14px}
+a,a:visited{text-decoration:none;color:#fff}a.btn{display:inline-block;border-radius:6px;color:#fff;background:#12b5b0;border:0;outline:0;text-align:center;padding:12px 0}
+input.btn{background:#12b5b0;border:0;outline:0;color:#fff;border-radius:6px;padding:12px 0;line-height:14px;cursor:pointer}a.btn_important{background:#ed4a4f}
+a.btn_middle,input.btn_middle{padding-left:30px;padding-right:30px}.btn_full{width:100%}input[type="text"],input[type="textarea"]{outline:0;padding:5px;border-radius:6px;border:1px solid #13b5b0;height:25px;line-height:25px;color:#626262}
+.input_full{width:100%}input[type="text"].input_img{padding-left:40px;background:url("../images/icons_spirite.png") no-repeat #fff}
+.alert_error{color:#ed4a4f}.pull-right{float:right}.pull-left{float:left}.show{display:block}.hide{display:none}.footer{position:fixed;bottom:0;width:100%;height:50px;background:#12b5b0;color:#fff;text-align:center}
+.footer .go_back,.footer .go_forward,{display:block;width:50px;height:50px;background:url("../images/icons_bar.png") no-repeat}.footer .go_back{display:block;width:50px;height:50px;background:url("../images/icons_bar.png") no-repeat}
+.container{padding:0 32px}.com_info{margin-top:100px}.com_info h2{font-size:24px;line-height:40px}.com_info p{margin-top:10px;font-size:16px}.com_info p a{color:#626262}
+.com_info p a:active,.com_info p a:hover{text-decoration:underline}.com_btns{margin-top:50px}.com_btns a:last-child{margin-top:24px}.com_btns a{padding:14px 0}
+.login{margin-top:100px}.login_input{margin-right:46px}.login_input input{background-position:0 0}.login_submit{margin-top:15px}.login_verify{margin-top:15px}
+.product_container{width:100%}.product_li{width:100%;overflow:hidden}.product_li.selected{background:#ffceaa}.product_cont{padding:10px 25px}.product_img,.product_info,.product_chat{display:inline-block;height:100px;overflow:hidden}
+.product_img{width:30%;text-align:center}.product_img img{margin-top:10px;height:80px;border-radius:6px}.product_info{width:40%}.product_info h4{margin-top:18px;font-size:15px;margin-left:10px}
+.product_info p{margin-top:2px;margin-left:10px}.product_chat{text-align:center}.product_chat a{width:35px;height:35px;padding-left:12px;padding-right:12px;margin-top:20px;background:url("../images/icons_spirite.png") 0 -51px no-repeat #12b5b0}
+.product_li.selected .product_chat a{background:url("../images/icons_spirite.png") 0 -51px no-repeat #ed4a4f}.detail_title{padding:6px 35px;background:#a08b71;margin-top:15px;color:#fff;line-height:25px}
+.detail_img{text-align:center;margin-top:10px;overflow:hidden}.detail_img img{width:100%}.detail_btn{margin-top:7px}

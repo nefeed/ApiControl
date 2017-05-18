@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.RedundantFieldExplainDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.RedundantFieldExplainEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="templateId" column="template_id" />
+		<result property="required" column="required" />
+		<result property="sort" column="sort" />
+		<result property="attr" column="attr" />
+		<result property="attrName" column="attr_name" />
+		<result property="fieldType" column="field_type" />
+		<result property="initValue" column="init_value" />
+		<result property="enable" column="enable" />
+		<result property="del" column="del" />
+		<result property="isRedundant" column="is_redundant" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldExplainEntity">
+  		INSERT INTO tb_redundant_field_explain ( 
+			id,corpid,template_id,required,sort,attr,attr_name,field_type,init_value,enable,del,is_redundant			
+  		) VALUES (
+			#{id},#{corpid},#{templateId},#{required},#{sort},#{attr},#{attrName},#{fieldType},#{initValue},#{enable},#{del},#{isRedundant}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldExplainEntity" >
+		UPDATE
+			tb_redundant_field_explain
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="required!=null">, required = #{required} </if>
+			 <if test="sort!=null">, sort = #{sort} </if>
+			 <if test="attr!=null">, attr = #{attr} </if>
+			 <if test="attrName!=null">, attr_name = #{attrName} </if>
+			 <if test="fieldType!=null">, field_type = #{fieldType} </if>
+			 <if test="initValue!=null">, init_value = #{initValue} </if>
+			 <if test="enable!=null">, enable = #{enable} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="isRedundant!=null">, is_redundant = #{isRedundant} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_explain
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_redundant_field_explain
+		SET
+			del = 1
+		<where>
+			id = #{key}
+		</where>
+	</delete>
+	
+	<delete id="deleteByTemplateId">
+		UPDATE
+			tb_redundant_field_explain
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND template_id = #{templateId}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_explain
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_redundant_field_explain
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.required!=null">
+  			AND  required = #{param.required}
+  		</if>
+  		<if test="param.sort!=null">
+  			AND  sort = #{param.sort}
+  		</if>
+  		<if test="param.attr!=null">
+  			AND  attr = #{param.attr}
+  		</if>
+  		<if test="param.attrName!=null">
+  			AND  attr_name = #{param.attrName}
+  		</if>
+  		<if test="param.fieldType!=null">
+  			AND  field_type = #{param.fieldType}
+  		</if>
+  		<if test="param.initValue!=null">
+  			AND  init_value = #{param.initValue}
+  		</if>
+  		<if test="param.enable!=null">
+  			AND  enable = #{param.enable}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		<if test="param.isRedundant!=null">
+  			AND  is_redundant = #{param.isRedundant}
+  		</if>
+	</sql>
+	
+	<!-- mybatis-config.xml 
+	<typeAlias alias="RedundantFieldExplainEntity" 	type="com.xbongbong.dingxbb.entity.RedundantFieldExplainEntity" />
+	<mapper resource="sql-mapper/RedundantFieldExplainMapper.xml" />
+	-->
+	<!-- spring-dao-beans.xml
+	<bean id="RedundantFieldExplainDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    	<property name="mapperInterface" value="com.xbongbong.dingxbb.dao.RedundantFieldExplainDao" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean>
+	-->
+</mapper>

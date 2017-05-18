@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.DataDictionaryDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.DataDictionaryEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="refEntity" column="ref_entity" />
+		<result property="name" column="name" />
+		<result property="code" column="code" />
+		<result property="type" column="type" />
+		<result property="addtionnalField" column="addtionnal_field" />
+		<result property="enable" column="enable" />
+		<result property="ifDefault" column="if_default" />
+		<result property="reserved" column="reserved" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="sort" column="sort" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.DataDictionaryEntity">
+  		INSERT INTO tb_data_dictionary ( 
+			id,corpid,ref_entity,name,code,type,addtionnal_field,enable,if_default,reserved,add_time,update_time,sort
+  		) VALUES (
+			#{id},#{corpid},#{refEntity},#{name},#{code},#{type},#{addtionnalField},#{enable},#{ifDefault},#{reserved},#{addTime},#{updateTime},#{sort}
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.DataDictionaryEntity" >
+		UPDATE
+			tb_data_dictionary
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="refEntity!=null">, ref_entity = #{refEntity} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="code!=null">, code = #{code} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="addtionnalField!=null">, addtionnal_field = #{addtionnalField} </if>
+			 <if test="enable!=null">, enable = #{enable} </if>
+			 <if test="ifDefault!=null">, if_default = #{ifDefault} </if>
+			 <if test="reserved!=null">, reserved = #{reserved} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="sort!=null">, sort = #{sort} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_data_dictionary
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_data_dictionary
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_data_dictionary
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_data_dictionary
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="sort" resultType="int">  
+        UPDATE tb_data_dictionary 
+		    SET sort = CASE id 
+		        <foreach item="item" index="key" collection="sortMap" open="" separator="" close="">
+		        	WHEN #{key} THEN #{item}
+		        </foreach> 
+		    END
+			<where>
+				<include refid="compareParamColumns" />
+			</where>
+    </select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.idIn!=null">
+  			AND  id IN
+	  		<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.refEntity!=null">
+  			AND  ref_entity = #{param.refEntity}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.code!=null">
+  			AND  code = #{param.code}
+  		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test="param.typeIn!=null">
+  			AND type in
+			<foreach item="item" index="index" collection="param.typeIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+  		</if>
+  		<if test="param.addtionnalField!=null">
+  			AND  addtionnal_field = #{param.addtionnalField}
+  		</if>
+  		<if test="param.enable!=null">
+  			AND  enable = #{param.enable}
+  		</if>
+  		<if test="param.ifDefault!=null">
+  			AND  if_default = #{param.ifDefault}
+  		</if>
+  		<if test="param.reserved!=null">
+  			AND  reserved = #{param.reserved}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.sort!=null">
+  			AND  sort = #{param.sort}
+  		</if>
+	</sql>
+	
+</mapper>

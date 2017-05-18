@@ -1,0 +1,217 @@
+<div class="row-fluid">
+	<div class="span12">
+		<!-- BEGIN STYLE CUSTOMIZER -->
+		<!-- END BEGIN STYLE CUSTOMIZER -->  
+		<h3 class="page-title">
+			接口测试
+			 <small>销帮帮API</small> 
+		</h3>
+		<ul class="breadcrumb">
+			<li>
+				<i class="icon-home"></i>
+				<a href="/list.html">销帮帮</a>
+				<span class="icon-angle-right"></span>
+			</li>
+			<li>
+				<a href="#">API接口</a>
+				<span class="icon-angle-right"></span>
+			</li>
+			<li><a href="#">接口测试</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<div class="span12">
+		<!-- BEGIN SAMPLE FORM PORTLET-->   
+		<div class="portlet box blue tabbable">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-reorder"></i>
+					<span class="hidden-480">测试表单</span>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="tabbable portlet-tabs">
+					<ul class="nav nav-tabs">
+						<li class=""><a data-toggle="tab" href="#portlet_tab3">&nbsp;</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="portlet_tab1" class="tab-pane active">
+							<!-- BEGIN FORM-->
+							<form class="form-horizontal" action="#">										
+								<div class="control-group">
+									<label class="control-label">选择接口</label>
+									<div class="controls">
+										<select tabindex="1" class="large m-wrap" id="apiId">
+										
+										<!------------------------导入options.vm页面------------------------>
+										#parse("/options.vm")	
+										
+										</select>
+									</div>
+								</div>	
+								<div class="control-group hide" id="needLogin">
+									<label class="control-label">token</label>
+									<div class="controls">
+										<input type="text" class="m-wrap medium" placeholder="token" name="sessionCode" id="sessionCode">
+									</div>
+								</div>											
+								<div class="control-group">
+									<label class="control-label">输入参数</label>
+									<div class="controls">
+										<textarea rows="5" class="large m-wrap" id="apiInput"></textarea>
+									</div>
+								</div>												
+								<div class="form-actions">
+									<button class="btn blue" type="button" id="apiSubmit"><i class="icon-ok"></i> 提交</button>													
+								</div>
+							</form>
+							<!-- END FORM-->  
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+</div>
+				
+<div class="row-fluid">
+	<div class="span12 ">
+
+		<!-- BEGIN Portlet PORTLET-->				
+		<div class="portlet" style = "width:1460px;overflow-y: auto">				
+			<div class="portlet-title">				
+				<div class="caption"><i class="icon-reorder"></i>返回结果</div>
+				<div class="tools">			
+					<a class="collapse" href="javascript:;"></a>											
+				</div>				
+			</div>				
+			<div class="portlet-body" id="apiResult" >			
+				返回结果		
+			</div>				
+		</div>				
+		<!-- END Portlet PORTLET-->				
+	</div>
+</div>
+				
+<div class="row-fluid" >
+	<div class="span12 ">
+
+		<!-- BEGIN Portlet PORTLET-->				
+		<div class="portlet">				
+			<div class="portlet-title">				
+				<div class="caption"><i class="icon-reorder"></i>接口说明</div>##<span style = "margin-left:10px;color:red;font-wight:bold;">[成功输出内容中标红部分为非显示字段]</span>
+				<div class="tools">			
+					<a class="collapse" href="javascript:;"></a>								
+					<a class="remove" href="javascript:;"></a>				
+				</div>				
+			</div>				
+			<div class="portlet-body" id="apiDoc" >			
+				接口说明详情				
+			</div>	
+			<div class="portlet-body" id="apiAttr">			
+				接口参数说明				
+			</div>
+			
+		   <!--------------------导入错误编码页面---------------------->
+		   #parse("/errorCode.vm")
+			
+		</div>				
+		<!-- END Portlet PORTLET-->				
+	</div>
+</div>	
+			
+<div>
+	
+	<!--------------------导入模块页面---------------------->
+    #parse("/modules.vm")
+
+</div>
+	
+	<!--<form action = "/API/xbb/upload.do" method = "post" enctype="multipart/form-data">
+		file:<input type = "file" name = "file">
+		<input type = "submit" value = "submit">
+	</form>-->
+
+<script language="javascript">
+
+	jQuery(document).ready(function() {
+	
+		var baseUrl = "";//"http://" + window.location.host;
+		
+		//选择接口
+		$("#apiId").bind("change",function(){
+			var apiDoc = $("#apiId").val();	
+			var apiAttr	= 	apiDoc.replace("api","attr");
+			var needLogin = $("#"+apiDoc).attr("login");
+			
+			//会话信息表单是否显示			
+			if(needLogin == 1){
+				$("#needLogin").show();
+			}else{
+				$("#needLogin").hide();
+			}	
+			
+			$("#apiDoc").html(($("#"+apiDoc).html()));
+			$("#apiAttr").html(($("#"+apiAttr).html()));
+		});
+		//接口数据提交
+		$("#apiSubmit").bind("click",function(){
+			var apiDoc = $("#apiId").val();
+			if(apiDoc==0){
+				alert("请选择接口");
+				return;
+			}	
+
+			var apiUrl = baseUrl+$("#"+apiDoc).attr("apiUrl");
+			var apiInput = $("#apiInput").val();
+			
+			var sessionToken = "";			
+			var needLogin = $("#"+apiDoc).attr("login");		
+			
+			//如果需要验证登录的，需要验证登录信息	
+			if(needLogin == 1){
+				var sessionCode = $("#sessionCode").val();
+
+				//因为js和java对双引号的操作不一样，所以在服务端开发了一个md5工具接口，使用该接口获取md5值
+				$.ajax({
+                        type : 'post',
+                        url: baseUrl+"/ajax/sha256.do",
+                        dataType : "jsonp",
+                        jsonp : "callback",
+                        async :"false",
+                        data : {
+                            code : apiInput + sessionCode
+                        },
+                        async : false,
+                        success : function(data) {
+                            $.ajax({
+							url: apiUrl,  
+							type: "POST",       
+							data: ({data : apiInput}), 
+							headers : {sign : data.sha256},
+							cache: false,   
+							success: function(html){     
+									$("#apiResult").html(html);   
+								} 			
+							});
+                        }
+                    });
+							
+			}else{
+				$.ajax({
+					url: apiUrl,  
+					type: "POST",       
+					data: ({data : apiInput,token:sessionToken,te:apiInput + sessionCode}), 
+					cache: false,   
+					success: function(html){     
+							$("#apiResult").html(html);   
+						} 			
+					});
+			}						
+		});
+		
+    });
+</script>		

@@ -1,0 +1,92 @@
+<div class="row-fluid">
+	<div class="span12">
+		<!-- BEGIN STYLE CUSTOMIZER -->
+		<!-- END BEGIN STYLE CUSTOMIZER -->  
+		<h3 class="page-title">
+			接口测试
+			 <small>销帮帮API</small> 
+		</h3>
+		<ul class="breadcrumb">
+			<li>
+				<i class="icon-home"></i>
+				<a href="/list.html">销帮帮</a>
+				<span class="icon-angle-right"></span>
+			</li>
+			<li>
+				<a href="#">API接口</a>
+				<span class="icon-angle-right"></span>
+			</li>
+			<li><a href="#">签名</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<div class="span12 ">
+
+		<!-- BEGIN Portlet PORTLET-->				
+		<div class="portlet" style = "width:1460px;overflow-y: auto">				
+			<div class="portlet-title">				
+				<div class="caption"><i class="icon-reorder"></i>全局参数说明</div>
+				<div class="tools">			
+					<a class="collapse" href="javascript:;"></a>											
+				</div>				
+			</div>				
+			<div class="portlet-body" id="apiResult" >			
+				
+				<div>
+					<table border = "1" width="1000">
+						<tr><th>参数名称</th><th>说明</th></tr>
+						<tr><td>data</td><td>访问接口传输参数的最外层包装参数，json格式，内部包含访问某个接口的所有参数集合</td></tr>
+						<tr><td>token</td><td>生成签名用到的固定secret部分,管理员账号登录销帮帮WEB版后台后，访问https://dingtalk.xbongbong.com/apiSetting/detail.html查看</td></tr>
+						<tr><td>corpid</td><td>包含在data中，访问每个接口都需要传该参数，必填，与钉钉中公司ID对应</td></tr>
+						<tr><td>sign</td><td>每次访问销帮帮CRM接口需要生成签名，用于身份验证和信息完整性认证</td></tr>
+					</table>
+				</div>
+						
+			</div>				
+		</div>				
+		<!-- END Portlet PORTLET-->				
+	</div>
+</div>
+				
+<div class="row-fluid" >
+	<div class="span12 ">
+
+		<!-- BEGIN Portlet PORTLET-->				
+		<div class="portlet">				
+			<div class="portlet-title">				
+				<div class="caption"><i class="icon-reorder"></i>签名规则</div>
+				<div class="tools">			
+					<a class="collapse" href="javascript:;"></a>								
+					<a class="remove" href="javascript:;"></a>				
+				</div>				
+			</div>				
+			<div class="portlet-body" id="apiDoc" >			
+				签名规则，将访问接口所需的参数集data + token字符串拼接后进行SHA256运算得到最后的签名,然后将签名参数sign(参数名为sign)放入http header中;
+				将访问接口所需的参数集data(参数名为data)放入http body.
+			</div>	
+		</div>				
+		<!-- END Portlet PORTLET-->				
+	</div>
+</div>
+
+<div class="row-fluid" >
+	<div class="span12 ">
+
+		<!-- BEGIN Portlet PORTLET-->				
+		<div class="portlet">				
+			<div class="portlet-title">				
+				<div class="caption"><i class="icon-reorder"></i>其他说明</div>
+				<div class="tools">			
+					<a class="collapse" href="javascript:;"></a>								
+					<a class="remove" href="javascript:;"></a>				
+				</div>				
+			</div>				
+			<div class="portlet-body" id="apiDoc" >			
+				目前接口只能VIP用户及试用期用户调用
+			</div>	
+		</div>				
+		<!-- END Portlet PORTLET-->				
+	</div>
+</div>

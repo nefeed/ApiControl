@@ -1,0 +1,201 @@
+##<link type="text/css" rel="stylesheet"
+##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
+<div id="vmList">
+    <!-- loading -->
+    <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    请稍候...
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- BEGIN STYLE CUSTOMIZER -->
+            <!-- END BEGIN STYLE CUSTOMIZER -->
+            <h3 class="page-title">
+                Api列表
+                <small>销帮帮API</small>
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="/list.html">销帮帮</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <a href="#">API接口</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li><a href="#">Api列表</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet box blue tabbable">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-reorder"></i>
+                        <span class="hidden-480">列表</span>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="tabbable portlet-tabs">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>模块</th>
+                                <th>版本</th>
+                                <th>接口名</th>
+                                <th>url</th>
+                                <th>作者</th>
+                                <th>修改时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in list">
+                                <td>
+                                    {{ item.module }}
+                                </td>
+                                <td>
+                                    v{{ item.version }}
+                                </td>
+                                <td>
+                                    <a href="#" @click="intoDetail(item.id)">{{ item.name }}</a>
+                                </td>
+                                <td>
+                                    {{ item.url }}
+                                </td>
+                                <td>
+                                    {{ item.username }}
+                                </td>
+                                <td>
+                                    {{ formatTime(item.updateTime) }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination pagination-right" style="margin-right: 10px; margin-bottom: 5px;">
+                        <ul>
+                            <li><a href="#" @click="intoPage((page-1))">Prev</a></li>
+                            <template v-for="index in pageCount">
+                                <li v-if="index == page" class="disabled"><a href="#">{{ index }}</a></li>
+                                <li v-else class="active"><a href="#" @click="intoPage(index)">{{ index }}</a></li>
+                            </template>
+                            <li><a href="#" @click="intoPage((page+1))">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- END SAMPLE FORM PORTLET-->
+        </div>
+    </div>
+</div>
+##<script src="$!{configConstant.resourcesBasicUrl}/js/lib/bootstrap.js?v=${configConstant.srcVersion}"
+##        type="text/javascript"></script>
+<script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
+        type="text/javascript"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#vmList',
+        data: {
+            page: 1,
+            pageSize: 20,
+            count: 0,
+            pageCount: 1,
+            list: []
+        },
+        computed: {},
+        methods: {
+            formatTime: function (time) {
+                return new Date(parseInt(time) * 1000).toLocaleString().replace(/\//g, '-').replace('下午', ' ')
+            },
+            /**
+             * 获取Api文档总数
+             */
+            loadCount: function () {
+                var self = this
+                $.ajax({
+                    url: "/api/doc/count.do",
+                    type: "POST",
+                    data: {},
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        self.count = result.ret.count
+                        if (self.count % self.pageSize == 0) {
+                            self.pageCount = self.count / self.pageSize
+                        } else {
+                            self.pageCount = self.count / self.pageSize + 1
+                        }
+                        if (self.pageCount == 0) {
+                            self.pageCount = 1
+                        }
+                        self.pageCount = Math.floor(self.pageCount)
+                        console.log('当前的页数：' + self.pageCount)
+                        self.loadApiList()
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                    }
+                });
+            },
+            /**
+             * 获取Api文档列表
+             */
+            loadApiList: function () {
+                var params = {
+                    page: this.page,
+                    pageSize: this.pageSize
+                }
+                var self = this
+                $('#loading').modal('show');
+                $.ajax({
+                    url: "/api/doc/list.do",
+                    type: "POST",
+                    data: params,
+                    cache: false,
+                    success: function (result) {
+                        self.list = JSON.parse(result).ret
+                        $('#loading').modal('hide');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
+                    }
+                });
+            },
+            /**
+             * 跳转到指定页并获取数据
+             * @param index
+             */
+            intoPage: function (index) {
+                if (index < 1 || index > this.pageCount) {
+                    // alert('翻页操作无效！')
+                    return
+                }
+                this.page = index
+                this.loadApiList()
+            },
+            /**
+             * 跳转到详情页
+             * @param id
+             */
+            intoDetail: function(id) {
+                window.location = '/item.html?id=' + id
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    vm.loadCount()
+</script>

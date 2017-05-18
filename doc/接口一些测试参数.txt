@@ -1,0 +1,43 @@
+token : 1b5f9765a8e55b18af0cf35fc04b2176
+
+客户：
+客户列表[详细] :  {"corpid":"1","page":1, "pageSize":15}
+客户列表[简要] :  {"corpid":"1","page":1, "pageSize":15}
+客户添加 ：{"corpid":"1","customer":{"创建人":"张三","客户名称":"测试客户101301","省":"浙江省","市":"杭州市","区/县":"西湖区","详细地址":"浙江工业大学","客户类型":"最终客户","客户电话":"13867426691"}}
+客户修改 ： {"corpid":"1","customer":{"customerId":1374, "创建者":"张三","客户名称":"测试客户101301","省":"浙江省","市":"杭州市","区/县":"西湖区","详细地址":"浙江工业大学屏峰校区","客户类型":"最终客户","客户电话":"13867426691"}}
+客户详情 ： {"corpid":"1","customerId":1374}
+删除客户 ： {"corpid":"1","customerId":1374}
+获取客户联系人列表 ：{"corpid":"1","customerId":77}
+获取客户合同列表 ：{"corpid":"1","customerId":82}
+
+联系人：
+联系人列表[详细] :  {"corpid":"1","page":1, "pageSize":15}
+联系人列表[简要] :  {"corpid":"1","page":1, "pageSize":15}
+联系人添加 ： {"corpid":"1","customerId":1373,"contact":{"联系电话":"13788992812","省":"浙江省","市":"杭州市","详细地址":"市政府","关联客户":"测试65","姓名":"卡卡"}} 
+联系人修改 ： {"corpid":"1","contact":{"contactId":273, "联系电话":"13788992812","省":"浙江省","市":"杭州市","详细地址":"市政府","关联客户":"测试65","姓名":"卡卡西"}} 
+联系人详情 ： {"corpid":"1","contactId":273}
+联系人删除 ： {"corpid":"1","contactId":271}
+
+合同：
+合同列表[详细] :  {"corpid":"1","page":1, "pageSize":15}
+合同列表[简要] :  {"corpid":"1","page":1, "pageSize":15}
+合同添加：{"corpid":"1","customerId":1373,"contract":{"创建人":"张杰","签订人":"张杰","合同编号":"HT20161014001","到期时间":1480525261,"签订日期":1476410400,"合同金额":1000,"合同状态":"执行中","客户名称":"测试65","合同名称":"测试合同1014"}} 
+合同修改：{"corpid":"1","contract":{"contractId":251,"合同编号":"HT20161014002","到期时间":1480525261,"签订日期":1476410400,"合同金额":1000,"合同状态":"执行中","合同名称":"测试合同1014"}} 
+合同详情 ： {"corpid":"dingxxx","contractId":xxx}
+合同删除 ： {"corpid":"dingxxx","contractId":xxx}
+获取合同关联产品列表： {"corpid":"dingxxx","contractId":xxx}
+合同关联产品添加 ： {"corpid":"dingxxx","contractId":xxx, "productId":xxx, "productNum":xxx, "price":xxx}
+合同关联产品修改 ： {"corpid":"dingxxx","contractId":xxx, "productId":xxx, "productNum":xxx, "price":xxx}
+##合同关联产品删除 ： {"corpid":"dingxxx","contractId":xxx, "productId":xxx}
+获取合同关联回款计划列表 ： {"corpid":"dingxxx","contractId":xxx}
+
+产品:
+产品列表:	{"corpid":"1","page":1, "pageSize":15}
+产品添加：  {"corpid":"1","product":{"产品编号":"HXC20161014001","规格":"HXC001","价格":100.5,"生产厂家":"杭州莫名","单盒利润":38,"产品名称":"什么药丸","零售价":120}}
+产品修改：  {"corpid":"1","product":{"productId":491,"产品编号":"HXC20161014001","规格":"HXC001","价格":100.5,"生产厂家":"杭州有名","单盒利润":38,"产品名称":"什么药丸","零售价":120}}
+产品详情： {"corpid":"1", "productId":491}
+产品删除： {"corpid":"1", "productId":23}
+产品分类列表： {"corpid":"1","page":1, "pageSize":50}
+产品分类添加： {"corpid":"1", "name":"新建分类","parentId":0}
+产品分类修改： {"corpid":"1","categoryId":36, "name":"修改分类"}
+产品分类删除： {"corpid":"1","categoryId":33}

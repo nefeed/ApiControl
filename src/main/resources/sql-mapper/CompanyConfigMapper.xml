@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.CompanyConfigDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.CompanyConfigEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="configName" column="config_name" />
+		<result property="configAlias" column="config_alias" />
+		<result property="configValue" column="config_value" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.CompanyConfigEntity">
+  		INSERT INTO tb_company_config ( 
+			id,corpid,config_name,config_alias,config_value,add_time,update_time,del			
+  		) VALUES (
+			#{id},#{corpid},#{configName},#{configAlias},#{configValue},#{addTime},#{updateTime},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.CompanyConfigEntity" >
+		UPDATE
+			tb_company_config
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="configName!=null">, config_name = #{configName} </if>
+			 <if test="configAlias!=null">, config_alias = #{configAlias} </if>
+			 <if test="configValue!=null">, config_value = #{configValue} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_company_config
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_company_config
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		FROM
+			tb_company_config INNER JOIN 
+		
+			(SELECT id  FROM tb_company_config 
+			<where> <include refid="compareParamColumns" /> </where>
+			<if test="param.orderByStr!=null"> order by ${param.orderByStr} </if>	
+			<choose>
+    			<when test="param.start!=null and param.pageNum!=null"> LIMIT #{param.start},#{param.pageNum} </when>
+    			<otherwise> LIMIT 0,1 </otherwise>
+			</choose>
+			 ) as  index_id 
+		
+		using(id)
+		<if test="param.orderByStr!=null"> order by ${param.orderByStr} </if>	
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_company_config
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.configName!=null">
+  			AND  config_name = #{param.configName}
+  		</if>
+  		<if test="param.configAlias!=null">
+  			AND  config_alias = #{param.configAlias}
+  		</if>
+  		<if test="param.configValue!=null">
+  			AND  config_value = #{param.configValue}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+ 		
+	</sql>
+	
+</mapper>

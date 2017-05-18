@@ -1,0 +1,786 @@
+##<link type="text/css" rel="stylesheet"
+##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
+<div id="vmItem">
+    <!-- loading -->
+    <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    请稍候...
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal hide fade" id="testDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         data-backdrop="static">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>请选择测试服务器</h3>
+        </div>
+        <div class="modal-body">
+            <p>将以 "请求 Demo" 作为参数进行访问，结果显示在 "返回结果" 处。</p>
+
+            <label>测试服务器：</label>
+            <select class="m-wrap large"
+                    v-model="testUrl">
+                <template v-for="(item, index) in testUrlArray">
+                    <option v-if="index === 0" selected :value="item.key">{{ item.value }}
+                    </option>
+                    <option v-else :value="item.key"
+                            :selected="{selected: (index == 0)}">{{ item.value }}
+                    </option>
+                </template>
+            </select>
+            <br/>
+            <label>Token:</label>
+            <input type="text" class="m-wrap large" placeholder="请输入Token"
+                   v-model="accessToken">
+            <label>不输入代表不需要登陆</label>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+            <a href="#" class="btn green" @click="runTest" data-dismiss="modal" aria-hidden="true">开始</a>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- BEGIN STYLE CUSTOMIZER -->
+            <!-- END BEGIN STYLE CUSTOMIZER -->
+            <h3 class="page-title">
+                新建API
+                <small>销帮帮API</small>
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="/list.html">销帮帮</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <a href="#">API接口</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li><a href="#">新建API</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+            <div class="portlet box blue tabbable">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-reorder"></i>
+                        <span class="hidden-480">{{ formTitle }}</span>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="tabbable portlet-tabs">
+                        <ul class="nav nav-tabs">
+                            <li class=""><a data-toggle="tab" href="#portlet_tab3">&nbsp;</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="portlet_tab1" class="tab-pane active">
+                                <!-- BEGIN FORM-->
+                                <form class="form-horizontal" action="#">
+                                    <div class="control-group">
+                                        <label class="control-label">版本</label>
+                                        <div class="controls">
+                                            <select class="m-wrap medium" name="apiVersion"
+                                                    v-model="version">
+                                                <template v-for="(item, index) in versionArray">
+                                                    <option v-if="index === 0" selected :value="item.key">{{ item.value
+                                                        }}
+                                                    </option>
+                                                    <option v-else :value="item.key"
+                                                            :selected="{selected: (index == 0)}">{{ item.value }}
+                                                    </option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">模块</label>
+                                        <div class="controls">
+                                            <input type="text" class="m-wrap medium" placeholder="请输入模块"
+                                                   name="apiModule" v-model="module">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Api 名称</label>
+                                        <div class="controls">
+                                            <input type="text" class="m-wrap medium" placeholder="请输入名称"
+                                                   name="apiName" v-model="name">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">URL</label>
+                                        <div class="controls">
+                                            <input type="text" class="m-wrap medium" placeholder="请输入地址"
+                                                   name="apiUrl" v-model="url"><br/>填写不包含域名部分，例："/api/doc/list.do"
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">作者大名</label>
+                                        <div class="controls">
+                                            <input type="text" class="m-wrap medium" placeholder="请输入大名"
+                                                   name="apiUsername" v-model="username">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">请求方式</label>
+                                        <div class="controls">
+                                            <select class="large m-wrap" name="apiMethod" v-model="method">
+                                                <option value="POST" selected>POST</option>
+                                                <option value="GET">GET</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">简要说明</label>
+                                        <div class="controls">
+                                            <textarea rows="5" class="large m-wrap" name="apiMemo"
+                                                      v-model="memo"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">请求参数</label>
+                                        <div class="controls">
+                                            <!-- TODO 请求参数 -->
+                                            <div v-if="params.length === 0">
+
+                                            </div>
+                                            <table v-else>
+                                                <thead>
+                                                <tr>
+                                                    <th>参数 Key</th>
+                                                    <th>参数中文</th>
+                                                    <th>参数类型</th>
+                                                    <th>长度上限<br/>（0：无上限)</th>
+                                                    <th style="width: 100px;">必填</th>
+                                                    <th>说明<br/>（换行请用"&lt;br /&gt;"）</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="(item, index) in params">
+                                                    <td>
+                                                        <input type="text" class="m-wrap small" placeholder="Key"
+                                                               v-model="item.key">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="m-wrap small" placeholder="Name"
+                                                               v-model="item.name">
+                                                    </td>
+                                                    <td>
+                                                        <select class="m-wrap small" v-model="item.type">
+                                                            <template v-for="(item, index) in typeOptions">
+                                                                <option v-if="index === 0" selected
+                                                                        :value="item.key">{{ item.value }}
+                                                                </option>
+                                                                <option v-else :value="item.key">{{ item.value }}
+                                                                </option>
+                                                            </template>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="m-wrap small" placeholder="Limit"
+                                                               v-model="item.limit">
+                                                    </td>
+                                                    <td>
+                                                        <label class="checkbox">
+                                                            <div class="checker" style="margin: 0 15px;">
+                                                                <span :class="{checked: item.required}">
+                                                                       <input type="checkbox" class="m-wrap"
+                                                                              v-model="item.required">
+                                                                 </span>
+
+                                                            </div>
+                                                            不为空
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <textarea rows="1" class="mediun m-wrap"
+                                                                  v-model="item.memo"></textarea>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn red" type="button"
+                                                                @click="removeParams(index)">
+                                                            <i class="icon-remove"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn blue" type="button" @click="addParams()"
+                                                    style="margin-top: 10px; margin-left: 2px;">
+                                                <i class="icon-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">请求 Demo</label>
+                                        <div class="controls">
+                                            <textarea rows="3" class="large m-wrap" name="apiParamsDemo"
+                                                      v-model="paramsDemo"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">返回数据</label>
+                                        <div class="controls">
+                                            <!-- TODO 返回数据 -->
+                                            <div v-if="response.length === 0">
+
+                                            </div>
+                                            <table v-else>
+                                                <thead>
+                                                <tr>
+                                                    <th>参数 Key</th>
+                                                    <th>参数中文</th>
+                                                    <th>参数类型</th>
+                                                    <th>说明<br/>（换行请用"&lt;br /&gt;"）</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="(item, index) in response">
+                                                    <td>
+                                                        <input type="text" class="m-wrap small" placeholder="Key"
+                                                               v-model="item.key">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="m-wrap small" placeholder="Name"
+                                                               v-model="item.name">
+                                                    </td>
+                                                    <td>
+                                                        <select class="m-wrap small" v-model="item.type">
+                                                            <template v-for="(item, index) in typeOptions">
+                                                                <option v-if="index === 0" selected
+                                                                        :value="item.key">{{ item.value }}
+                                                                </option>
+                                                                <option v-else
+                                                                        :value="item.key">{{ item.value }}
+                                                                </option>
+                                                            </template>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <textarea rows="1" class="mediun m-wrap"
+                                                                  v-model="item.memo"></textarea>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn red" type="button"
+                                                                @click="removeResponse(index)">
+                                                            <i class="icon-remove"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn blue" type="button" @click="addResponse()"
+                                                    style="margin-top: 10px; margin-left: 2px;">
+                                                <i class="icon-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">返回 Demo</label>
+                                        <div class="controls">
+                                            <textarea rows="5" class="large m-wrap" name="apiResponseDemo"
+                                                      v-model="responseDemo"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">错误 Code</label>
+                                        <div class="controls">
+                                            <!-- TODO 错误 Code -->
+                                            <div v-if="wrongCode.length === 0">
+
+                                            </div>
+                                            <table v-else>
+                                                <thead>
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>解释<br/>（换行请用"&lt;br /&gt;"）</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="(item, index) in wrongCode">
+                                                    <td>
+                                                        <input type="text" class="m-wrap small" placeholder="Code"
+                                                               v-model="item.code">
+                                                    </td>
+                                                    <td>
+                                                        <textarea rows="1" class="mediun m-wrap"
+                                                                  v-model="item.msg"></textarea>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn red" type="button"
+                                                                @click="removeWrongCode(index)">
+                                                            <i class="icon-remove"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button class="btn blue" type="button" @click="addWrongCode()"
+                                                    style="margin-top: 10px; margin-left: 2px;">
+                                                <i class="icon-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button class="btn blue" type="button" @click="showConfirmDialog">
+                                            <i class="icon-ok" style="margin-right: 10px;"></i>{{ btnSave }}
+                                        </button>
+                                        <button class="btn green" type="button" @click="showApiTestDialog">
+                                            <i class="icon-briefcase" style="margin-right: 10px;"></i>测试
+                                        </button>
+                                        <button class="btn gray" type="button" @click="outputMarkdown">
+                                            <i class="icon-file" style="margin-right: 10px;"></i>导出Markdown
+                                        </button>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END SAMPLE FORM PORTLET-->
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12 ">
+
+            <!-- BEGIN Portlet PORTLET-->
+            <div class="portlet" style="width: 100%;overflow-y: auto">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>返回结果</div>
+                    <div class="tools">
+                        <a class="collapse" href="javascript:;"></a>
+                    </div>
+                </div>
+                <div class="portlet-body" id="apiResult">
+                    {{ result }}
+                </div>
+            </div>
+            <div class="portlet" style="width: 100%;overflow-y: auto" v-show="isMarkdownShown">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Markdown文本</div>
+                    <small style="margin-left: 10px;margin-top: 5px;">(请复制到 .md 文件中)</small>
+                    <div class="tools">
+                        <a class="collapse" href="javascript:;"></a>
+                    </div>
+                </div>
+                <div class="portlet-body" id="markdownContent">
+                </div>
+            </div>
+            <!-- END Portlet PORTLET-->
+        </div>
+    </div>
+</div>
+##<script src="$!{configConstant.resourcesBasicUrl}/js/lib/bootstrap.js?v=${configConstant.srcVersion}"
+##        type="text/javascript"></script>
+<script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
+        type="text/javascript"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#vmItem',
+        data: {
+            testUrl: 'http://localhost/',
+            testUrlArray: [
+                {key: 'http://localhost/', value: '本机80端口'},
+                {key: 'http://localhost:8016/', value: '本机8016端口'},
+                {key: 'http://localhost:8080/', value: '本机8080端口'},
+                {key: 'http://localhost:8081/', value: '本机8081端口'},
+                {key: 'http://localhost:8087/', value: '本机8087端口'},
+                {key: 'http://localhost:8088/', value: '本机8088端口'},
+                {key: 'https://testdingtalk2.xbongbong.com/', value: 'WEB项目开发版'},
+                {key: 'https://testdingtalkapi2.xbongbong.com/', value: 'Dingtalk项目开发版'},
+                {key: 'https://testdingtalk3.xbongbong.com/', value: 'WEB项目测试版'},
+                {key: 'https://testdingtalkapi3.xbongbong.com/', value: 'Dingtalk项目测试版'}
+            ],
+            versionArray: [
+                {key: '3.7', value: '3.7'},
+                {key: '3.6', value: '3.6'},
+                {key: '3.5', value: '3.5'},
+                {key: '3.4', value: '3.4'},
+                {key: '3.3', value: '3.3'},
+                {key: '3.2', value: '3.2'}
+            ],
+            typeOptions: [
+                {key: 'String', value: 'String'},
+                {key: 'Integer', value: 'Integer'},
+                {key: 'Array', value: 'Array'},
+                {key: 'Boolean', value: 'Boolean'},
+                {key: 'Float', value: 'Float'},
+                {key: 'Double', value: 'Double'}
+            ],
+            id: null,
+            version: '3.7', // Api Doc 版本号
+            module: '', // 'Api Doc 模块名',
+            name: '', // 'Api Doc 接口名',
+            url: '', // 'Api Doc 请求地址，不包含域名部分',
+            username: '', // 'Api Doc 创建者名称',
+            method: 'POST', // 'Api Doc 请求方式：POST或GET',
+            memo: '', // 'Api Doc 说明',
+            params: [{
+                key: '',
+                name: '',
+                type: 'String',
+                limit: 0,
+                required: true,
+                memo: ''
+            }], // 'Api Doc 请求参数 {"key": "参数 key", "name": "参数中文", "type": "参数类型（String、int、float、double、boolean）", "limie": "参数长度上限（0：无上限）", "required": "是否必填（boolean）", "memo": "说明"}',
+            paramsItem: {
+                key: '',
+                name: '',
+                type: 'String',
+                limit: 0,
+                required: true,
+                memo: ''
+            },
+            paramsDemo: '', // 'Api Doc 请求参数 Demo',
+            response: [{
+                key: '',
+                name: '',
+                type: 'String',
+                memo: ''
+            }], // 'Api Doc 返回 Response 的 body 主要内容 {"key": "参数 key", "name": "参数中文", "type": "参数类型（String、int、float、double、boolean）", "memo": "说明"}',
+            responseItem: {
+                key: '',
+                name: '',
+                type: 'String',
+                memo: ''
+            },
+            responseDemo: '', // 'Api Doc 返回 Response 的 body 的 demo',
+            wrongCode: [], // '错误代码： {"code": "错误代码 Code", "msg": "错误说明"}',
+            wrongCodeItem: {
+                code: '',
+                msg: ''
+            },
+            addTime: 0, // '创建时间（Unix_timestamp）',
+            updateTime: 0, // '更新时间（Unix_timestamp）',
+            del: 0, // '是否删除',
+            result: '', // 接口返回结果
+            formTitle: '新建表单',
+            btnSave: '保存',
+            accessToken: '', // 请求需要的token   1b5f9765a8e55b18af0cf35fc04b2176
+            isMarkdownShown: false
+        },
+        computed: {},
+        methods: {
+            formatTime: function (time) {
+                return new Date(parseInt(time) * 1000).toLocaleString().replace(/\//g, '-').replace('下午', ' ')
+            },
+            /**
+             * 添加请求参数
+             */
+            addParams: function () {
+                var item = {
+                    key: '',
+                    name: '',
+                    type: 'String',
+                    limit: 0,
+                    required: true,
+                    memo: ''
+                }
+                this.params.push(item)
+            },
+            /**
+             * 删除该条请求参数
+             */
+            removeParams: function (index) {
+                this.params.splice(index, 1)
+            },
+            /**
+             * 添加返回参数
+             */
+            addResponse: function () {
+                var item = {
+                    key: '',
+                    name: '',
+                    type: 'String',
+                    memo: ''
+                }
+                this.response.push(item)
+            },
+            /**
+             * 删除该条返回参数
+             */
+            removeResponse: function (index) {
+                this.response.splice(index, 1)
+            },
+            /**
+             * 添加错误代码
+             */
+            addWrongCode: function () {
+                var item = {
+                    code: '',
+                    msg: ''
+                }
+                this.wrongCode.push(item)
+            },
+            /**
+             * 删除该条返回参数
+             */
+            removeWrongCode: function (index) {
+                this.wrongCode.splice(index, 1)
+            },
+            showConfirmDialog: function () {
+                if (!this.version) {
+                    alert('请输入版本号！')
+                    return
+                }
+                if (!this.module) {
+                    alert('请输入所属模块名称！')
+                    return
+                }
+                if (!this.name) {
+                    alert('请输入 Api 名称！')
+                    return
+                }
+                if (!this.url) {
+                    alert('请输入 Api 请求地址！')
+                    return
+                }
+                if (!this.username) {
+                    alert('请输入作者大名！')
+                    return
+                }
+                var mymessage = confirm('确认保存吗？');
+                if (mymessage == true) {
+                    this.save()
+                } else if (mymessage == false) {
+                    // Hide
+                }
+            },
+            /**
+             * 获取Api文档列表
+             */
+            loadVersionList: function () {
+                var self = this
+                $.ajax({
+                    url: "/api/doc/version.do",
+                    type: "POST",
+                    data: {},
+                    cache: false,
+                    success: function (result) {
+                        var versionList = JSON.parse(result).ret;
+                        if (versionList && versionList.length > 0) {
+                            self.version = versionList[0]
+                            self.versionArray = []
+                            for (var i = 0; i < versionList.length; i++) {
+                                self.versionArray.push({
+                                    key: versionList[i],
+                                    value: versionList[i]
+                                })
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+            },
+            /**
+             * 获取详情
+             */
+            loadDetail: function () {
+                var self = this
+                $('#loading').modal('show');
+                $.ajax({
+                    url: '/api/doc/detail.do',
+                    type: 'POST',
+                    data: {
+                        id: self.id
+                    },
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        self.id = result.ret.id
+                        self.version = result.ret.version
+                        self.module = result.ret.module
+                        self.name = result.ret.name
+                        self.url = result.ret.url
+                        self.username = result.ret.username
+                        self.method = result.ret.method
+                        self.memo = result.ret.memo
+                        self.params = JSON.parse(result.ret.params)
+                        self.paramsDemo = result.ret.paramsDemo
+                        self.response = JSON.parse(result.ret.response)
+                        self.responseDemo = result.ret.responseDemo
+                        self.wrongCode = JSON.parse(result.ret.wrongCode)
+                        self.del = result.ret.del
+                        self.btnSave = '更新'
+                        self.formTitle = '更新表单'
+                        $('#loading').modal('hide');
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
+                    }
+                });
+            },
+            save: function () {
+                var params = {
+                    id: this.id,
+                    version: this.version,
+                    module: this.module,
+                    name: this.name,
+                    url: this.url,
+                    username: this.username,
+                    method: this.method,
+                    memo: this.memo,
+                    params: JSON.stringify(this.params),
+                    paramsDemo: this.paramsDemo,
+                    response: JSON.stringify(this.response),
+                    responseDemo: this.responseDemo,
+                    wrongCode: JSON.stringify(this.wrongCode),
+                    del: this.del
+                }
+                var self = this
+                $('#loading').modal('show');
+                $.ajax({
+                    url: '/api/doc/item.do',
+                    type: 'POST',
+                    data: {
+                        params: JSON.stringify(params)
+                    },
+                    cache: false,
+                    success: function (result) {
+                        self.result = result
+                        result = JSON.parse(result)
+                        self.id = result.ret.id
+                        if (result.errorcode == 0) {
+                            self.btnSave = '更新'
+                            self.formTitle = '更新表单'
+                            alert('保存成功！')
+                        } else {
+                            alert('服务器返回错误信息：' + result.msg)
+                        }
+                        $('#loading').modal('hide');
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
+                    }
+                });
+            },
+            showApiTestDialog: function () {
+                $('#testDialog').modal('show');
+            },
+            runTest: function () {
+                var self = this
+                $('#loading').modal('show');
+                if (self.accessToken) {
+                    $.ajax({
+                        url: self.testUrl + self.url,
+                        type: "POST",
+                        data: ({
+                            data: self.paramsDemo,
+                            token: '',
+                            te: self.paramsDemo + self.accessToken
+                        }),
+                        cache: false,
+                        success: function (result) {
+                            self.result = result
+                            $('#loading').modal('hide');
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                            $('#loading').modal('hide');
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: self.testUrl + self.url,
+                        type: 'POST',
+                        data: JSON.parse(self.paramsDemo),
+                        cache: false,
+                        success: function (result) {
+                            self.result = result
+                            $('#loading').modal('hide');
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                            $('#loading').modal('hide');
+                        }
+                    });
+                }
+            },
+            /**
+             * 导出 Markdown 文本，输出在 result
+             */
+            outputMarkdown: function () {
+                var params = {
+                    id: this.id,
+                    version: this.version,
+                    module: this.module,
+                    name: this.name,
+                    url: this.url,
+                    username: this.username,
+                    method: this.method,
+                    memo: this.memo,
+                    params: JSON.stringify(this.params),
+                    paramsDemo: this.paramsDemo,
+                    response: JSON.stringify(this.response),
+                    responseDemo: this.responseDemo,
+                    wrongCode: JSON.stringify(this.wrongCode),
+                    del: this.del
+                }
+                var self = this
+                $('#loading').modal('show');
+                $.ajax({
+                    url: '/api/doc/outputMarkdown.do',
+                    type: 'POST',
+                    data: {
+                        params: JSON.stringify(params)
+                    },
+                    cache: false,
+                    success: function (result) {
+                        self.result = result
+                        result = JSON.parse(result)
+                        self.id = result.ret.id
+                        if (result.errorcode == 0) {
+                            self.btnSave = '更新'
+                            self.formTitle = '更新表单'
+                            var markdownContentDiv = document.getElementById('markdownContent')
+                            markdownContentDiv.innerHTML = result.ret.markdown
+                            self.isMarkdownShown = true
+                            setTimeout(function () {
+                                $('body').scrollTop($('body').height());
+                            }, 300)
+                        }
+                        $('#loading').modal('hide');
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
+                    }
+                });
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null)return unescape(r[2]);
+        return null;
+    }
+
+    vm.loadVersionList()
+    if (getQueryString('id')) {
+        vm.id = getQueryString('id')
+        vm.loadDetail()
+    }
+</script>

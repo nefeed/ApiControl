@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ContactUserDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ContactUserEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="customerId" column="customer_id" />
+		<result property="contactId" column="contact_id" />
+		<result property="isMain" column="is_main" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ContactUserEntity">
+  		INSERT INTO tb_contact_user ( 
+			id,corpid,user_id,user_name,customer_id,contact_id,is_main		
+  		) VALUES (
+			#{id},#{corpid},#{userId},#{userName},#{customerId},#{contactId},#{isMain}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ContactUserEntity" >
+		UPDATE
+			tb_contact_user
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="customerId!=null">, customer_id = #{customerId} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="userName!=null">, user_name = #{userName} </if>
+			 <if test="contactId!=null">, contact_id = #{contactId} </if>
+			 <if test="isMain!=null">, is_main = #{isMain} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_contact_user
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		DELETE	FROM
+			tb_contact_user
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<delete id="deleteByCorpidAndCustomerId">
+		DELETE	FROM
+			tb_contact_user
+		<where>
+			corpid = #{corpid} AND customer_id = #{customerId}
+		</where>
+	</delete>
+	
+	<delete id="deleteByCorpidAndContactId">
+		DELETE	FROM
+			tb_contact_user
+		<where>
+			corpid = #{corpid} AND contact_id = #{contactId}
+		</where>
+	</delete>
+	
+	<delete id="deleteByUserCustomer">
+		DELETE FROM 
+			tb_contact_user
+		<where>
+			user_id = #{userId} AND customer_id = #{customerId} AND corpid = #{corpid}
+		</where>
+	</delete>
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_contact_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_contact_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		corpid = #{param.corpid}
+  		<if test="param.customerId!=null">
+  			AND  customer_id = #{param.customerId}
+  		</if>
+  		<if test = "param.customerIdIn!=null">
+	  	    AND customer_id IN
+	  		<foreach item="item" index="index" collection="param.customerIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId} 
+  		</if>
+  		<if test="param.userName!=null">
+  			AND  user_name = #{param.userName} 
+  		</if>
+  		<if test="param.contactId!=null">
+  			AND  contact_id = #{param.contactId}
+  		</if>
+  		<if test="param.isMain!=null">
+  			AND  is_main = #{param.isMain}
+  		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,316 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xbongbong</groupId>
+    <artifactId>xbb-dingtalk-api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>xbb-dingtalk-api</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <maven.compiler.source>6</maven.compiler.source>
+        <maven.compiler.target>6</maven.compiler.target>
+        <maven.compiler.encoding>utf8</maven.compiler.encoding>
+        <slf4j.version>1.7.5</slf4j.version>
+        <spring.maven.artifact.version>3.2.14.RELEASE</spring.maven.artifact.version>
+        <shiro.maven.artifact.version>1.2.2</shiro.maven.artifact.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- userfull tools -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.1.26</version>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+
+        <!-- velocity -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+            <version>2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.struts</groupId>
+                    <artifactId>struts-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.struts</groupId>
+                    <artifactId>struts-tiles</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.struts</groupId>
+                    <artifactId>struts-taglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- database -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.0.2.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>7.0.23</version>
+
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-juli</artifactId>
+            <version>7.0.23</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- log4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.maven.artifact.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>xbb-dingtalk-api</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*/*</include>
+                    <include>*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
+
+                <configuration>
+                    <!-- http port -->
+                    <port>8087</port>
+                    <!-- local test tomcat server url and server -->
+
+                    <!-- <url>http://192.168.32.100/manager</url> -->
+                    <server>tomcat-local-server</server>
+
+                    <!-- application path always starts with / -->
+                    <path>/</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <!-- skip unit test -->
+                    <!-- -->
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>UTF-8</encoding>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pfx</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <id>testcom</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <prop.jdbc.default.driver>com.mysql.jdbc.Driver</prop.jdbc.default.driver>
+                <prop.jdbc.default.url>
+                    <![CDATA[jdbc:mysql://192.168.10.100:3306/db_xbb_dingtalk?connectTimeout=2000&amp;socketTimeout=8000&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false]]></prop.jdbc.default.url>
+                <prop.jdbc.default.username>ms2</prop.jdbc.default.username>
+                <prop.jdbc.default.password>ms2.com.cn</prop.jdbc.default.password>
+
+                <!-- 项目根目录及缓存主机 -->
+                <prop.project.name>xbbDingtalk</prop.project.name>
+                <prop.cache.redis.host>192.168.10.5</prop.cache.redis.host>
+
+                <!-- 版本号 -->
+                <prop.version>wlkxtest</prop.version>
+                <deploy.version>wlkxtest</deploy.version>
+
+                <!-- 是否混淆控制 -->
+                <proguard.maven.plugin.obfuscate>false</proguard.maven.plugin.obfuscate>
+
+            </properties>
+        </profile>
+
+        <profile>
+            <id>aliyun</id>
+            <properties>
+                <prop.jdbc.default.driver>com.mysql.jdbc.Driver</prop.jdbc.default.driver>
+                <prop.jdbc.default.url>
+                    <![CDATA[jdbc:mysql://database2:3306/db_xbb_dingtalk?connectTimeout=2000&amp;socketTimeout=8000&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false]]></prop.jdbc.default.url>
+                <prop.jdbc.default.username>xbb_com</prop.jdbc.default.username>
+                <prop.jdbc.default.password>GOvI3Qa0AS4C88CjPjll</prop.jdbc.default.password>
+
+                <!-- 项目根目录及缓存主机 -->
+                <prop.project.name>xbbDingtalk</prop.project.name>
+                <prop.cache.redis.host>redis.server</prop.cache.redis.host>
+
+                <!-- 版本号 -->
+                <prop.version>xbbapi</prop.version>
+                <deploy.version>xbbapi0613</deploy.version>
+
+                <!-- 是否混淆控制 -->
+                <proguard.maven.plugin.obfuscate>true</proguard.maven.plugin.obfuscate>
+
+            </properties>
+        </profile>
+
+        <profile>
+            <id>jushita</id>
+            <properties>
+                <prop.jdbc.default.driver>com.mysql.jdbc.Driver</prop.jdbc.default.driver>
+                <prop.jdbc.default.url>
+                    <![CDATA[jdbc:mysql://rm-vy19mel534qt4l3er.mysql.rds.aliyuncs.com:3306/db_xbb_dingtalk?connectTimeout=2000&amp;socketTimeout=8000&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false]]></prop.jdbc.default.url>
+                <prop.jdbc.default.username>xbb_com</prop.jdbc.default.username>
+                <prop.jdbc.default.password>GOvI3Qa0AS4C88CjPjll</prop.jdbc.default.password>
+
+                <!-- 项目根目录及缓存主机 -->
+                <prop.project.name>xbbDingtalk</prop.project.name>
+                <prop.cache.redis.host>10.24.41.81</prop.cache.redis.host>
+
+                <!-- 版本号 -->
+                <prop.version>xbbapi</prop.version>
+                <deploy.version>xbbapi1229</deploy.version>
+
+                <!-- 是否混淆控制 -->
+                <proguard.maven.plugin.obfuscate>true</proguard.maven.plugin.obfuscate>
+
+            </properties>
+        </profile>
+
+    </profiles>
+</project>

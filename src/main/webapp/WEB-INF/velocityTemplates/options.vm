@@ -1,0 +1,51 @@
+	<option value="0">选择接口</option>											
+	
+	<option value="0">===================客户管理模块=====================</option>
+    <option value="api101">客户列表[全部数据]接口地址[/api/v1/customer/list.do]</option>
+    <option value="api102">客户列表[简要数据]接口地址[/api/v1/customer/simpleList.do]</option>
+    <option value="api103">新建客户接口地址[/api/v1/customer/add.do]</option>
+    <option value="api104">修改客户接口地址[/api/v1/customer/update.do]</option>
+    <option value="api105">获取客户详情接口地址[/api/v1/customer/get.do]</option>
+    <option value="api106">客户删除接口地址[/api/v1/customer/delete.do]</option>
+    <option value="api107">客户关联联系人列表接口地址[/api/v1/customer/contact.do]</option>
+    <option value="api108">客户关联合同列表接口地址[/api/v1/customer/contract.do]</option>
+    <option value="api109">客户添加协同人地址[/api/v1/customer/team/add.do]</option>
+    <option value="api110">客户删除协同人地址[/api/v1/customer/team/delete.do]</option>
+
+    <option value="0">===================联系人模块=====================</option>
+    <option value="api201">联系人列表[详细]接口地址[/api/v1/contact/list.do]</option>
+    <option value="api202">联系人列表[简要]接口地址[/api/v1/contact/simpleList.do]</option>
+    <option value="api203">新建联系人接口地址[/api/v1/contact/add.do]</option>
+    <option value="api204">联系人修改接口地址[/api/v1/contact/update.do]</option>
+    <option value="api205">获取联系人详情接口地址[/api/v1/contact/get.do]</option>
+    <option value="api206">联系人删除接口地址[/api/v1/contact/delete.do]</option>
+
+    <option value="0">===================合同模块=====================</option>
+    <option value="api301">合同列表[全部数据]接口地址[/api/v1/contract/list.do]</option>
+    <option value="api302">合同列表[简要数据]接口地址[/api/v1/contract/simpleList.do]</option>
+    <option value="api303">新建合同接口地址[/api/v1/contract/add.do]</option>
+    <option value="api304">合同修改接口地址[/api/v1/contract/update.do]</option>
+    <option value="api305">获取合同详情接口地址[/api/v1/contract/get.do]</option>
+    <option value="api306">合同删除接口地址[/api/v1/contract/delete.do]</option>
+    <option value="api307">获取合同关联产品列表接口地址[/api/v1/contract/product/list.do]</option>
+    <option value="api308">合同关联产品添加接口地址[/api/v1/contract/product/add.do]</option>
+    <option value="api309">合同关联产品修改接口地址[/api/v1/contract/product/update.do]</option>
+    ##关联修改合同信息<option value="api310">合同关联产品修改接口地址[/api/v1/contract/product/update.do]</option>
+    <option value="api311">获取合同关联回款计划列表接口地址[/api/v1/contract/payment/list.do]</option>
+    <option value="api312">合同回款计划添加接口地址[/api/v1/contract/payment/add.do]</option>
+    <option value="api313">合同回款计划编辑接口地址[/api/v1/contract/payment/update.do]</option>
+    <option value="api314">合同回款计划删除接口地址[/api/v1/contract/payment/delete.do]</option>
+    
+    <option value="0">===================产品模块=====================</option>
+    <option value="api401">产品列表[全部数据]接口地址[/api/v1/product/list.do]</option>
+    <option value="api402">新建产品接口地址[/api/v1/product/add.do]</option>
+    <option value="api403">产品修改接口地址[/api/v1/product/update.do]</option>
+    <option value="api404">获取产品详情接口地址[/api/v1/product/get.do]</option>
+    <option value="api405">产品删除接口地址[/api/v1/product/delete.do]</option>
+    <option value="api406">产品分类列表[全部数据]接口地址[/api/v1/product/category/list.do]</option>
+    <option value="api407">产品分类添加接口地址[/api/v1/product/category/add.do]</option>
+    <option value="api408">产品分类更新接口地址[/api/v1/product/category/update.do]</option>
+    <option value="api409">产品分类删除接口地址[/api/v1/product/category/delete.do]</option>
+    
+    <option value="0">===================模板模块=====================</option>
+    <option value="api501">获取当前启用的模板详情接口地址[/api/v1/template/get.do]</option>

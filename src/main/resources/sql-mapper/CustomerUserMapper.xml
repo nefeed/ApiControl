@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.CustomerUserDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.CustomerUserEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="customerId" column="customer_id" />
+		<result property="isMain" column="is_main" />
+		<result property="distributionTime" column="distribution_time" />
+		<result property="backTime" column="back_time" />
+		<result property="del" column="del" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+	
+	<resultMap id="USER-RESULT" type="com.xbongbong.dingxbb.entity.UserEntity">
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="active" column="active" />
+		<result property="isAdmin" column="is_admin" />
+		<result property="isBoss" column="is_boss" />
+		<result property="dingId" column="ding_id" />
+		<result property="position" column="position" />
+		<result property="avatar" column="avatar" />
+		<result property="jobnumber" column="jobnumber" />
+		<result property="department" column="department" />
+		<result property="orderInDepts" column="order_in_depts" />
+		<result property="isLeaderInDepts" column="is_leader_in_depts" />
+		<result property="extattr" column="extattr" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		
+		<result property="isMain" column="is_main" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.CustomerUserEntity">
+  		INSERT INTO tb_customer_user ( 
+			id,corpid,user_id,user_name,customer_id,is_main,distribution_time,back_time,del,add_time,update_time
+  		) VALUES (
+			#{id},#{corpid},#{userId},#{userName},#{customerId},#{isMain},#{distributionTime},#{backTime},#{del},#{addTime},#{updateTime}
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.CustomerUserEntity" >
+		UPDATE
+			tb_customer_user
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="userName!=null">, user_name = #{userName} </if>
+			 <if test="customerId!=null">, customer_id = #{customerId} </if>
+			 <if test="isMain!=null">, is_main = #{isMain} </if>
+			 <if test="distributionTime!=null">, distribution_time = #{distributionTime} </if>
+			 <if test="backTime!=null">, back_time = #{backTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			<if test="addTime!=null">, add_time = #{addTime} </if>
+			<if test="updateTime!=null">, update_time = #{updateTime} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_customer_user
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	<select id="getByUserIdCustomerId" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_customer_user
+		<where>
+			 corpid = #{corpid} AND user_id = #{userId} AND customer_id = #{customerId} AND del = 0
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_customer_user
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<delete id="deleteByCustomerId">
+		UPDATE
+			tb_customer_user
+		SET
+			del = 1
+		<where>
+			 corpid = #{corpid} AND customer_id = #{customerId}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_customer_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_customer_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="findEntitysJoinUser" parameterType="map" resultMap="USER-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		 FROM (SELECT * FROM tb_user WHERE corpid = #{param.corpidJoin}) AS u LEFT JOIN (SELECT * FROM tb_customer_user WHERE corpid = #{param.corpidJoin}) AS cu 
+			ON u.user_id = cu.user_id
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	<select id="getEntitysCountJoinUser" parameterType="map" resultType="int">
+		SELECT count(*) FROM (SELECT * FROM tb_user WHERE corpid = #{param.corpidJoin}) AS u LEFT JOIN (SELECT * FROM tb_customer_user WHERE corpid = #{param.corpidJoin}) AS cu 
+			ON u.user_id = cu.user_id
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getMainPerson" parameterType="map" resultMap="BASE-RESULT">
+		SELECT customer_id,user_id,GROUP_CONCAT(IF(is_main=1, user_name, "")) as user_name FROM tb_customer_user 
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		    GROUP BY customer_id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId}
+  		</if>
+  		<if test = "param.userIdIn!=null">
+	  	    AND user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.userName!=null">
+  			AND  user_name = #{param.userName}
+  		</if>
+  		<if test="param.customerId!=null">
+  			AND  customer_id = #{param.customerId}
+  		</if>
+  		<if test="param.customerIdJoin!=null">
+  			AND  cu.customer_id = #{param.customerIdJoin}
+  		</if>
+  		<if test = "param.customerIdIn!=null">
+	  	    AND customer_id IN
+	  		<foreach item="item" index="index" collection="param.customerIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.isMain!=null">
+  			AND  is_main = #{param.isMain}
+  		</if>
+  		
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		
+  		<if test = "param.userIdInJoin!=null">
+	  	    AND cu.user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdInJoin" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.delJoin!=null">
+  			AND  u.del = #{param.delJoin}
+  		</if>
+	</sql>
+	
+</mapper>

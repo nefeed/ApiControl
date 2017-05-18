@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ContractDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ContractEntity">
+		<result property="id" column="id" />
+		<result property="templateId" column="template_id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="customerId" column="customer_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="contactId" column="contact_id" />
+		<result property="contactName" column="contact_name" />
+		<result property="name" column="name" />
+		<result property="amount" column="amount" />
+		<result property="otherCharge" column="other_charge" />
+		<result property="discount" column="discount" />
+		<result property="contractNo" column="contract_no" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="district" column="district" />
+		<result property="country" column="country" />
+		<result property="address" column="address" />
+		<result property="receivedPayment" column="received_payment" />
+		<result property="type" column="type" />
+		<result property="signTime" column="sign_time" />
+		<result property="signUserId" column="sign_user_id" />
+		<result property="signPerson" column="sign_person" />
+		<result property="partnerId" column="partner_id" />
+		<result property="partnerName" column="partner_name" />
+		<result property="ifStatistic" column="if_statistic" />
+		<result property="status" column="status" />
+		<result property="payMethod" column="pay_method" />
+		<result property="opportunityId" column="opportunity_id" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<result property="deadline" column="deadline" />
+		<result property="currency" column="currency" />
+		<result property="unit" column="unit" />
+		<result property="exchangeRate" column="exchange_rate" />
+		
+		<result property="contractUserName" column="contract_user_name" />
+		<result property="isMainUserId" column="is_main_user_id" />
+		<!-- 归档合同 -->
+		<result property="archived" column="archived" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ContractEntity">
+  		INSERT INTO tb_contract ( 
+			id,template_id,corpid,user_id,user_name,customer_id,customer_name,contact_id,contact_name,name,amount,other_charge,discount,contract_no,province,city,district,country,address,received_payment,type,sign_time,sign_user_id,sign_person,partner_id,partner_name,if_statistic,status,pay_method,opportunity_id,add_time,update_time,del,deadline,currency,unit,exchange_rate,archived
+  		) VALUES (
+			#{id},#{templateId},#{corpid},#{userId},#{userName},#{customerId},#{customerName},#{contactId},#{contactName},#{name},#{amount},#{otherCharge},#{discount},#{contractNo},#{province},#{city},#{district},#{country},#{address},#{receivedPayment},#{type},#{signTime},#{signUserId},#{signPerson},#{partnerId},#{partnerName},#{ifStatistic},#{status},#{payMethod},#{opportunityId},#{addTime},#{updateTime},#{del},#{deadline},#{currency},#{unit},#{exchangeRate},#{archived}
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ContractEntity" >
+		UPDATE
+			tb_contract
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="userName!=null">, user_name = #{userName} </if>
+			 <if test="customerId!=null">, customer_id = #{customerId} </if>
+			 <if test="customerName!=null">, customer_name = #{customerName} </if>
+			 <if test="contactId!=null">, contact_id = #{contactId} </if>
+			 <if test="contactName!=null">, contact_name = #{contactName} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="amount!=null">, amount = #{amount} </if>
+			 <if test="otherCharge!=null">, other_charge = #{otherCharge} </if>
+			 <if test="discount!=null">, discount = #{discount} </if>
+			 <if test="contractNo!=null">, contract_no = #{contractNo} </if>
+			 <if test="province!=null">, province = #{province} </if>
+			 <if test="city!=null">, city = #{city} </if>
+			 <if test="district!=null">, district = #{district} </if>
+			 <if test="country!=null">, country = #{country} </if>
+			 <if test="address!=null">, address = #{address} </if>
+			 <if test="receivedPayment!=null">, received_payment = #{receivedPayment} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="signTime!=null">, sign_time = #{signTime} </if>
+			 <if test="signUserId!=null">, sign_user_id = #{signUserId} </if>
+			 <if test="signPerson!=null">, sign_person = #{signPerson} </if>
+			 <if test="partnerId!=null">, partner_id = #{partnerId} </if>
+			 <if test="partnerName!=null">, partner_name = #{partnerName} </if>
+			 <if test="ifStatistic!=null">, if_statistic = #{ifStatistic} </if>
+			 <if test="status!=null">, status = #{status} </if>
+			 <if test="payMethod!=null">, pay_method = #{payMethod} </if>
+			 <if test="opportunityId!=null">, opportunity_id = #{opportunityId} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="deadline!=null">, deadline = #{deadline} </if>
+			 <if test="currency!=null">, currency = #{currency} </if>
+			 <if test="unit!=null">, unit = #{unit} </if>
+			 <if test="exchangeRate!=null">, exchange_rate = #{exchangeRate} </if>
+			 <if test="archived!=null">, archived = #{archived} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+<!-- <update id="updateIfStatistic" parameterType="map" >
+		UPDATE
+			tb_contract
+		SET
+			 if_statistic = #{ifStatistic}
+		<where>
+			corpid = #{corpid}
+		AND status = #{status}
+		AND if_statistic = #{oldIfStatistic}
+		</where>
+	</update> -->	
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_contract
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_contract
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_contract
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<!-- 客户排名 -->
+	<select id="rankByCustomer" parameterType="map" resultMap="BASE-RESULT">
+		SELECT SUM(amount) as amount, customer_id,customer_name FROM
+			tb_contract
+		<where>
+			<include refid="compareParamColumns" />
+			AND customer_id!=0
+		</where>
+		GROUP BY customer_id 
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+ 	<!-- 销售排名  by chy-->
+ 	<select id="saleAmountRank" parameterType="map" resultMap="BASE-RESULT">
+		SELECT user_id,amount,(@rowNum:=@rowNum+1) AS rank FROM(
+			SELECT user_id,SUM(amount) AS amount
+				FROM tb_contract 
+				<where>
+					<include refid="compareParamColumns" />
+				</where>
+				GROUP BY user_id
+				Order by amount desc) as a,(Select (@rowNum :=0) 
+		) b
+	</select>
+	<!-- 客户排名  by chy-->
+ 	<select id="customerAmountRank" parameterType="map" resultMap="BASE-RESULT">
+		SELECT customer_id,customer_name,amount,(@rowNum:=@rowNum+1) AS rank FROM(
+			SELECT customer_id,customer_name,SUM(amount) AS amount
+				FROM tb_contract 
+				<where>
+					<include refid="compareParamColumns" />
+				</where>
+				GROUP BY customer_id
+				Order by amount desc) as a,(Select (@rowNum :=0) 
+		) b
+	</select>
+	<!-- 获得总金额 -->
+	<select id="getSumAmount" parameterType="map" resultType="double">
+		SELECT SUM(amount) as amount FROM
+			tb_contract 
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	<!-- 合同明细-->
+	<select id="contractDetails" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.id,c.contract_no,c.name,c.customer_id,c.customer_name,c.sign_time,c.sign_person,c.amount,p.amount AS payment_amount,p.status 
+		FROM tb_contract c LEFT JOIN tb_payment p ON c.id = p.contract_id
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		ORDER BY id,status
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	
+	<!-- @1 合同一周统计 -->
+	<select id="statisticsByWeek" parameterType="map" resultMap="BASE-RESULT">
+		SELECT status,COUNT(*) as count FROM
+			tb_contract
+		WHERE corpid = #{param.corpid} AND user_id = #{param.userId} AND del = 0
+		<![CDATA[AND update_time >= #{param.nowTime} - 7 * 86400 AND update_time < #{param.nowTime}]]> 
+		GROUP BY status
+	</select>
+	
+	<!-- @2 当前月份或季度的合同总额 -->
+	<select id="totalSumOfThisMonthOrSeason" parameterType="map" resultType="hashmap">
+		SELECT SUM(amount) as totalSum FROM tb_contract c 
+			LEFT JOIN tb_contract_user u ON c.id = u.contract_id AND c.corpid = u.corpid
+		WHERE c.corpid = #{param.corpid}
+		
+		<if test = "param.userId!=null">
+		 AND c.user_id = #{param.userId}
+		</if>
+		<if test = "param.userIdIn!=null">
+		 	AND u.user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND u.is_main = #{param.isMainJoin}
+		</if>
+  		<if test="param.statusIn!=null">
+	  	    AND status IN
+	  		<foreach item="item" index="index" collection="param.statusIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.ifStatistic!=null">
+  			AND  if_statistic = #{param.ifStatistic}
+  		</if>
+  		<if test = "param.signUserIdIn!=null">
+	  	    AND sign_user_id IN
+	  		<foreach item="item" index="index" collection="param.signUserIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+		<![CDATA[AND sign_time >= #{param.startTime} AND sign_time < #{param.endTime}]]> 
+		 AND c.del = 0 AND u.del = 0
+	</select>
+	
+	<!-- @3 当前月份或季度的合同分组总计(总额排重) -->
+	<select id="rankOfThisMonthOrSeason" parameterType="map" resultType="int">	
+		
+		SELECT COUNT(DISTINCT(s.totalSum)) FROM (
+			SELECT user_id,SUM(amount) AS totalSum 
+			FROM tb_contract 
+			WHERE corpid = #{param.corpid} AND if_statistic = #{param.ifStatistic} AND del = 0 <![CDATA[ AND sign_time >= #{param.startTime} AND sign_time < #{param.endTime}]]> GROUP BY user_id ORDER  BY totalSum DESC ) AS s 
+		WHERE s.totalSum >= (
+			SELECT st.totalSum FROM (SELECT user_id,SUM(amount) AS totalSum FROM tb_contract WHERE corpid = #{param.corpid} AND if_statistic = #{param.ifStatistic} AND del = 0 <![CDATA[ AND sign_time >= #{param.startTime} AND sign_time < #{param.endTime}]]> GROUP BY user_id HAVING user_id = #{param.userId} ORDER  BY totalSum DESC) AS st 
+		)
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT 
+			COUNT(*) FROM tb_contract
+			<where>
+				<include refid="compareParamColumns" />
+			</where>
+	</select>
+	
+	<!-- 用于统计 -->
+	<select id="contractStatistic" parameterType="map" resultType="hashmap">
+		SELECT customer_id as customerId,customer_name as customerName,user_name as userName,user_id as userId,SUM(amount) as totalAmount
+			FROM tb_contract
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.groupBy!=null">
+			GROUP BY customer_id
+		</if>
+		<if test="param.groupByUserId!=null">
+			GROUP BY user_id
+		</if>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="findEntitysJoinContractUser" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.*,GROUP_CONCAT(u.user_name) as contract_user_name, u.user_id as is_main_user_id FROM tb_contract c 
+			LEFT JOIN tb_contract_user u ON c.id = u.contract_id AND c.corpid = u.corpid AND u.del = 0
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		    GROUP BY c.id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getJoinContractUserCount" parameterType="map" resultType="int">
+		SELECT COUNT(DISTINCT(c.id)) FROM tb_contract c 
+			LEFT JOIN tb_contract_user u ON c.id = u.contract_id AND c.corpid = u.corpid AND u.del = 0
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test = "param.idIn!=null">
+	  	    AND id IN
+	  		<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.idNeg!=null">
+  			AND  id != #{param.idNeg}
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.contractIdJoin!=null">
+            AND id IN (
+          	 SELECT contract_id FROM tb_contract_user WHERE corpid = #{param.corpid} AND user_id IN 
+          	 <foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+	           	#{item}
+             </foreach>
+             <if test="param.isMainFlag!=null">
+	  			AND  is_main = #{param.isMainFlag}
+	  		 </if>
+                AND  del = 0 ) 
+	    </if>
+		<choose>
+			<when test="param.distinctAndJoin!=null">
+				AND id IN (
+					SELECT DISTINCT(contract_id) FROM tb_contract_user
+					WHERE 
+						corpid = #{param.corpid}  
+						<if test="param.userIdIn!=null">
+							AND user_id IN
+							<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+								#{item}
+							</foreach>
+						</if>
+						<if test="param.userId!=null">
+							AND user_id = #{param.userId}
+						</if>
+						AND del = 0
+				)
+			</when>
+			<otherwise>
+			    <if test="param.contractIdJoin==null" >
+			        <if test="param.userId!=null">
+					   AND user_id = #{param.userId}
+					</if>
+					<if test="param.userIdIn!=null">
+						AND user_id IN
+						<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+			    </if>
+			</otherwise>
+		</choose>
+  		<if test="param.userName!=null">
+  			AND  user_name = #{param.userName}
+  		</if>
+  		<if test="param.customerId!=null">
+  			AND  customer_id = #{param.customerId}
+  		</if>
+  		<if test="param.customerIdIn!=null">
+			AND customer_id IN
+			<foreach item="item" index="index" collection="param.customerIdIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+  		</if>
+  		<if test="param.customerName!=null">
+  			AND  customer_name = #{param.customerName}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.nameLike!=null">
+  			AND  name like CONCAT('%',#{param.nameLike},'%' )
+  		</if>
+  		<if test="param.amount!=null">
+  			AND  amount = #{param.amount}
+  		</if>
+  		<if test="param.contractNo!=null">
+  			AND  contract_no = #{param.contractNo}
+  		</if>
+  		<if test="param.province!=null">
+  			AND  province = #{param.province}
+  		</if>
+  		<if test="param.city!=null">
+  			AND  city = #{param.city}
+  		</if>
+  		<if test="param.district!=null">
+  			AND  district = #{param.district}
+  		</if>
+  		<if test="param.country!=null">
+  			AND  country = #{param.country}
+  		</if>
+  		<if test="param.address!=null">
+  			AND  address = #{param.address}
+  		</if>
+  		<if test="param.receivedPayment!=null">
+  			AND  received_payment = #{param.receivedPayment}
+  		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test="param.signTime!=null">
+  			AND  sign_time = #{param.signTime}
+  		</if>
+  		<if test="param.signUserId!=null">
+  			AND  sign_user_id = #{param.signUserId}
+  		</if>
+  		<if test = "param.signUserIdIn!=null">
+	  	    AND sign_user_id IN
+	  		<foreach item="item" index="index" collection="param.signUserIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.signPerson!=null">
+  			AND  sign_person = #{param.signPerson}
+  		</if>
+  		<if test="param.status!=null">
+  			AND  status = #{param.status}
+  		</if>
+  		<if test="param.statusIn!=null">
+	  	    AND status IN
+	  		<foreach item="item" index="index" collection="param.statusIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.payMethod!=null">
+  			AND  pay_method = #{param.payMethod}
+  		</if>
+  		<if test="param.salesOpportunityId!=null">
+  			AND  sales_opportunity_id = #{param.salesOpportunityId}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.ifStatistic!=null">
+  			AND  if_statistic = #{param.ifStatistic}
+  		</if>
+  		
+  		<!-- 归档合同 -->
+  		<if test="param.archived!=null">
+  			AND  archived = #{param.archived}
+  		</if>
+  		
+  		
+  		<!-- 合同名或合同编号查询 -->
+  		<if test="param.nameOrContractNoLike!=null">
+  			AND  (name like CONCAT('%',#{param.nameOrContractNoLike},'%' ) or contract_no like CONCAT('%',#{param.nameOrContractNoLike},'%' ) )
+  		</if>
+  		
+  		<!-- 客户联系人，合作客户 -->
+  		<if test="param.partnerNameLike!=null">
+  			AND  partner_name like CONCAT('%',#{param.partnerNameLike},'%' )
+  		</if>
+  		<if test="param.contactNameLike!=null">
+  			AND  contact_name like CONCAT('%',#{param.contactNameLike},'%' )
+  		</if>
+  		
+  		<if test="param.startAmount!=null">
+  			<![CDATA[AND  amount >= #{param.startAmount}]]>
+  		</if>
+  		<if test="param.endAmount!=null">
+  			<![CDATA[AND  amount < #{param.endAmount}]]>
+  		</if>
+  		<if test="param.customerNameLike!=null">
+  			AND  customer_name like CONCAT('%',#{param.customerNameLike},'%' )
+  		</if>
+  		<if test="param.contractNoLike!=null">
+  			AND  contract_no like CONCAT('%',#{param.contractNoLike},'%')
+  		</if>
+  		
+  		<if test="param.startAddTime!=null">
+  			<![CDATA[AND  add_time >= #{param.startAddTime}]]>
+  		</if>
+  		<if test="param.endAddTime!=null">
+  			<![CDATA[AND  add_time < #{param.endAddTime}]]>
+  		</if>
+  		
+  		<if test="param.startTime!=null">
+  			<![CDATA[AND  sign_time >= #{param.startTime}]]>
+  		</if>
+  		<if test="param.endTime!=null">
+  			<![CDATA[AND  sign_time < #{param.endTime}]]>
+  		</if>
+		<if test="param.del!=null">
+			AND del = #{param.del}
+		</if>
+		<if test="param.delNeg!=null">
+			AND del != #{param.delNeg}
+		</if>
+		<if test="param.deadline!=null">
+			AND deadline = #{param.deadline}
+		</if>
+		
+		<!-- 到期时间筛选 -->
+		<if test="param.startDeadlineTime!=null">
+  			<![CDATA[AND  deadline >= #{param.startDeadlineTime}]]>
+  		</if>
+  		<if test="param.endDeadlineTime!=null">
+  			<![CDATA[AND  deadline < #{param.endDeadlineTime}]]>
+  		</if>
+		
+  		<!-- JOIN -->
+  		<if test = "param.customerIdJoin!=null">
+	  	    AND c.customer_id = #{param.customerIdJoin}
+  		</if>
+  		<!--筛选主负责人 的数据-->
+  		<if test = "param.userIdInJoinMain!=null">
+	  	    AND u.user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdInJoinMain" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.mainAndAdd!=null"><!-- 是关联表的负责人添加的信息 -->
+			AND c.user_id = u.user_id
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND u.is_main = #{param.isMainJoin}
+		</if>
+		<if test = "param.startAddTimeJoin!=null">
+  			<![CDATA[AND c.add_time >= #{param.startAddTimeJoin}]]>
+  		</if>
+  		<if test = "param.endAddTimeJoin!=null">
+  			<![CDATA[AND c.add_time < #{param.endAddTimeJoin}]]>
+  		</if>
+  		<if test="param.corpidJoin!=null">
+  			AND  c.corpid = #{param.corpidJoin}
+  		</if>
+  		<if test="param.delJoin!=null">
+  			AND  c.del = #{param.delJoin}
+  		</if>
+  		
+  		<if test="param.contractIdIn!=null">
+			AND id IN
+			<foreach item="item" index="index" collection="param.contractIdIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+  		</if>
+  		
+  		<if test="param.signPersonrLike!=null">
+  			AND  sign_person like CONCAT('%',#{param.signPersonrLike},'%' )
+  		</if>
+  		
+  		<if test="param.currency!=null">
+  			AND  currency = #{param.currency}
+  		</if>
+  		
+	</sql>
+	
+</mapper>

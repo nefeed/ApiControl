@@ -1,0 +1,1308 @@
+
+<!==================================================================================================================================>
+	<!--------------------------------------------客户管理模块-------------------------------------------->
+	<div class="hide" id="api101" apiUrl="/api/v1/customer/list.do" login="1">
+		客户列表[详细]接口地址：http://example.com/api/v1/customer/list.do<br>                    
+		输入参数：data = { "corpid":"dingxxxxxx", "page":1, "pageSize":15 }<br>
+		成功输出：<pre>
+			
+			
+{
+   "errorCode": 0,        			(int)(错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "操作成功",        			(String)(成功返回信息)
+    "customerList": [ //具体字段与您公司的模板相关
+        {
+        	"10": "",
+        	"20": "",
+        	"9我轻轻吻": "",
+        	"id": 1252,
+			"区/县": "新城区",
+			"地址": "我募集啊",
+			"头像": "",
+			"客户名称": "0830测试有合同不能删除",
+			"客户性质": "个人客户",
+			"客户状态": "持续跟进",
+			"客户简介": "测试有合同的客户不能删除。。。",
+			"客户简称": "测试李",
+			"客户类型": "最终客户",
+			"市": "呼和浩特市",
+			"客户电话": "[{\"name\":\"工作\",\"telNum\":\"1334654512\"}]",
+			"日期型": "选项2",
+			"测试3": "",
+			"测试5": "选项2",
+			"省": "内蒙古",
+			"重要程度": "三星",
+			"更新时间": 1493883428,
+        }
+    ],
+    "totalCount": 2,			(int)(总记录数)
+    "page" : 1,					(int)(当前页数回显)
+    "pageSize" : 15,			(int)(每页记录条数回显)
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr101">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(String)name</td><td>客户名称模糊筛选</td><td>选填，根据客户名称模糊搜索客户列表</td></tr>
+			<tr><td>(String)phone</td><td>电话号码模糊筛选</td><td>选填，根据电话号码模糊搜索客户列表</td></tr>
+            <tr><td>(int)updateTimeStart</td><td>根据更新时间筛选,整型时间戳,精确到秒</td><td>选填，筛选出大于该时间戳的客户记录</td></tr>
+            <tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api102" apiUrl="/api/v1/customer/simpleList.do" login="1">
+		客户列表[简要]接口地址：http://example.com/api/v1/customer/simpleList.do<br>                    
+		输入参数：data = { "corpid":"dingxxxxxx", "page":1, "pageSize":15 }<br>
+		成功输出：<pre>
+			
+			      {
+    "errorCode": 0,        			(错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "操作成功",        			(成功返回信息)
+	"customerList": [ //具体字段与您公司的模板相关
+        {
+        	"addTime": 1474338414,
+			"id": 1336,
+			"lastConnectTime": 0,
+			"name": " 小弟",
+			"nameShort": "",
+			"phone": "[{\"name\":\"工作\",\"telNum\":\"1334654512\"}]"
+        }
+    ],
+    "totalCount": 2,			(int)(总记录数)
+    "page" : 1,					(int)(当前页数回显)
+    "pageSize" : 15,			(int)(每页记录条数回显)
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr102">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(String)name</td><td>客户名称模糊筛选</td><td>选填，根据客户名称模糊搜索客户列表</td></tr>
+			<tr><td>(String)phone</td><td>电话号码模糊筛选</td><td>选填，根据电话号码模糊搜索客户列表</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api103" apiUrl="/api/v1/customer/add.do" login="1">
+		新建客户接口地址：http://example.com/api/v1/customer/add.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","customer":{"创建人":"张三","负责人":"张三","协同人":"李四,王五","客户名称":"测试客户101301","省":"浙江省","市":"杭州市","区/县":"西湖区","详细地址":"浙江工业大学","客户类型":"最终客户","客户电话":"13867426691","经度":121.31,"纬度":31.31}}//具体字段与模板相关 <br>
+		成功输出：<pre>
+{
+    "errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "操作成功",        			        (成功返回信息)
+    "customerId": xxx,						(新增客户ID)
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr103">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(JSONObject)customer</td><td>需要新建的客户实体</td><td>根据查重规则，客户名称或客户电话必填，具体字段参见模板，后续补充</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api104" apiUrl="/api/v1/customer/update.do" login="1">
+		修改客户接口地址：http://example.com/api/v1/customer/update.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","customer":{"customerId":"xxx","客户名称":"测试客户101301","省":"浙江省","市":"杭州市","区/县":"西湖区","详细地址":"浙江工业大学","客户类型":"最终客户","客户电话":"13867426691","经度":121.31,"纬度":31.31}}//具体字段与模板相关 <br>
+		成功输出：<pre>
+			
+{
+    "errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "操作成功",        			        (成功返回信息)
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr104">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(JSONObject)customer</td><td>需要新建的客户实体</td><td>根据查重规则，客户名称或客户电话必填，具体字段参见模板，后续补充,</td></tr>
+			<tr><td>(int)customerId</td><td>客户ID</td><td>必填，包含在customer json中</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api105" apiUrl="/api/v1/customer/get.do" login="1">
+		获取客户详情接口地址：http://example.com/api/v1/customer/get.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","customerId":xxx} <br>
+		成功输出：<pre>
+{
+	"customer": {
+		"10": "",
+		"20": "",
+		"9我轻轻吻": "",
+		"id": 1374,
+		"区/县": "西湖区",
+		"地址": "浙江工业大学屏峰校区",
+		"头像": "",
+		"客户名称": "测试客户101301",
+		"客户性质": "",
+		"客户状态": "",
+		"客户电话": "[{\"name\":\"手机\",\"telNum\":\"13867426691\"}]",
+		"客户简介": "",
+		"客户简称": "",
+		"客户类型": "最终客户",
+		"市": "杭州市",
+		"日期型": "",
+		"测试3": "",
+		"测试5": "",
+		"省": "浙江省",
+		"重要程度": ""
+	},
+	"customerUserList": [{ 					//销售团队列表
+		"customerId": 1429,
+		"distributionTime": 1479968338,		//加入团队时间或获取客户时间
+		"isMain": 1, 						//是否主负责人
+		"userId": "1",						//员工ID
+		"userName": "张杰"					//员工姓名
+	}],
+	"errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+	"msg": "获取成功"							 (成功返回信息)
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr105">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>要查看的客户ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api106" apiUrl="/api/v1/customer/delete.do" login="1">
+		客户删除接口地址：http://example.com/api/v1/customer/delete.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","customerId":xxx}<br>
+		成功输出：<pre>
+			
+		{
+   	 		"errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+    		"msg": "操作成功",        			        (成功返回信息)
+    		"customerId" : xx						(被删除的客户ID)
+		}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr106">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>要删除的客户ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api107" apiUrl="/api/v1/customer/contact.do" login="1">
+		客户关联联系人列表接口地址：http://example.com/api/v1/customer/contact.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","customerId":xxx}<br>
+		成功输出：<pre>
+			
+		{
+   	 		"errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+    		"msg": "操作成功",        			        (成功返回信息)
+    		"contactList": [{						(联系人列表)
+				"id": 72,
+				"sort1": "",
+				"sort2": "",
+				"sort3": "2323",
+				"关联客户": "cs客户11",
+				"决策关系": "",
+				"区/县": "",
+				"地址": "",
+				"备注": "",
+				"姓名": "阿斯蒂芬",
+				"市": "",
+				"性别": "男",
+				"手机": "15854565256",
+				"省": "",
+				"级别": "",
+				"职务": "",
+				"部门": "",
+				"重要程度": ""
+			}],
+			"customerId": 77,
+			"totalCount": xx
+		}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr107">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>客户ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+    
+    <div class="hide" id="api108" apiUrl="/api/v1/customer/contract.do" login="1">
+		客户关联合同列表接口地址：http://example.com/api/v1/customer/contract.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","customerId":xxx}<br>
+		成功输出：<pre>
+			
+		{
+   	 		"errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+    		"msg": "操作成功",        			        (成功返回信息)
+    		"contractList": [{
+				"id": 123,
+				"到期时间": "",
+				"合同名称": "导入测试",
+				"合同状态": "签约",
+				"合同编号": "cs00018",
+				"合同金额": "10001.0",
+				"图片": "",
+				"客户名称": "导入测试1",
+				"文件1": "",
+				"新字段22": "",
+				"签订人": "张杰",
+				"签订日期": "2016-06-19 00:00"
+			}],
+			"customerId": 82,
+			"totalCount": 3
+		}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr108">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>客户ID</td><td>必填</td></tr>
+		</table>
+	</div>
+
+	<div class="hide" id="api109" apiUrl="/api/v1/customer/team/add.do" login="1">
+        客户添加协同人地址：http://example.com/api/v1/customer/team/add.do<br>
+		输入参数：data = {"corpid":"dingxxxx","customerId":xxx,"name":"李四"}<br>
+		成功输出：<pre>
+
+			{
+				"errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+				"msg": "操作成功",        			        (成功返回信息)
+			}
+			</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br>
+	</div>
+	<div class="hide" id="attr109">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>客户ID</td><td>必填</td></tr>
+            <tr><td>(String)name</td><td>协同人姓名</td><td>必填，必须和公司员工名能对应</td></tr>
+		</table>
+	</div>
+
+	<div class="hide" id="api110" apiUrl="/api/v1/customer/team/delete.do" login="1">
+        客户删除协同人地址：http://example.com/api/v1/customer/team/delete.do<br>
+		输入参数：data = {"corpid":"dingxxxx","customerId":xxx,"name":"李四"}<br>
+		成功输出：<pre>
+
+				{
+					"errorCode": 0,							(错误返回码,0表示返回成功,其他参考错误码编号)
+					"msg": "操作成功",        			        (成功返回信息)
+				}
+				</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br>
+	</div>
+	<div class="hide" id="attr110">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>客户ID</td><td>必填</td></tr>
+			<tr><td>(String)name</td><td>协同人姓名</td><td>必填，必须和公司员工名能对应</td></tr>
+		</table>
+	</div>
+<!==================================================================================================================================>
+	
+	<!--------------------------------------------联系人模块-------------------------------------------->
+	<div class="hide" id="api201" apiUrl="/api/v1/contact/list.do" login="1">
+		联系人列表[详细]接口地址：http://example.com/api/v1/contact/list.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","page":1, "pageSize":15}<br>
+		成功输出：<pre>
+			  
+{
+    "errorCode": 0,                        (错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "操作成功",						   (成功返回信息)
+    "contactList": [{
+		"id": 213,
+		"sort1": "",
+		"sort2": "",
+		"sort3": "",
+		"关联客户": "测试",
+		"决策关系": "",
+		"区/县": "东城区",
+		"地址": "1",
+		"备注": "",
+		"姓名": "qwe",
+		"市": "北京市",
+		"性别": "男",
+		"省": "北京市",
+		"级别": "",
+		"职务": "",
+		"联系电话": "[{\"name\":\"手机\",\"telNum\":\"ww\"}]",
+		"部门": "",
+		"重要程度": ""
+	}],
+	"page": 1,
+	"pageSize": 15,
+	"totalCount": 85
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr201">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api202" apiUrl="/api/v1/contact/simpleList.do" login="1">
+		 联系人列表[简要数据]接口地址：http://example.com/api/v1/contact/simpleList.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","page":1, "pageSize":15} <br>
+		成功输出：<pre>
+			  
+{
+    "errorCode": 0,                        (错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "操作成功",						   (成功返回信息)
+    "contactList": [{
+		"addTime": 1473490330,
+		"id": 213,
+		"name": "qwe",
+		"phone": "[{\"name\":\"手机\",\"telNum\":\"ww\"}]"
+	}],
+	"page": 1,
+	"pageSize": 15,
+	"totalCount": 85
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr202">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api203" apiUrl="/api/v1/contact/add.do" login="1">
+		新建联系人接口地址：http://example.com/api/v1/contact/add.do<br>                    
+		输入参数：data = {"corpid":"1","customerId":xxx,"contact":{"联系电话":"xxxxx","省":"浙江省","市":"杭州市","详细地址":"市政府","关联客户":"测试65","姓名":"卡卡"}}  <br>
+		成功输出：<pre>
+			  
+			{
+    			"errorCode": 0,                        (错误返回码,0表示返回成功,其他参考错误码编号)
+    			"msg": "删除成功",						   (成功返回信息)
+    			"contactId", xx
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"删除失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr203">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>关联客户ID</td><td>必填</td></tr>
+			<tr><td>(JSONObject)contact</td><td>需要新建的联系人实体</td><td>联系人电话必填，具体字段参见模板，后续补充</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api204" apiUrl="/api/v1/contact/update.do" login="1">
+		联系人修改接口地址：http://example.com/api/v1/contact/update.do<br>                    
+		输入参数：data = {"corpid":"1","contact":{"contactId":xxx, "联系电话":"xxxxx","省":"浙江省","市":"杭州市","详细地址":"市政府","关联客户":"测试65","姓名":"卡卡"}}  <br>
+		成功输出：<pre>
+			
+{
+    "errorCode": 0,                         (错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "获取成功",							(成功返回信息)
+}
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr204">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(JSONObject)contact</td><td>需要新建的客户实体</td><td>联系人电话必填，具体字段参见模板，后续补充</td></tr>
+			<tr><td>(int)contactId</td><td>联系人ID</td><td>必填，包含在contact json中</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api205" apiUrl="/api/v1/contact/get.do" login="1">
+		获取联系人详情接口地址：http://example.com/api/v1/contact/get.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","contactId":xxx}  <br>
+		成功输出：<pre>
+			 
+{
+    "errorCode": 0,						(错误返回码,0表示返回成功,其他参考错误码编号)
+    "msg": "获取成功", 					(成功返回信息)
+    "contact": {
+		"id": 273,
+		"关联客户": "测试65",
+		"决策关系": "",
+		"区/县": "",
+		"地址": "市政府",
+		"备注": "",
+		"姓名": "卡卡西",
+		"市": "杭州市",
+		"性别": "未设置",
+		"省": "浙江省",
+		"级别": "",
+		"职务": "",
+		"联系电话": "[{\"name\":\"手机\",\"telNum\":\"13788992812\"}]",
+		"部门": "",
+		"重要程度": ""
+	},
+} 
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr205">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contactId</td><td>联系人ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api206" apiUrl="/api/v1/contact/delete.do" login="1">
+		联系人删除接口地址：http://example.com/api/v1/contact/delete.do<br>                    
+		输入参数：data =  {"corpid":"dingxxxx","contactId":xxx}  <br>
+		成功输出：<pre>
+			  
+			{
+				"errorCode":0,
+				"msg":"添加成功",
+				"contactId" : xx						(被删除的客户ID)
+			}
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"添加失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr206">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contactId</td><td>联系人ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+<!==================================================================================================================================>
+
+	<!--------------------------------------------合同模块-------------------------------------------->
+	
+	<div class="hide" id="api301" apiUrl="/api/v1/contract/list.do" login="1">
+		合同列表[全部数据]接口地址：http://example.com/api/v1/contract/list.do<br>                    
+		输入参数：data = { "corpid":"dingxxxxxx", "page":1, "pageSize":15 }<br>
+		成功输出：<pre>
+			  
+{
+    "errorCode": 0,
+    "msg": "操作成功",
+    "contractList": [{
+		"id": 213,
+		"到期时间": "",
+		"合同名称": "回款测试2",
+		"合同状态": "完毕",
+		"合同编号": "0910003",
+		"合同金额": "10000.0",
+		"图片": "",
+		"客户名称": "请我额",
+		"文件1": "",
+		"新字段22": "",
+		"签订人": "白书城2",
+		"签订日期": "2016-09-08 00:00"
+	}],
+	"page": 1,
+	"pageSize": 15,
+	"totalCount": 65
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr301">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api302" apiUrl="/api/v1/contract/simpleList.do" login="1">
+		合同列表[简要数据]接口地址：http://example.com/api/v1/contract/simpleList.do<br>                    
+		输入参数：data = { "corpid":"dingxxxx", "page":1, "pageSize":15, "signUserId":"", "signPerson":""}<br>
+		成功输出：<pre>
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+    "contractList": [{
+		"addTime": 1459328420,
+		"amount": 3000000,
+		"customerName": "测试",
+		"id": 39,
+		"name": "测试合同",
+		"signTime": 1462032000
+	}],
+	"page": 1,
+	"pageSize": 15,
+	"totalCount": 65
+}
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr302">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+			<tr><td>(String)signUserId</td><td>签订人ID,对应钉钉中的userId</td><td>与signPerson参数二者选其一，若都填会取交集，两个参数如果不对应，可能会找不到数据</td></tr>
+			<tr><td>(String)signPerson</td><td>签订人姓名，模糊查询</td><td>与signUserId参数二者选其一，若都填会取交集，两个参数如果不对应，可能会找不到数据</td></tr>
+		</table>
+	</div>
+	
+
+	<div class="hide" id="api303" apiUrl="/api/v1/contract/add.do" login="1">
+		新建合同接口地址：http://example.com/api/v1/contract/add.do<br>                    
+		输入参数：data = {"corpid":"1","customerId":1373,"contract":{"创建人":"xxx","签订人":"xxx","合同编号":"HT20161014001","到期日期":1480525261,"签订日期":1476410400,"合同金额":1000,"合同状态":"执行中","合同名称":"测试合同1014"}}  <br>
+		成功输出：<pre>
+			 
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+    "contractId": xx
+} 
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr303">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)customerId</td><td>关联客户ID</td><td>必填</td></tr>
+			<tr><td>(JSONObject)contract</td><td>需要新建的合同实体</td><td>具体字段参见模板，后续补充</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api304" apiUrl="/api/v1/contract/update.do" login="1">
+		合同修改接口地址：http://example.com/api/v1/contract/update.do<br>                    
+		输入参数：data = {"corpid":"1","contract":{"contractId":xxx,"合同编号":"HT20161014002","到期时间":1480525261,"签订日期":1476410400,"合同金额":1000,"合同状态":"执行中","合同名称":"测试合同1014"}}   <br>
+		成功输出：<pre>
+			  
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr304">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(JSONObject)contract</td><td>需要新建的合同实体</td><td>具体字段参见模板，后续补充</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填，包含在contract json中</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api305" apiUrl="/api/v1/contract/get.do" login="1">
+		获取合同详情接口地址：http://example.com/api/v1/contract/get.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx}<br>
+		成功输出：<pre>
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+    "contract": {
+		"id": 251,
+		"到期时间": "2016-12-01",
+		"合同名称": "测试合同1014",
+		"合同状态": "执行中",
+		"合同编号": "HT20161014002",
+		"合同金额": "1000.0",
+		"客户名称": "测试65",
+		"签订人": "xxx",
+		"签订日期": "2016-10-14 10:00"
+	}
+} 
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr305">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+
+	<div class="hide" id="api306" apiUrl="/api/v1/contract/delete.do" login="1">
+		合同删除接口地址：http://example.com/api/v1/contract/delete.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx} <br>
+		成功输出：<pre>
+{   
+    "errorCode": 0,
+    "msg": "获取成功",
+    "contractId"：xx
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr306">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api307" apiUrl="/api/v1/contract/product/list.do" login="1">
+		获取合同关联产品列表接口地址：http://example.com/api/v1/contract/product/list.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "获取成功",
+			    "contracProductList": [{
+					"price": 1,
+					"productId": 9,
+					"productName": "水蜜桃",
+					"productNum": 1,
+					"specification": ""
+				}],
+				"contractId": 56,
+				"totalCount": 3
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr307">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api308" apiUrl="/api/v1/contract/product/add.do" login="1">
+		合同关联产品添加接口地址：http://example.com/api/v1/contract/product/add.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx, "productId":xxx, "productNum":xxx, "price":xxx}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "操作成功"
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr308">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+			<tr><td>(int)productId</td><td>产品ID</td><td>必填</td></tr>
+			<tr><td>(int)productNum</td><td>产品数量</td><td>必填</td></tr>
+			<tr><td>(double)price</td><td>产品单价</td><td>选填，不填则产品单价与产品ID对应产品的产品单价相同</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api309" apiUrl="/api/v1/contract/product/update.do" login="1">
+		合同关联产品修改接口地址：http://example.com/api/v1/contract/product/update.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx, "productId":xxx, "productNum":xxx, "price":xxx}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "操作成功"
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr309">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+			<tr><td>(int)productId</td><td>产品ID</td><td>必填</td></tr>
+			<tr><td>(int)productNum</td><td>产品数量</td><td>选填，填写则修改</td></tr>
+			<tr><td>(double)price</td><td>产品单价</td><td>选填，填写则修改</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api310" apiUrl="/api/v1/contract/product/delete.do" login="1">
+		删除合同关联产品接口地址：http://example.com/api/v1/contract/product/delete.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx, "productId":xxx}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "操作成功"
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr310">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+			<tr><td>(int)productId</td><td>产品ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api311" apiUrl="/api/v1/contract/payment/list.do" login="1">
+		获取合同关联回款计划列表接口地址：http://example.com/api/v1/contract/payment/list.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "获取成功",
+			    "contractId": xxx,
+			    "totalCount": 6,
+			    "paymentList": [{
+					"accountPeriod": 0,
+					"addTime": 1476083486,
+					"amount": 100,
+					"contractId": 246,
+					"contractName": "一王企鹅的",
+					"customerId": 1337,
+					"estimateTime": 1476115200,
+					"id": 346,
+					"payTime": 1476288000,
+					"paymentNo": "SO.20160929003.1",
+					"status": 2,
+					"updateTime": 1476322808,
+					"userId": "1",
+					"userName": "张杰"
+				}],
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr311">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api312" apiUrl="/api/v1/contract/payment/add.do" login="1">
+		合同回款计划添加接口地址：http://example.com/api/v1/contract/payment/add.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","contractId":xxx, "payment" : {"amount":xx,"status":xx,"estimateTime":xx,"userName":xx,"paymentNo":xx,"payTime":xx}}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "获取成功",
+			    "paymentId" : xxx //回款计划ID
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr312">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)contractId</td><td>合同ID</td><td>必填</td></tr>
+			<tr><td>(double)amount</td><td>回款计划金额</td><td>必填</td></tr>
+			<tr><td>(int)status</td><td>回款计划状态，通过接口添加的回款计划，状态可以选择 1：未收款，2：已收款</td><td>必填</td></tr>
+			<tr><td>(int)estimateTime</td><td>预计回款时间，整型时间戳，精确到秒</td><td>必填</td></tr>
+			<tr><td>(String)userName</td><td>回款计划创建人，必须和本公司在职的员工姓名对应</td><td>必填</td></tr>
+			<tr><td>(String)paymentNo</td><td>若不填则自动生成</td><td>选填</td></tr>
+			<tr><td>(int)payTime</td><td>实际收款时间，整型时间戳，精确到秒，若未填：若回款计划为未收款则默认是0，若为已收款没有填则默认是当天</td><td>选填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api313" apiUrl="/api/v1/contract/payment/update.do" login="1">
+		合同回款计划编辑接口地址：http://example.com/api/v1/contract/payment/update.do<br>                    
+		输入参数：data = {"corpid":"dingxxx", "payment" : {"paymentId":xx,"amount":xx,"status":xx,"estimateTime":xx,"payTime":xx}}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "获取成功",
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr313">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)paymentId</td><td>需要编辑的回款计划实体的ID</td><td>必填</td></tr>
+			<tr><td>(double)amount</td><td>回款计划金额</td><td>选填</td></tr>
+			<tr><td>(int)status</td><td>回款计划状态，通过接口添加的回款计划，状态可以选择 1：未收款，2：已收款，已收款的回款计划不能修改</td><td>选填</td></tr>
+			<tr><td>(int)estimateTime</td><td>预计回款时间，整型时间戳，精确到秒</td><td>选填</td></tr>
+			<tr><td>(int)payTime</td><td>实际收款时间，整型时间戳，精确到秒</td><td>选填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api314" apiUrl="/api/v1/contract/payment/delete.do" login="1">
+		合同回款计划删除接口地址：http://example.com/api/v1/contract/payment/delete.do<br>                    
+		输入参数：data = {"corpid":"dingxxx", "paymentId":xx}  <br>
+		成功输出：<pre>
+           	{
+			    "errorCode": 0,
+			    "msg": "获取成功",
+			    "paymentId" :xx
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="api314">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)paymentId</td><td>需要删除的回款计划实体的ID</td><td>必填</td></tr>
+		</table>
+	</div>
+<!==================================================================================================================================>
+
+	<!--------------------------------------------产品模块-------------------------------------------->
+		
+	<div class="hide" id="api401" apiUrl="/api/v1/product/list.do" login="1">
+		产品列表[全部数据]接口地址：http://example.com/api/v1/product/list.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","page":1, "pageSize":15} <br>
+		成功输出：<pre>
+			
+{
+    "errorCode": 0, 
+    "msg": "获取成功",
+    "page": 1,
+	"pageSize": 15,
+	"totalCount": 222,
+	"productList": [{
+		"id": 9,
+		"产品单位": "",
+		"产品名称": "水蜜桃",
+		"产品图片": "[\"http://xbongbong.img-cn-hangzhou.aliyuncs.com/xbbDingtalk/1/image/c80163c13b45e3296acda64a559b815b.jpg\"]",
+		"产品简介": "",
+		"产品编号": "1",
+		"价格": "122.0",
+		"单盒利润": "122",
+		"备注": "",
+		"多选项": "",
+		"政策": "",
+		"生产厂家": "4324",
+		"规格": "111",
+		"零售价": "122"
+	}]
+}  
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr401">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认15条，最多50条</td><td>如果是null或者0默认都为15条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api402" apiUrl="/api/v1/product/add.do" login="1">
+		产品列表接口地址：http://example.com/api/v1/product/add.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","product":{"产品编号":"HXC20161014001","规格":"HXC001","价格":100.5,"生产厂家":"杭州莫名","单盒利润":38,"产品名称":"什么药丸","零售价":120}}   <br>
+		成功输出：<pre>
+{
+    "errorCode": 0,
+    "msg": "操作成功",
+    "productId": xxx
+}
+			
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr402">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(JSONObject)product</td><td>需要新建的产品实体</td><td>具体字段参见模板，后续补充</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api403" apiUrl="/api/v1/product/update.do" login="1">
+		产品修改接口地址：http://example.com/api/v1/product/update.do<br>                    
+		输入参数：data = {"corpid":"dingxxx","product":{"productId":xxx,"产品编号":"HXC20161014001","规格":"HXC001","价格":100.5,"生产厂家":"杭州有名","单盒利润":38,"产品名称":"什么药丸","零售价":120}}    <br>
+		成功输出：<pre>
+			  
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+    
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr403">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(JSONObject)product</td><td>需要新建的产品实体</td><td>具体字段参见模板，后续补充</td></tr>
+			<tr><td>(int)productId</td><td>产品Id</td><td>必填,包含在 product json中</td></tr>
+		</table>
+	</div>
+	
+	
+	<div class="hide" id="api404" apiUrl="/api/v1/product/get.do" login="1">
+		获取产品详情接口地址：http://example.com/api/v1/product/get.do<br>                    
+		输入参数：data = {"corpid":"dingxx", "productId":xx}    <br>
+		成功输出：<pre>
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+    "contact": {
+		"id": 491,
+		"产品单位": "",
+		"产品名称": "什么药丸",
+		"产品图片": "",
+		"产品简介": "",
+		"产品编号": "HXC20161014001",
+		"价格": "100.5",
+		"单盒利润": "38",
+		"备注": "",
+		"多选项": "",
+		"政策": "",
+		"生产厂家": "杭州屏峰厂",
+		"规格": "HXC001",
+		"零售价": "120"
+	},
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr404">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)productId</td><td>产品Id</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api405" apiUrl="/api/v1/product/delete.do" login="1">
+		产品删除接口地址：http://example.com/api/v1/product/delete.do<br>                    
+		输入参数：data =  {"corpid":"dingxx", "productId":xx}    <br>
+		成功输出：<pre>
+		{
+		    "errorCode": 0,
+		    "msg": "删除成功",
+		    "productId": xxx
+		}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr405">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)productId</td><td>产品Id</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	
+	
+	<div class="hide" id="api406" apiUrl="/api/v1/product/category/list.do" login="1">
+		产品分类列表[全部数据]接口地址：http://example.com/api/v1/product/category/list.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","page":1, "pageSize":50} <br>
+			成功输出：<pre>
+{
+    "errorCode": 0,
+    "msg": "获取成功",
+    "page": 1,
+	"pageSize": 50,
+	"totalCount": 18,
+	"productCategoryList": [{
+		"addTime": 1465787755,
+		"id": 1,
+		"name": "水果类",
+		"parentId": 0
+	}]
+}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"获取失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr406">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)page</td><td>第几页</td><td>如果是null或者0默认都为1页--(用于分页)</td></tr>
+			<tr><td>(int)pageSize</td><td>一页多少条数据，默认50条</td><td>如果是null或者0默认都为50条--(用于分页)</td></tr>
+		</table>
+	</div>
+	
+    <div class="hide" id="api407" apiUrl="/api/v1/product/category/add.do" login="1">
+		产品分类添加接口地址：http://example.com/api/v1/product/category/add.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx", "name":"新建分类","parentId":0} <br>
+			成功输出：<pre>
+			{
+			    "errorCode": 0,
+			    "msg": "操作成功",
+			    "categoryId":xxx
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"删除失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr407">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(String)name</td><td>分类名称</td><td>必填</td></tr>
+			<tr><td>(int)parentId</td><td>父分类Id,填0即新建一级分类</td><td>不填则默认是0</td></tr>
+		</table>
+	</div>
+	
+    <div class="hide" id="api408" apiUrl="/api/v1/product/category/update.do" login="1">
+		产品分类更新接口地址：http://example.com/api/v1/product/category/update.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","categoryId":xxx, "name":"修改分类"} <br>
+			成功输出：<pre>
+			{
+			    "errorCode": 0,
+			    "msg": "操作成功"
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"删除失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr408">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)categoryId</td><td>产品分类ID</td><td>必填</td></tr>
+			<tr><td>(String)name</td><td>修改后的产品分类名</td><td>必填</td></tr>
+		</table>
+	</div>
+	
+	<div class="hide" id="api409" apiUrl="/api/v1/product/category/delete.do" login="1">
+		产品分类更新接口地址：http://example.com/api/v1/product/category/delete.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","categoryId":xxx} <br>
+			成功输出：<pre>
+			{
+			    "errorCode": 0,
+			    "msg": "删除成功",
+			    "categoryId": xxx
+			}
+		</pre>
+		失败输出：{"errorCode":"*","msg":"删除失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr409">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)categoryId</td><td>产品分类ID</td><td>必填</td></tr>
+		</table>
+	</div>
+
+<!==================================================================================================================================>
+
+	<!--------------------------------------------模板模块-------------------------------------------->
+		
+	<div class="hide" id="api501" apiUrl="/api/v1/template/get.do" login="1">
+		获取当前启用的模板详情接口地址：http://example.com/api/v1/template/get.do<br>                    
+		输入参数：data = {"corpid":"dingxxxx","refType":1} <br>
+		成功输出：<pre>
+			
+{
+    "errorCode": 0, 
+    "msg": "获取成功",
+    "explains": [{
+		"attr": "name",
+		"attrName": "客户名称",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 1
+	},
+	{
+		"attr": "nameShort",
+		"attrName": "客户简称",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 1
+	},
+	{
+		"attr": "phone",
+		"attrName": "客户电话",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "genre",
+		"attrName": "客户类型",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "type",
+		"attrName": "客户状态",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 1
+	},
+	{
+		"attr": "isIndividual",
+		"attrName": "客户性质",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "scale",
+		"attrName": "客户分级",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "industry",
+		"attrName": "客户行业",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "importantDegree",
+		"attrName": "重要程度",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "country",
+		"attrName": "国家",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "address",
+		"attrName": "客户地址",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "source",
+		"attrName": "客户来源",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "website",
+		"attrName": "客户官网",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	},
+	{
+		"attr": "instruction",
+		"attrName": "客户简介",
+		"enable": 1,
+		"fieldType": 0,
+		"initValue": "",
+		"isRedundant": 0,
+		"required": 0
+	}]
+}  
+		</pre>
+		失败输出：{"errorCode":"*","msg":"操作失败","ret":""}<br> 
+	</div>
+	<div class="hide" id="attr501">
+		<span>接口参数解析</span>
+		<table border = "1" width="1000">
+			<tr><th>参数名称</th><th>参数解析</th><th>参数值</th></tr>
+			<tr><td>(String)corpid</td><td>公司corpid,与钉钉公司ID一致</td><td>必填</td></tr>
+			<tr><td>(int)refType</td><td>模板类型</td><td>1：客户 2：销售机会 3：合同  4：联系人 5：产品</td></tr>
+		</table>
+	</div>

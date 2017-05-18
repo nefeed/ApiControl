@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.OpportunityProductDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.OpportunityProductEntity">
+		<result property="corpid" column="corpid" />
+		<result property="opportunityId" column="opportunity_id" />
+		<result property="productId" column="product_id" />
+		<result property="productName" column="product_name" />
+		<result property="productNum" column="product_num" />
+		<result property="price" column="price" />
+		<result property="specification" column="specification" />
+		
+		<result property="thumbnail" column="thumbnail" />
+		<result property="categoryId" column="category_id" />
+		<result property="spec" column="spec" />
+		<result property="unit" column="unit" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.OpportunityProductEntity">
+  		INSERT INTO tb_opportunity_product ( 
+			corpid,opportunity_id,product_id,product_name,product_num,price,specification			
+  		) VALUES (
+			#{corpid},#{opportunityId},#{productId},#{productName},#{productNum},#{price},#{specification}			
+  		)
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.OpportunityProductEntity" >
+		UPDATE
+			tb_opportunity_product
+		SET
+			 <if test="corpid!=null"> corpid = #{corpid} </if>
+			 <if test="opportunityId!=null">, opportunity_id = #{opportunityId} </if>
+			 <if test="productId!=null">, product_id = #{productId} </if>
+			 <if test="productName!=null">, product_name = #{productName} </if>
+			 <if test="productNum!=null">, product_num = #{productNum} </if>
+			 <if test="price!=null">, price = #{price} </if>
+			 <if test="specification!=null">, specification = #{specification} </if>
+		<where>
+			corpid = #{corpid} AND opportunity_id = #{opportunityId} AND product_id = #{productId}
+		</where>
+	</update>
+	
+	<update id="dataConsistencyUpdate" >
+		UPDATE
+			tb_opportunity_product
+		SET
+			 corpid = #{corpid}
+			 <if test="productName!=null">, product_name = #{productName} </if>
+			 <if test="specification!=null">, specification = #{specification} </if>
+		<where>
+			corpid = #{corpid} AND product_id = #{productId}
+		</where>
+	</update>
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_opportunity_product
+		<where>
+			corpid = #{corpid} AND opportunity_id = #{opportunityId} AND product_id = #{productId}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		DELETE FROM 
+			tb_opportunity_product
+		<where>
+			corpid = #{corpid} AND opportunity_id = #{opportunityId} AND product_id = #{productId}
+		</where>
+	</delete>
+	
+<!-- 	<delete id="deleteByOpportunityId"> -->
+<!-- 		DELETE from -->
+<!-- 			tb_opportunity_product -->
+<!-- 		<where> -->
+<!-- 			opportunityId = #{opportunityId} AND corpid = #{corpid} -->
+<!-- 		</where> -->
+<!-- 	</delete> -->
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_opportunity_product
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<!-- 查找销售机会关联的产品信息 -->
+	<select id="findEntitysJoinProduct" parameterType="map" resultMap="BASE-RESULT">
+		SELECT o.*, thumbnail, category_id, p.specification AS spec, p.unit AS unit
+			FROM
+				tb_opportunity_product AS o LEFT JOIN tb_product AS p ON o.product_id = p.id
+			WHERE 
+				o.corpid = #{param.corpid}  AND o.opportunity_id = #{param.opportunityId}
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_opportunity_product
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.opportunityId!=null">
+  			AND  opportunity_id = #{param.opportunityId}
+  		</if>
+  		<if test = "param.opportunityIdIn!=null">
+	  		AND opportunity_id IN
+	  		<foreach item="item" index="index" collection="param.opportunityIdIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+  		<if test="param.productId!=null">
+  			AND  product_id = #{param.productId}
+  		</if>
+  		<if test="param.productName!=null">
+  			AND  product_name = #{param.productName}
+  		</if>
+  		<if test="param.productNum!=null">
+  			AND  product_num = #{param.productNum}
+  		</if>
+  		<if test="param.price!=null">
+  			AND  price = #{param.price}
+  		</if>
+  		<if test="param.specification!=null">
+  			AND  specification = #{param.specification}
+  		</if>
+	</sql>
+	
+</mapper>

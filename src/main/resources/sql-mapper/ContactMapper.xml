@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ContactDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ContactEntity">
+		<result property="id" column="id" />
+		<result property="templateId" column="template_id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="name" column="name" />
+		<result property="honorificTitle" column="honorific_title" />
+		<result property="department" column="department" />
+		<result property="position" column="position" />
+		<result property="level" column="level" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="qq" column="qq" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="hobbies" column="hobbies" />
+		<result property="relationship" column="relationship" />
+		<result property="intimateDegree" column="intimate_degree" />
+		<result property="importantDegree" column="important_degree" />
+		<result property="memo" column="memo" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="district" column="district" />
+		<result property="address" column="address" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+		<result property="zipCode" column="zip_code" />
+		<result property="updateTime" column="update_time" />
+		<result property="addTime" column="add_time" />
+		<result property="del" column="del" />
+		
+		<result property="isMainUserId" column="is_main_user_id" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ContactEntity">
+  		INSERT INTO tb_contact ( 
+			id,template_id,corpid,user_id,customer_id,customer_name,name,honorific_title,department,position,level,phone,email,qq,sex,birthday,hobbies,relationship,intimate_degree,important_degree,memo,province,city,district,address,latitude,longitude,zip_code,update_time,add_time,del			
+  		) VALUES (
+			#{id},#{templateId},#{corpid},#{userId},#{customerId},#{customerName},#{name},#{honorificTitle},#{department},#{position},#{level},#{phone},#{email},#{qq},#{sex},#{birthday},#{hobbies},#{relationship},#{intimateDegree},#{importantDegree},#{memo},#{province},#{city},#{district},#{address},#{latitude},#{longitude},#{zipCode},#{updateTime},#{addTime},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ContactEntity" >
+		UPDATE
+			tb_contact
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="customerId!=null">, customer_id = #{customerId} </if>
+			 <if test="customerName!=null">, customer_name = #{customerName} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="honorificTitle!=null">, honorific_title = #{honorificTitle} </if>
+			 <if test="department!=null">, department = #{department} </if>
+			 <if test="position!=null">, position = #{position} </if>
+			 <if test="level!=null">, level = #{level} </if>
+			 <if test="phone!=null">, phone = #{phone} </if>
+			 <if test="email!=null">, email = #{email} </if>
+			 <if test="qq!=null">, qq = #{qq} </if>
+			 <if test="sex!=null">, sex = #{sex} </if>
+			 <if test="birthday!=null">, birthday = #{birthday} </if>
+			 <if test="hobbies!=null">, hobbies = #{hobbies} </if>
+			 <if test="relationship!=null">, relationship = #{relationship} </if>
+			 <if test="intimateDegree!=null">, intimate_degree = #{intimateDegree} </if>
+			 <if test="importantDegree!=null">, important_degree = #{importantDegree} </if>
+			 <if test="memo!=null">, memo = #{memo} </if>
+			 <if test="province!=null">, province = #{province} </if>
+			 <if test="city!=null">, city = #{city} </if>
+			 <if test="district!=null">, district = #{district} </if>
+			 <if test="address!=null">, address = #{address} </if>
+			 <if test="latitude!=null">, latitude = #{latitude} </if>
+			 <if test="longitude!=null">, longitude = #{longitude} </if>
+			 <if test="zipCode!=null">, zip_code = #{zipCode} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_contact
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_contact
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<delete id="deleteByCorpidAndCustomerId">
+		UPDATE
+			tb_contact
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND customer_id = #{customerId} AND del = 0
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_contact
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_contact
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="findEntitysJoinUserRelation" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.*, u.user_id as is_main_user_id FROM
+			tb_contact_user AS u RIGHT JOIN tb_contact AS c ON u.contact_id = c.id
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+			GROUP BY c.id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getEntitysJoinUserRelationCount" parameterType="map" resultType="int">
+		SELECT COUNT(DISTINCT(c.id)) FROM
+			tb_contact_user AS u RIGHT JOIN tb_contact AS c ON u.contact_id = c.id
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>	
+	
+	<sql id="compareParamColumns">
+		1
+		<if test="param.idNeg!=null">
+  			AND  id != #{param.idNeg}
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId}
+  		</if>
+  		<if test="param.customerId!=null">
+  			AND  customer_id = #{param.customerId}
+  		</if>
+  		<if test = "param.customerIdIn!=null">
+	  	    AND customer_id IN
+	  		<foreach item="item" index="index" collection="param.customerIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		
+  		<if test = "param.contactIdIn!=null">
+	  	    AND c.id IN
+	  		<foreach item="item" index="index" collection="param.contactIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		
+  		<if test="param.customerName!=null">
+  			AND  customer_name = #{param.customerName}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.honorificTitle!=null">
+  			AND  honorific_title = #{param.honorificTitle}
+  		</if>
+  		<if test="param.department!=null">
+  			AND  department = #{param.department}
+  		</if>
+  		<if test="param.position!=null">
+  			AND  position = #{param.position}
+  		</if>
+  		<if test="param.level!=null">
+  			AND  level = #{param.level}
+  		</if>
+  		<if test="param.phone!=null">
+  			AND  phone = #{param.phone}
+  		</if>
+  		<if test="param.email!=null">
+  			AND  email = #{param.email}
+  		</if>
+  		<if test="param.qq!=null">
+  			AND  qq = #{param.qq}
+  		</if>
+  		<if test="param.sex!=null">
+  			AND  sex = #{param.sex}
+  		</if>
+  		<if test="param.birthday!=null">
+  			AND  birthday = #{param.birthday}
+  		</if>
+  		<if test="param.hobbies!=null">
+  			AND  hobbies = #{param.hobbies}
+  		</if>
+  		<if test="param.relationship!=null">
+  			AND  relationship = #{param.relationship}
+  		</if>
+  		<if test="param.intimateDegree!=null">
+  			AND  intimate_degree = #{param.intimateDegree}
+  		</if>
+  		<if test="param.importantDegree!=null">
+  			AND  important_degree = #{param.importantDegree}
+  		</if>
+  		<if test="param.memo!=null">
+  			AND  memo = #{param.memo}
+  		</if>
+  		<if test="param.province!=null">
+  			AND  province = #{param.province}
+  		</if>
+  		<if test="param.city!=null">
+  			AND  city = #{param.city}
+  		</if>
+  		<if test="param.district!=null">
+  			AND  district = #{param.district}
+  		</if>
+  		<if test="param.address!=null">
+  			AND  address = #{param.address}
+  		</if>
+  		<if test="param.latitude!=null">
+  			AND  latitude = #{param.latitude}
+  		</if>
+  		<if test="param.longitude!=null">
+  			AND  longitude = #{param.longitude}
+  		</if>
+  		<if test="param.zipCode!=null">
+  			AND  zip_code = #{param.zipCode}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+		
+		
+  		<if test="param.nameLike!=null">
+  			AND name like CONCAT('%',#{param.nameLike},'%' )
+  		</if>
+  		
+  		<if test="param.phoneLike!=null">
+  			AND phone like CONCAT('%',#{param.phoneLike},'%' )
+  		</if>
+  		
+  		<if test="param.customerNameLike!=null">
+  			AND customer_name LIKE CONCAT('%', #{param.customerNameLike},'%')
+  		</if>
+  		<if test="param.addressLike!=null">
+  			AND address LIKE CONCAT('%', #{param.addressLike},'%')
+  		</if>
+  		
+  		<!-- 省市区查询 -->
+  		<if test="param.cityLike!=null">
+  			AND city LIKE CONCAT('%', #{param.cityLike},'%')
+  		</if>
+  		<if test="param.provinceLike!=null">
+  			AND province LIKE CONCAT('%', #{param.provinceLike},'%')
+  		</if>
+  		<if test="param.districtLike!=null">
+  			AND district LIKE CONCAT('%', #{param.districtLike},'%')
+  		</if>
+  		<if test = "param.importantDegreeIn!=null">
+  			AND important_degree IN 
+  			<foreach item="item" index="index" collection="param.importantDegreeIn" open="(" separator="," close=")">
+             	#{item}
+            </foreach> 
+  		</if>
+  		<if test = "param.levelIn!=null">
+  			AND level IN 
+  			<foreach item="item" index="index" collection="param.levelIn" open="(" separator="," close=")">
+             	#{item}
+            </foreach> 
+  		</if>
+  		
+  		<!-- 职务 -->
+  		<if test = "param.positionLike!=null">
+  			AND position LIKE CONCAT('%', #{param.positionLike},'%')
+  		</if>
+  		
+  		<!-- email，qq，zipCode，hobbies，memo -->
+  		<if test = "param.emailLike!=null">
+  			AND email LIKE CONCAT('%', #{param.emailLike},'%')
+  		</if>
+  		<if test = "param.qqLike!=null">
+  			AND qq LIKE CONCAT('%', #{param.qqLike},'%')
+  		</if>
+  		<if test = "param.zipCodeLike!=null">
+  			AND zip_code LIKE CONCAT('%', #{param.zipCodeLike},'%')
+  		</if>
+  		<if test = "param.hobbiesLike!=null">
+  			AND hobbies LIKE CONCAT('%', #{param.hobbiesLike},'%')
+  		</if>
+  		<if test = "param.memoLike!=null">
+  			AND memo LIKE CONCAT('%', #{param.memoLike},'%')
+  		</if>
+  		
+  		<!-- 连表查询 -->
+		<if test="param.corpidJoin!=null">
+			AND u.corpid = #{param.corpidJoin}
+		</if>
+		<if test="param.idInJoin!=null">
+			AND c.id IN
+			<foreach item="item" index="index" collection="param.idInJoin" open="(" separator="," close=")">
+             	#{item}
+            </foreach> 
+		</if>
+  		<if test="param.customerIdJoin!=null">
+  			AND u.customer_id = #{param.customerIdJoin}
+  		</if>
+		<if test ="param.userId!=null">
+		    AND u.user_id = #{param.userId}
+		</if>
+		<if test="param.userIdIns!=null">
+			AND user_id IN
+			<foreach item="item" index="index" collection="param.userIdIns" open="(" separator="," close=")">
+             	#{item}
+            </foreach> 
+		</if>
+		<if test="param.userIdIn!=null">
+			AND u.user_id IN
+			<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+             	#{item}
+            </foreach> 
+		</if>
+  		<if test="param.staffId!=null">
+  			AND	customer_id in(
+				SELECT customer_id FROM tb_customer_user WHERE user_id = #{param.staffId} AND corpid = #{param.corpid}
+			)
+  		</if>
+  		<!-- 更新时间 -->
+  		<if test = "param.startUpdateTime!=null">
+  			<![CDATA[AND c.update_time >= #{param.startUpdateTime}]]>
+  		</if>
+  		<if test = "param.endUpdateTime!=null">
+  			<![CDATA[AND c.update_time < #{param.endUpdateTime}]]>
+  		</if>
+  		<!-- 添加时间 -->
+  		<if test = "param.startAddTime!=null">
+  			<![CDATA[AND c.add_time >= #{param.startAddTime}]]>
+  		</if>
+  		<if test = "param.endAddTime!=null">
+  			<![CDATA[AND c.add_time < #{param.endAddTime}]]>
+  		</if>
+	</sql>
+	
+</mapper>

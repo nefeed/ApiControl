@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ContractUserDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ContractUserEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="userAvatar" column="user_avatar" />
+		<result property="contractId" column="contract_id" />
+		<result property="isMain" column="is_main" />
+		<result property="addTime" column="add_time" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ContractUserEntity">
+  		INSERT INTO tb_contract_user ( 
+			id,corpid,user_id,user_name,user_avatar,contract_id,is_main,add_time,del			
+  		) VALUES (
+			#{id},#{corpid},#{userId},#{userName},#{userAvatar},#{contractId},#{isMain},#{addTime},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ContractUserEntity" >
+		UPDATE
+			tb_contract_user
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="userName!=null">, user_name = #{userName} </if>
+			 <if test="userAvatar!=null">, user_avatar = #{userAvatar} </if>
+			 <if test="contractId!=null">, contract_id = #{contractId} </if>
+			 <if test="isMain!=null">, is_main = #{isMain} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_contract_user
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	<select id="getByUserIdContractId" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_contract_user
+		<where>
+			 corpid = #{corpid} AND user_id = #{userId} AND contract_id = #{contractId}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_contract_user
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<delete id="deleteEntitys"  parameterType="map">
+		UPDATE
+			tb_contract_user
+		SET
+			del = 1
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+	    <choose>
+	        <when test="param.distinctStr!=null">DISTINCT(contract_id)</when>
+		    <otherwise>*</otherwise>
+		</choose>
+		 FROM
+			tb_contract_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_contract_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<!-- 交接时用 -->
+	<select id="findEntitysJoinContract" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM tb_contract_user u 
+			LEFT JOIN ( SELECT id as cId,customer_id FROM tb_contract  where corpid = #{param.corpidJoin} and del = 0) c
+			ON u.contract_id = cId  
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId}
+  		</if>
+  		<if test = "param.userIdIn!=null">
+	  	    AND user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.userName!=null">
+  			AND  user_name = #{param.userName}
+  		</if>
+  		<if test="param.userAvatar!=null">
+  			AND  user_avatar = #{param.userAvatar}
+  		</if>
+  		<if test="param.contractId!=null">
+  			AND  contract_id = #{param.contractId}
+  		</if>
+  		<if test="param.isMain!=null">
+  			AND  is_main = #{param.isMain}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		
+  		<!-- 移交时关联主表，通过主表的customer_id条件筛选 -->
+  		<if test="param.customerIdIn!=null">
+			AND customer_id IN
+			<foreach item="item" index="index" collection="param.customerIdIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+  		</if>
+  		<if test="param.corpidJoin!=null">
+  			AND  u.corpid = #{param.corpidJoin}
+  		</if>
+  		<if test="param.delJoin!=null">
+  			AND  u.del = #{param.delJoin}
+  		</if>
+  		
+  		<!-- 通过contractIdIn查询 -->
+  		<if test="param.contractIdIn!=null">
+  			AND contract_id IN
+  			<foreach item="item" index="index" collection="param.contractIdIn" open="(" separator="," close=")">
+  				#{item}
+  			</foreach>
+  		</if>
+	</sql>
+	
+</mapper>

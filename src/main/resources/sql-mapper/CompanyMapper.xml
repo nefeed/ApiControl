@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.CompanyDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.CompanyEntity">
+		<result property="corpid" column="corpid" />
+		<result property="corpName" column="corp_name" />
+		<result property="status" column="status" />
+		<result property="industry" column="industry" />
+		<result property="isAuthenticated" column="is_authenticated" />
+		<result property="corpLogoUrl" column="corp_logo_url" />
+		<result property="authUserId" column="auth_user_id" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<result property="inviteCode" column="invite_code" />
+		<result property="inviteUrl" column="invite_url" />
+		<result property="licenseCode" column="license_code" />
+		<result property="permanentCode" column="permanent_code" />
+		<result property="agentId" column="agent_id" />
+		<result property="isPushMessage" column="is_push_message" />
+		
+		<result property="authChannel" column="auth_channel" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.CompanyEntity">
+  		INSERT INTO tb_company ( 
+			corpid,corp_name,status,industry,is_authenticated,corp_logo_url,auth_user_id,add_time,update_time,del,invite_code,invite_url,license_code,permanent_code,agent_id,is_push_message,auth_channel		
+  		) VALUES (
+			#{corpid},#{corpName},#{status},#{industry},#{isAuthenticated},#{corpLogoUrl},#{authUserId},#{addTime},#{updateTime},#{del},#{inviteCode},#{inviteUrl},
+			#{licenseCode},#{permanentCode},#{agentId},#{isPushMessage},#{authChannel}		
+  		)   
+    	 
+  	</insert>
+  	
+  	<insert id="insertFeeCompany" parameterType="com.xbongbong.dingxbb.entity.CompanyEntity">
+  		INSERT  INTO `tb_fee_company`( corpid,corp_name,fee_id,fee_name,real_price,buy_num,fee,user_num,day_num,pay_time,start_time,end_time,is_pay,is_active,is_invoice,op_user_name,add_time,update_time,del,pay_type)
+		SELECT #{corpid},#{corpName},id, NAME,real_price,1,0,user_num,day_num,0,UNIX_TIMESTAMP() ,UNIX_TIMESTAMP() +31*86400,0,1,0,'sys',UNIX_TIMESTAMP() ,UNIX_TIMESTAMP() ,0,0 
+		FROM tb_fee WHERE id=1 
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.CompanyEntity" >
+		UPDATE
+			tb_company
+		SET
+			 <if test="corpid!=null"> corpid = #{corpid} </if>
+			 <if test="corpName!=null">, corp_name = #{corpName} </if>
+			 <if test="status!=null">, status = #{status} </if>
+			 <if test="industry!=null">, industry = #{industry} </if>
+			 <if test="isAuthenticated!=null">, is_authenticated = #{isAuthenticated} </if>
+			 <if test="corpLogoUrl!=null">, corp_logo_url = #{corpLogoUrl} </if>
+			 <if test="authUserId!=null">, auth_user_id = #{authUserId} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="inviteCode!=null">, invite_code = #{inviteCode} </if>
+			 <if test="inviteUrl!=null">, invite_url = #{inviteUrl} </if>
+			 <if test="licenseCode!=null">, license_code = #{licenseCode} </if>
+			 <if test="permanentCode!=null">, permanent_code = #{permanentCode} </if>
+			 <if test="agentId!=null">, agent_id = #{agentId} </if>
+			 <if test="isPushMessage!=null">, is_push_message = #{isPushMessage} </if>
+			 
+			 <if test="authChannel!=null">, auth_channel = #{authChannel} </if>
+		<where>
+			corpid = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_company
+		<where>
+			corpid = #{key} AND del = 0
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_company
+		SET
+			del = 1
+		<where>
+			corpid = #{key}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_company
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_company
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="getEndTime" parameterType="map" resultType="int">
+		SELECT end_time FROM
+			tb_fee_company
+		<where>
+			1 and corpid=#{param.corpid} and is_active=1 and del=0 
+			<!--套餐生效时间，并且有15天（1926000）的超期 -->
+	  		<if test="param.now!=null">
+	  			AND ( #{param.now} BETWEEN start_time AND end_time+1296000 )
+	  		</if>
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<!-- 获取公司套餐信息 -->
+	<select id="findFeeCompanyEntitys" parameterType="map" resultType="hashmap">
+		SELECT * FROM
+			tb_fee_company
+		<where>
+			1
+			<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  			</if>
+  			<if test="param.isActive!=null">
+  			AND  is_active = #{param.isActive}
+  			</if>
+  			<if test="param.del!=null">
+  			AND  del = #{param.del}
+  			</if>
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.corpName!=null">
+  			AND  corp_name = #{param.corpName}
+  		</if>
+  		<if test="param.status!=null">
+  			AND  status = #{param.status}
+  		</if>
+  		<if test="param.industry!=null">
+  			AND  industry = #{param.industry}
+  		</if>
+  		<if test="param.isAuthenticated!=null">
+  			AND  is_authenticated = #{param.isAuthenticated}
+  		</if>
+  		<if test="param.corpLogoUrl!=null">
+  			AND  corp_logo_url = #{param.corpLogoUrl}
+  		</if>
+  		<if test="param.authUserId!=null">
+  			AND  auth_user_id = #{param.authUserId}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		<if test="param.inviteCode!=null">
+  			AND  invite_code = #{param.inviteCode}
+  		</if>
+  		<if test="param.inviteUrl!=null">
+  			AND  invite_url = #{param.inviteUrl}
+  		</if>
+  		<if test="param.licenseCode!=null">
+  			AND  license_code = #{param.licenseCode}
+  		</if>
+		<if test="param.addTimeStart!=null">
+  			<![CDATA[AND add_time >= #{param.addTimeStart}]]>
+  		</if>
+  		<if test="param.addTimeEnd!=null">
+  			<![CDATA[AND add_time < #{param.addTimeEnd}]]>
+  		</if>
+		<if test="param.agentId!=null">
+  			AND  agent_id = #{param.agentId}
+  		</if>
+  		<if test="param.isPushMessage!=null">
+  			AND  is_push_message = #{param.isPushMessage}
+  		</if>
+  		<if test="param.authChannel!=null">
+  			AND  auth_channel = #{param.authChannel}
+  		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.PaymentSheetDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.PaymentSheetEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="contractId" column="contract_id" />
+		<result property="paymentId" column="payment_id" />
+		<result property="amount" column="amount" />
+		<result property="paymentTime" column="payment_time" />
+		<result property="payMethod" column="pay_method" />
+		<result property="memo" column="memo" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<!-- 回款单编号，归属人 -->
+		<result property="paymentSheetNo" column="payment_sheet_no" />
+		<result property="belongId" column="belong_id" />
+		<result property="belongName" column="belong_name" />
+	</resultMap>
+
+	
+	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.PaymentSheetEntity">
+  		INSERT INTO tb_payment_sheet ( 
+			id,corpid,user_id,customer_id,contract_id,payment_id,amount,payment_time,pay_method,memo,add_time,update_time,del,payment_sheet_no,belong_id,belong_name			
+  		) VALUES (
+			#{id},#{corpid},#{userId},#{customerId},#{contractId},#{paymentId},#{amount},#{paymentTime},#{payMethod},#{memo},#{addTime},#{updateTime},#{del},#{paymentSheetNo},#{belongId},#{belongName}			
+  		)   
+		<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+	</insert>
+  	
+	<update id="update" parameterType="com.xbongbong.dingxbb.entity.PaymentSheetEntity" >
+		UPDATE
+			tb_payment_sheet
+		SET
+		<if test="id!=null"> id = #{id} </if>
+		<if test="userId!=null">, user_id = #{userId} </if>
+		<if test="customerId!=null">, customer_id = #{customerId} </if>
+		<if test="contractId!=null">, contract_id = #{contractId} </if>
+		<if test="paymentId!=null">, payment_id = #{paymentId} </if>
+		<if test="amount!=null">, amount = #{amount} </if>
+		<if test="paymentTime!=null">, payment_time = #{paymentTime} </if>
+		<if test="payMethod!=null">, pay_method = #{payMethod} </if>
+		<if test="memo!=null">, memo = #{memo} </if>
+		<if test="addTime!=null">, add_time = #{addTime} </if>
+		<if test="updateTime!=null">, update_time = #{updateTime} </if>
+		<if test="del!=null">, del = #{del} </if>
+		
+		<!-- 回款单编号，归属人 -->
+		<if test="paymentSheetNo!=null">, payment_sheet_no = #{paymentSheetNo} </if>
+		<if test="belongId!=null">, belong_id = #{belongId} </if>
+		<if test="belongName!=null">, belong_name = #{belongName} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	<update id="dataConsistencyUpdateUser" >
+		UPDATE
+			tb_payment_sheet
+		SET
+			 corpid = #{corpid}
+			 <if test="belongName!=null">, belong_name = #{belongName} </if>
+		<where>
+			corpid = #{corpid} AND belong_id = #{belongId}
+		</where>
+	</update>
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_payment_sheet
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_payment_sheet
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>	
+	
+	<!-- 通过合同id删除回款单 -->
+	<delete id="deleteByContractId">
+		UPDATE
+			tb_payment_sheet
+		SET
+			del = 1
+		<where>
+			contract_id = #{contractId} AND corpid = #{corpid}
+		</where>
+	</delete>
+	<!-- 通过回款计划id删除回款单-->
+	<delete id="deleteByPaymentId">
+		UPDATE
+			tb_payment_sheet
+		SET
+			del = 1
+		<where>
+			payment_id = #{paymentId} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="getParterPaymentSum" resultType="double">
+		SELECT SUM(amount) FROM
+			tb_payment_sheet
+		<where>
+			corpid = #{corpid} AND payment_id = #{paymentId} AND del = 0
+		</where>
+	</select>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_payment_sheet
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_payment_sheet
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	
+	<sql id="compareParamColumns">
+		corpid = #{param.corpid}
+		<if test="param.id!=null">
+  			AND  id = #{param.id}
+		</if>
+		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId}
+		</if>
+		<if test="param.customerId!=null">
+			AND customer_id = #{param.customerId}
+		</if>
+		<if test="param.contractId!=null">
+  			AND  contract_id = #{param.contractId}
+		</if>
+		<if test="param.paymentId!=null">
+			AND payment_id = #{param.paymentId}
+		</if>
+		<if test="param.amount!=null">
+  			AND  amount = #{param.amount}
+		</if>
+		<if test="param.paymentTime!=null">
+			AND payment_time = #{param.paymentTime}
+		</if>
+		<if test="param.payMethod!=null">
+			AND pay_method = #{param.payMethod}
+		</if>
+		<if test="param.memo!=null">
+			AND memo = #{param.memo}
+		</if>
+		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+		</if>
+		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+		</if>
+		<if test="param.del!=null">
+  			AND  del = #{param.del}
+		</if>
+  		
+  		<!-- 回款单编号，归属人 -->
+  		<if test="param.paymentSheetNo!=null">
+  			AND  payment_sheet_no = #{param.paymentSheetNo}
+		</if>
+		<if test="param.belongId!=null">
+  			AND  belong_id = #{param.belongId}
+		</if>
+		<if test="param.belongName!=null">
+			
+  			AND  belong_name = #{param.belongName}
+		</if>
+		<!-- 搜索归属人 -->
+		<if test="param.belongNameLike!=null">
+  			AND  belong_name like CONCAT('%',#{param.belongNameLike},'%' )
+  		</if>
+	</sql>
+	
+</mapper>

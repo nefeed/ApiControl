@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.PermissionDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.PermissionEntity">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="parentId" column="parent_id" />
+		<result property="isMenu" column="is_menu" />
+		<result property="sort" column="sort" />
+		<result property="permission" column="permission" />
+		<result property="aimUrl" column="aim_url" />
+		<result property="value" column="value" />
+		<result property="type" column="type" />
+		<result property="router" column="router" />
+		<result property="icon" column="icon" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="isUse" column="is_use" />
+	    <result property="companyId" column="company_id" />
+	    <!-- vip 0:免费功能;1:vip功能 -->
+	    <result property="vip" column="vip" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.PermissionEntity">
+  		INSERT INTO tb_permission ( 
+			id,name,alias,parent_id,is_menu,sort,permission,aim_url,type,router,icon,add_time,update_time,is_use,company_id,vip			
+  		) VALUES (
+			#{id},#{name},#{alias},#{parentId},#{isMenu},#{sort},#{permission},#{aimUrl},#{type},#{router},#{icon},#{addTime},#{updateTime},#{isUse},#{companyId},#{vip}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.PermissionEntity" >
+		UPDATE
+			tb_permission
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="alias!=null">, alias = #{alias} </if>
+			 <if test="parentId!=null">, parent_id = #{parentId} </if>
+			 <if test="isMenu!=null">, is_menu = #{isMenu} </if>
+			 <if test="sort!=null">, sort = #{sort} </if>
+			 <if test="permission!=null">, permission = #{permission} </if>
+			 <if test="aimUrl!=null">, aim_url = #{aimUrl} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="router!=null">, router = #{router} </if>
+			 <if test="icon!=null">, icon = #{icon} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="isUse!=null">, is_use = #{isUse} </if>
+			 <if test="vip!=null">, vip = #{vip} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_permission
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_permission
+		SET
+			del = 1
+		<where>
+			id = #{key} AND company_id = #{companyId}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_permission
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_permission
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+		<if test="param.idIn">
+			AND id IN
+  			<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+             	#{item}
+            </foreach>  
+		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.alias!=null">
+  			AND  alias = #{param.alias}
+  		</if>
+  		<if test="param.parentId!=null">
+  			AND  parent_id = #{param.parentId}
+  		</if>
+  		<if test="param.isMenu!=null">
+  			AND  is_menu = #{param.isMenu}
+  		</if>
+  		<if test="param.sort!=null">
+  			AND  sort = #{param.sort}
+  		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test="param.isUse!=null">
+  			AND  is_use = #{param.isUse}
+  		</if>
+  		<if test="param.vip!=null">
+  			AND  vip = #{param.vip}
+  		</if>
+  		<!-- 限制vip才能取出所有权限， 超期后，继续允许14天 -->
+  		<if test="param.corpid!=null">
+  			AND <![CDATA[ vip <= (SELECT COUNT(*) FROM tb_fee_company WHERE corpid=#{param.corpid}  AND is_active=1 AND del=0 AND UNIX_TIMESTAMP() BETWEEN start_time AND end_time+1209600) ]]>
+  		</if>
+  		
+	</sql>
+	
+</mapper>

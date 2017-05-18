@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.RedundantFieldAppendDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.RedundantFieldAppendEntity">
+		<result property="id" column="id" />
+		<result property="redundantFieldId" column="redundant_field_id" />
+		<result property="corpid" column="corpid" />
+		<result property="refType" column="ref_type" />
+		<result property="refId" column="ref_id" />
+		<result property="templateId" column="template_id" />
+		<result property="attr21" column="attr21" />
+		<result property="attr22" column="attr22" />
+		<result property="attr23" column="attr23" />
+		<result property="attr24" column="attr24" />
+		<result property="attr25" column="attr25" />
+		<result property="attr26" column="attr26" />
+		<result property="attr27" column="attr27" />
+		<result property="attr28" column="attr28" />
+		<result property="attr29" column="attr29" />
+		<result property="attr30" column="attr30" />
+		<result property="attr31" column="attr31" />
+		<result property="attr32" column="attr32" />
+		<result property="attr33" column="attr33" />
+		<result property="attr34" column="attr34" />
+		<result property="attr35" column="attr35" />
+		<result property="attr36" column="attr36" />
+		<result property="attr37" column="attr37" />
+		<result property="attr38" column="attr38" />
+		<result property="attr39" column="attr39" />
+		<result property="attr40" column="attr40" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldAppendEntity">
+  		INSERT INTO tb_redundant_field_append ( 
+			id,redundant_field_id,corpid,ref_type,ref_id,template_id,attr21,attr22,attr23,attr24,attr25,attr26,attr27,attr28,attr29,attr30,attr31,attr32,attr33,attr34,attr35,attr36,attr37,attr38,attr39,attr40			
+  		) VALUES (
+			#{id},#{redundantFieldId},#{corpid},#{refType},#{refId},#{templateId},#{attr21},#{attr22},#{attr23},#{attr24},#{attr25},#{attr26},#{attr27},#{attr28},#{attr29},#{attr30},#{attr31},#{attr32},#{attr33},#{attr34},#{attr35},#{attr36},#{attr37},#{attr38},#{attr39},#{attr40}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldAppendEntity" >
+		UPDATE
+			tb_redundant_field_append
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="redundantFieldId!=null">, redundant_field_id = #{redundantFieldId} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="refType!=null">, ref_type = #{refType} </if>
+			 <if test="refId!=null">, ref_id = #{refId} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="attr21!=null">, attr21 = #{attr21} </if>
+			 <if test="attr22!=null">, attr22 = #{attr22} </if>
+			 <if test="attr23!=null">, attr23 = #{attr23} </if>
+			 <if test="attr24!=null">, attr24 = #{attr24} </if>
+			 <if test="attr25!=null">, attr25 = #{attr25} </if>
+			 <if test="attr26!=null">, attr26 = #{attr26} </if>
+			 <if test="attr27!=null">, attr27 = #{attr27} </if>
+			 <if test="attr28!=null">, attr28 = #{attr28} </if>
+			 <if test="attr29!=null">, attr29 = #{attr29} </if>
+			 <if test="attr30!=null">, attr30 = #{attr30} </if>
+			 <if test="attr31!=null">, attr31 = #{attr31} </if>
+			 <if test="attr32!=null">, attr32 = #{attr32} </if>
+			 <if test="attr33!=null">, attr33 = #{attr33} </if>
+			 <if test="attr34!=null">, attr34 = #{attr34} </if>
+			 <if test="attr35!=null">, attr35 = #{attr35} </if>
+			 <if test="attr36!=null">, attr36 = #{attr36} </if>
+			 <if test="attr37!=null">, attr37 = #{attr37} </if>
+			 <if test="attr38!=null">, attr38 = #{attr38} </if>
+			 <if test="attr39!=null">, attr39 = #{attr39} </if>
+			 <if test="attr40!=null">, attr40 = #{attr40} </if>
+		<where>
+			id = #{id} and corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_append
+		<where>
+			redundant_field_id = #{key}
+		</where>
+	</select>
+	
+	<select id="getByRefTypeAndRefId" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_append
+		<where>
+			corpid = #{corpid} AND ref_type = #{refType} AND ref_id = #{refId}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_redundant_field_append
+		SET
+			del = 1
+		<where>
+			redundant_field_id = #{key}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+    	SELECT * FROM
+			tb_redundant_field_append
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+	<select id="findRefIds" parameterType="map" resultType="int">
+		SELECT ref_id FROM
+			tb_redundant_field
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_redundant_field_append
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.redundantFieldId!=null">
+  			AND  redundant_field_id = #{param.redundantFieldId}
+  		</if>
+  		<if test="param.redundantFieldIdIn!=null">
+  			AND redundant_field_id IN
+	  		<foreach item="item" index="index" collection="param.redundantFieldIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.refType!=null">
+  			AND  ref_type = #{param.refType}
+  		</if>
+  		<if test="param.refId!=null">
+  			AND  ref_id = #{param.refId}
+  		</if>
+  		<if test="param.refIdIn!=null">
+  			AND ref_id IN
+	  		<foreach item="item" index="index" collection="param.refIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.attr21!=null">
+  			AND  attr21 = #{param.attr21}
+  		</if>
+  		<if test="param.attr22!=null">
+  			AND  attr22 = #{param.attr22}
+  		</if>
+  		<if test="param.attr23!=null">
+  			AND  attr23 = #{param.attr23}
+  		</if>
+  		<if test="param.attr24!=null">
+  			AND  attr24 = #{param.attr24}
+  		</if>
+  		<if test="param.attr25!=null">
+  			AND  attr25 = #{param.attr25}
+  		</if>
+  		<if test="param.attr26!=null">
+  			AND  attr26 = #{param.attr26}
+  		</if>
+  		<if test="param.attr27!=null">
+  			AND  attr27 = #{param.attr27}
+  		</if>
+  		<if test="param.attr28!=null">
+  			AND  attr28 = #{param.attr28}
+  		</if>
+  		<if test="param.attr29!=null">
+  			AND  attr29 = #{param.attr29}
+  		</if>
+  		<if test="param.attr30!=null">
+  			AND  attr30 = #{param.attr30}
+  		</if>
+  		<if test="param.attr31!=null">
+  			AND  attr31 = #{param.attr31}
+  		</if>
+  		<if test="param.attr32!=null">
+  			AND  attr32 = #{param.attr32}
+  		</if>
+  		<if test="param.attr33!=null">
+  			AND  attr33 = #{param.attr33}
+  		</if>
+  		<if test="param.attr34!=null">
+  			AND  attr34 = #{param.attr34}
+  		</if>
+  		<if test="param.attr35!=null">
+  			AND  attr35 = #{param.attr35}
+  		</if>
+  		<if test="param.attr36!=null">
+  			AND  attr36 = #{param.attr36}
+  		</if>
+  		<if test="param.attr37!=null">
+  			AND  attr37 = #{param.attr37}
+  		</if>
+  		<if test="param.attr38!=null">
+  			AND  attr38 = #{param.attr38}
+  		</if>
+  		<if test="param.attr39!=null">
+  			AND  attr39 = #{param.attr39}
+  		</if>
+  		<if test="param.attr40!=null">
+  			AND  attr40 = #{param.attr40}
+  		</if>
+ 		
+ 		<!-- 模糊查询使用 -->
+  		<if test="param.attr21Like!=null">
+  			AND  attr21 LIKE CONCAT ('%', #{param.attr21Like} ,'%')
+  		</if>
+  		<if test="param.attr22Like!=null">
+  			AND  attr22 LIKE CONCAT ('%', #{param.attr22Like} ,'%')
+  		</if>
+  		<if test="param.attr23Like!=null">
+  			AND  attr23 LIKE CONCAT ('%', #{param.attr23Like} ,'%')
+  		</if>
+  		<if test="param.attr24Like!=null">
+  			AND  attr24 LIKE CONCAT ('%', #{param.attr24Like} ,'%')
+  		</if>
+  		<if test="param.attr25Like!=null">
+  			AND  attr25 LIKE CONCAT ('%', #{param.attr25Like} ,'%')
+  		</if>
+  		<if test="param.attr26Like!=null">
+  			AND  attr26 LIKE CONCAT ('%', #{param.attr26Like} ,'%')
+  		</if>
+  		<if test="param.attr27Like!=null">
+  			AND  attr27 LIKE CONCAT ('%', #{param.attr27Like} ,'%')
+  		</if>
+  		<if test="param.attr28Like!=null">
+  			AND  attr28 LIKE CONCAT ('%', #{param.attr28Like} ,'%')
+  		</if>
+  		<if test="param.attr29Like!=null">
+  			AND  attr29 LIKE CONCAT ('%', #{param.attr29Like} ,'%')
+  		</if>
+  		<if test="param.attr30Like!=null">
+  			AND  attr30 LIKE CONCAT ('%', #{param.attr30Like} ,'%')
+  		</if>
+  		<if test="param.attr31Like!=null">
+  			AND  attr31 LIKE CONCAT ('%', #{param.attr31Like} ,'%')
+  		</if>
+  		<if test="param.attr32Like!=null">
+  			AND  attr32 LIKE CONCAT ('%', #{param.attr32Like} ,'%')
+  		</if>
+  		<if test="param.attr33Like!=null">
+  			AND  attr33 LIKE CONCAT ('%', #{param.attr33Like} ,'%')
+  		</if>
+  		<if test="param.attr34Like!=null">
+  			AND  attr34 LIKE CONCAT ('%', #{param.attr34Like} ,'%')
+  		</if>
+  		<if test="param.attr35Like!=null">
+  			AND  attr35 LIKE CONCAT ('%', #{param.attr35Like} ,'%')
+  		</if>
+  		<if test="param.attr36Like!=null">
+  			AND  attr36 LIKE CONCAT ('%', #{param.attr36Like} ,'%')
+  		</if>
+  		<if test="param.attr37Like!=null">
+  			AND  attr37 LIKE CONCAT ('%', #{param.attr37Like} ,'%')
+  		</if>
+  		<if test="param.attr38Like!=null">
+  			AND  attr38 LIKE CONCAT ('%', #{param.attr38Like} ,'%')
+  		</if>
+  		<if test="param.attr39Like!=null">
+  			AND  attr39 LIKE CONCAT ('%', #{param.attr39Like} ,'%')
+  		</if>
+  		<if test="param.attr40Like!=null">
+  			AND  attr40 LIKE CONCAT ('%', #{param.attr40Like} ,'%')
+  		</if>
+  		
+  		<!-- 时间型查询 -->
+  		<if test = "param.attr21DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr21,'%Y-%m-%d') >= #{param.attr21DateStart}]]>
+  		</if>
+  		<if test = "param.attr21DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr21,'%Y-%m-%d') < #{param.attr21DateEnd}]]>
+  		</if>
+  		<if test = "param.attr22DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr22,'%Y-%m-%d') >= #{param.attr22DateStart}]]>
+  		</if>
+  		<if test = "param.attr22DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr22,'%Y-%m-%d') < #{param.attr22DateEnd}]]>
+  		</if>
+  		<if test = "param.attr23DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr23,'%Y-%m-%d') >= #{param.attr23DateStart}]]>
+  		</if>
+  		<if test = "param.attr23DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr23,'%Y-%m-%d') < #{param.attr23DateEnd}]]>
+  		</if>
+  		<if test = "param.attr24DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr24,'%Y-%m-%d') >= #{param.attr24DateStart}]]>
+  		</if>
+  		<if test = "param.attr24DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr24,'%Y-%m-%d') < #{param.attr24DateEnd}]]>
+  		</if>
+  		<if test = "param.attr25DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr25,'%Y-%m-%d') >= #{param.attr25DateStart}]]>
+  		</if>
+  		<if test = "param.attr25DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr25,'%Y-%m-%d') < #{param.attr25DateEnd}]]>
+  		</if>
+  		<if test = "param.attr26DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr26,'%Y-%m-%d') >= #{param.attr26DateStart}]]>
+  		</if>
+  		<if test = "param.attr26DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr26,'%Y-%m-%d') < #{param.attr26DateEnd}]]>
+  		</if>
+  		<if test = "param.attr27DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr27,'%Y-%m-%d') >= #{param.attr27DateStart}]]>
+  		</if>
+  		<if test = "param.attr27DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr27,'%Y-%m-%d') < #{param.attr27DateEnd}]]>
+  		</if>
+  		<if test = "param.attr28DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr28,'%Y-%m-%d') >= #{param.attr28DateStart}]]>
+  		</if>
+  		<if test = "param.attr28DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr28,'%Y-%m-%d') < #{param.attr28DateEnd}]]>
+  		</if>
+  		<if test = "param.attr29DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr29,'%Y-%m-%d') >= #{param.attr29DateStart}]]>
+  		</if>
+  		<if test = "param.attr29DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr29,'%Y-%m-%d') < #{param.attr29DateEnd}]]>
+  		</if>
+  		<if test = "param.attr30DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr30,'%Y-%m-%d') >= #{param.attr30DateStart}]]>
+  		</if>
+  		<if test = "param.attr30DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr30,'%Y-%m-%d') < #{param.attr30DateEnd}]]>
+  		</if>
+  		<if test = "param.attr31DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr31,'%Y-%m-%d') >= #{param.attr31DateStart}]]>
+  		</if>
+  		<if test = "param.attr31DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr31,'%Y-%m-%d') < #{param.attr31DateEnd}]]>
+  		</if>
+  		<if test = "param.attr32DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr32,'%Y-%m-%d') >= #{param.attr32DateStart}]]>
+  		</if>
+  		<if test = "param.attr32DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr32,'%Y-%m-%d') < #{param.attr32DateEnd}]]>
+  		</if>
+  		<if test = "param.attr33DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr33,'%Y-%m-%d') >= #{param.attr33DateStart}]]>
+  		</if>
+  		<if test = "param.attr33DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr33,'%Y-%m-%d') < #{param.attr33DateEnd}]]>
+  		</if>
+  		<if test = "param.attr34DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr34,'%Y-%m-%d') >= #{param.attr34DateStart}]]>
+  		</if>
+  		<if test = "param.attr34DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr34,'%Y-%m-%d') < #{param.attr34DateEnd}]]>
+  		</if>
+  		<if test = "param.attr35DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr35,'%Y-%m-%d') >= #{param.attr35DateStart}]]>
+  		</if>
+  		<if test = "param.attr35DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr35,'%Y-%m-%d') < #{param.attr35DateEnd}]]>
+  		</if>
+  		<if test = "param.attr36DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr36,'%Y-%m-%d') >= #{param.attr36DateStart}]]>
+  		</if>
+  		<if test = "param.attr36DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr36,'%Y-%m-%d') < #{param.attr36DateEnd}]]>
+  		</if>
+  		<if test = "param.attr37DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr37,'%Y-%m-%d') >= #{param.attr37DateStart}]]>
+  		</if>
+  		<if test = "param.attr37DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr37,'%Y-%m-%d') < #{param.attr37DateEnd}]]>
+  		</if>
+  		<if test = "param.attr38DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr38,'%Y-%m-%d') >= #{param.attr38DateStart}]]>
+  		</if>
+  		<if test = "param.attr38DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr38,'%Y-%m-%d') < #{param.attr38DateEnd}]]>
+  		</if>
+  		<if test = "param.attr39DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr39,'%Y-%m-%d') >= #{param.attr39DateStart}]]>
+  		</if>
+  		<if test = "param.attr39DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr39,'%Y-%m-%d') < #{param.attr39DateEnd}]]>
+  		</if>
+  		<if test = "param.attr40DateStart!=null">
+  			<![CDATA[AND DATE_FORMAT(attr40,'%Y-%m-%d') >= #{param.attr40DateStart}]]>
+  		</if>
+  		<if test = "param.attr40DateEnd!=null">
+  			<![CDATA[AND DATE_FORMAT(attr40,'%Y-%m-%d') < #{param.attr40DateEnd}]]>
+  		</if>
+  		
+  		<!-- 模板idIn查询 -->
+  		<if test="param.templateIdIn!=null">
+  			AND  template_id IN
+	  		<foreach item="item" index="index" collection="param.templateIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		
+  		<!-- In 查询 -->
+  		<if test="param.attr21In!=null">
+  			AND attr21 IN
+	  		<foreach item="item" index="index" collection="param.attr21In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr22In!=null">
+  			AND attr22 IN
+	  		<foreach item="item" index="index" collection="param.attr22In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr23In!=null">
+  			AND attr23 IN
+	  		<foreach item="item" index="index" collection="param.attr23In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr24In!=null">
+  			AND attr24 IN
+	  		<foreach item="item" index="index" collection="param.attr24In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr25In!=null">
+  			AND attr25 IN
+	  		<foreach item="item" index="index" collection="param.attr25In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr26In!=null">
+  			AND attr26 IN
+	  		<foreach item="item" index="index" collection="param.attr26In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr27In!=null">
+  			AND attr27 IN
+	  		<foreach item="item" index="index" collection="param.attr27In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr28In!=null">
+  			AND attr28 IN
+	  		<foreach item="item" index="index" collection="param.attr28In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr29In!=null">
+  			AND attr29 IN
+	  		<foreach item="item" index="index" collection="param.attr29In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr30In!=null">
+  			AND attr30 IN
+	  		<foreach item="item" index="index" collection="param.attr30In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr31In!=null">
+  			AND attr31 IN
+	  		<foreach item="item" index="index" collection="param.attr31In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr32In!=null">
+  			AND attr32 IN
+	  		<foreach item="item" index="index" collection="param.attr32In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr33In!=null">
+  			AND attr33 IN
+	  		<foreach item="item" index="index" collection="param.attr33In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr34In!=null">
+  			AND attr34 IN
+	  		<foreach item="item" index="index" collection="param.attr34In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr35In!=null">
+  			AND attr35 IN
+	  		<foreach item="item" index="index" collection="param.attr35In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr36In!=null">
+  			AND attr36 IN
+	  		<foreach item="item" index="index" collection="param.attr36In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr37In!=null">
+  			AND attr37 IN
+	  		<foreach item="item" index="index" collection="param.attr37In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr38In!=null">
+  			AND attr38 IN
+	  		<foreach item="item" index="index" collection="param.attr38In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr39In!=null">
+  			AND attr39 IN
+	  		<foreach item="item" index="index" collection="param.attr39In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.attr40In!=null">
+  			AND attr40 IN
+	  		<foreach item="item" index="index" collection="param.attr40In" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+	</sql>
+	
+</mapper>

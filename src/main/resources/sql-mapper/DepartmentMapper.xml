@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.DepartmentDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.DepartmentEntity">
+		<result property="corpid" column="corpid" />
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="parentId" column="parent_id" />
+		<result property="level" column="level" />
+		<result property="sort" column="sort" />
+		<result property="deptHiding" column="dept_hiding" />
+		<result property="deptPerimits" column="dept_perimits" />
+		<result property="userPerimits" column="user_perimits" />
+		<result property="outerDept" column="outer_dept" />
+		<result property="outerPermitDepts" column="outer_permit_depts" />
+		<result property="outerPermitUsers" column="outer_permit_users" />
+		<result property="deptManagerUseridList" column="dept_manager_useridList" />
+		<result property="orgDeptOwner" column="org_dept_owner" />
+		<result property="createDeptGroup" column="create_dept_group" />
+		<result property="autoAddUser" column="auto_add_user" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<result property="depIdRouter" column="dep_id_router" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.DepartmentEntity">
+  		INSERT INTO tb_department ( 
+			corpid,id,name,parent_id,level,sort,dept_hiding,dept_perimits,user_perimits,outer_dept,outer_permit_depts,outer_permit_users,dept_manager_useridList,org_dept_owner,create_dept_group,auto_add_user,add_time,update_time,del,dep_id_router			
+  		) VALUES (
+			#{corpid},#{id},#{name},#{parentId},#{level},#{sort},#{deptHiding},#{deptPerimits},#{userPerimits},#{outerDept},#{outerPermitDepts},#{outerPermitUsers},#{deptManagerUseridList},#{orgDeptOwner},#{createDeptGroup},#{autoAddUser},#{addTime},#{updateTime},#{del},#{depIdRouter}			
+  		)   
+    	<!-- <selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey> -->
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.DepartmentEntity" >
+		UPDATE
+			tb_department
+		SET
+			 <if test="corpid!=null"> corpid = #{corpid} </if>
+			 <if test="id!=null">, id = #{id} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="parentId!=null">, parent_id = #{parentId} </if>
+			 <if test="level!=null">, level = #{level} </if>
+			 <if test="sort!=null">, sort = #{sort} </if>
+			 <if test="deptHiding!=null">, dept_hiding = #{deptHiding} </if>
+			 <if test="deptPerimits!=null">, dept_perimits = #{deptPerimits} </if>
+			 <if test="userPerimits!=null">, user_perimits = #{userPerimits} </if>
+			 <if test="outerDept!=null">, outer_dept = #{outerDept} </if>
+			 <if test="outerPermitDepts!=null">, outer_permit_depts = #{outerPermitDepts} </if>
+			 <if test="outerPermitUsers!=null">, outer_permit_users = #{outerPermitUsers} </if>
+			 <if test="deptManagerUseridList!=null">, dept_manager_useridList = #{deptManagerUseridList} </if>
+			 <if test="orgDeptOwner!=null">, org_dept_owner = #{orgDeptOwner} </if>
+			 <if test="createDeptGroup!=null">, create_dept_group = #{createDeptGroup} </if>
+			 <if test="autoAddUser!=null">, auto_add_user = #{autoAddUser} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="depIdRouter!=null">, dep_id_router = #{depIdRouter} </if>
+		<where>
+			corpid = #{corpid} AND id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_department
+		<where>
+			corpid = #{corpid} AND id = #{key} AND del = 0
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_department
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND id = #{key}
+		</where>
+	</delete>
+	
+	<delete id="deleteByCorpId">
+		UPDATE
+			tb_department
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND del = 0
+		</where>
+	</delete>
+	
+	<delete id="deleteByKeys">
+		UPDATE
+			tb_department
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} 
+			AND id IN 
+			<foreach item="item" index="index" collection="keys" open="(" separator="," close=")">
+           		#{item}
+       		</foreach>
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_department
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_department
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.parentId!=null">
+  			AND  parent_id = #{param.parentId}
+  		</if>
+  		<if test="param.level!=null">
+  			AND  level = #{param.level}
+  		</if>
+  		<if test="param.sort!=null">
+  			AND  sort = #{param.sort}
+  		</if>
+  		<if test="param.deptHiding!=null">
+  			AND  dept_hiding = #{param.deptHiding}
+  		</if>
+  		<if test="param.deptPerimits!=null">
+  			AND  dept_perimits = #{param.deptPerimits}
+  		</if>
+  		<if test="param.userPerimits!=null">
+  			AND  user_perimits = #{param.userPerimits}
+  		</if>
+  		<if test="param.outerDept!=null">
+  			AND  outer_dept = #{param.outerDept}
+  		</if>
+  		<if test="param.outerPermitDepts!=null">
+  			AND  outer_permit_depts = #{param.outerPermitDepts}
+  		</if>
+  		<if test="param.outerPermitUsers!=null">
+  			AND  outer_permit_users = #{param.outerPermitUsers}
+  		</if>
+  		<if test="param.deptManagerUseridList!=null">
+  			AND  dept_manager_useridList = #{param.deptManagerUseridList}
+  		</if>
+  		<if test="param.orgDeptOwner!=null">
+  			AND  org_dept_owner = #{param.orgDeptOwner}
+  		</if>
+  		<if test="param.createDeptGroup!=null">
+  			AND  create_dept_group = #{param.createDeptGroup}
+  		</if>
+  		<if test="param.autoAddUser!=null">
+  			AND  auto_add_user = #{param.autoAddUser}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.idIn!=null" >
+	    	AND id IN 
+			<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+           		#{item}
+       		</foreach>
+ 		</if>
+ 		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		<if test="param.depIdRouter!=null">
+  			AND  dep_id_router = #{param.depIdRouter}
+  		</if>
+	</sql>
+	
+</mapper>

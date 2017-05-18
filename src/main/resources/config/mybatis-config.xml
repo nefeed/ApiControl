@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+    <typeAliases>
+		<typeAlias alias="UserEntity" 		type="com.xbongbong.dingxbb.entity.UserEntity" />
+		<typeAlias alias="DepartmentEntity" 		type="com.xbongbong.dingxbb.entity.DepartmentEntity" />
+		<typeAlias alias="CustomerEntity" 		type="com.xbongbong.dingxbb.entity.CustomerEntity" />
+		<typeAlias alias="CustomerUserEntity"    type="com.xbongbong.dingxbb.entity.CustomerUserEntity" />
+		<typeAlias alias="ContactEntity"    type="com.xbongbong.dingxbb.entity.ContactEntity" />
+		<typeAlias alias="ContactUserEntity"    type="com.xbongbong.dingxbb.entity.ContactUserEntity" />
+		<typeAlias alias="ContractEntity"    type="com.xbongbong.dingxbb.entity.ContractEntity" />
+		<typeAlias alias="ContractUserEntity"    type="com.xbongbong.dingxbb.entity.ContractUserEntity" />
+		<typeAlias alias="ContractProductEntity"    type="com.xbongbong.dingxbb.entity.ContractProductEntity" />
+		<typeAlias alias="OpportunityEntity"    type="com.xbongbong.dingxbb.entity.OpportunityEntity" />
+		<typeAlias alias="OpportunityUserEntity"    type="com.xbongbong.dingxbb.entity.OpportunityUserEntity" />
+		<typeAlias alias="OpportunityProductEntity"    type="com.xbongbong.dingxbb.entity.OpportunityProductEntity" />
+		<typeAlias alias="PaymentEntity"    type="com.xbongbong.dingxbb.entity.PaymentEntity" />
+		<typeAlias alias="PaymentSheetEntity"    type="com.xbongbong.dingxbb.entity.PaymentSheetEntity" />
+		<typeAlias alias="DataDictionaryEntity" 		type="com.xbongbong.dingxbb.entity.DataDictionaryEntity" />
+		<typeAlias alias="SalesStageEntity" 		type="com.xbongbong.dingxbb.entity.SalesStageEntity" />
+		<typeAlias alias="RedundantFieldEntity" 		type="com.xbongbong.dingxbb.entity.RedundantFieldEntity" />
+		<typeAlias alias="RedundantFieldAppendEntity"		type="com.xbongbong.dingxbb.entity.RedundantFieldAppendEntity" />
+		<typeAlias alias="RedundantFieldExplainEntity" 		type="com.xbongbong.dingxbb.entity.RedundantFieldExplainEntity" />
+		<typeAlias alias="RedundantFieldTemplateEntity" 		type="com.xbongbong.dingxbb.entity.RedundantFieldTemplateEntity" />
+		<typeAlias alias="PermissionEntity" 		type="com.xbongbong.dingxbb.entity.PermissionEntity" />
+		<typeAlias alias="ProductCategoryEntity"    type="com.xbongbong.dingxbb.entity.ProductCategoryEntity" />
+		<typeAlias alias="ProductEntity"    type="com.xbongbong.dingxbb.entity.ProductEntity" />
+ 		<typeAlias alias="RoleEntity" 		type="com.xbongbong.dingxbb.entity.RoleEntity" />
+ 		<typeAlias alias="WeakManageEntity" 		type="com.xbongbong.dingxbb.entity.WeakManageEntity" />       
+ 		<!-- 公司配置 -->
+		<typeAlias alias="CompanyConfigEntity" type="com.xbongbong.dingxbb.entity.CompanyConfigEntity" />
+		
+		<typeAlias alias="ApiTokenEntity" 	type="com.xbongbong.dingxbb.entity.ApiTokenEntity" />
+		
+		<typeAlias alias="CompanyEntity" 	type="com.xbongbong.dingxbb.entity.CompanyEntity" />
+		<!-- Api 文档 -->
+		<typeAlias alias="ApiDocEntity" 	type="com.xbongbong.dingxbb.entity.ApiDocEntity" />
+    </typeAliases>  
+     
+    <mappers> 
+    	<mapper resource="sql-mapper/UserMapper.xml"/>
+    	<mapper resource="sql-mapper/DepartmentMapper.xml"/>
+    	<mapper resource="sql-mapper/CustomerMapper.xml"/>
+    	<mapper resource="sql-mapper/CustomerUserMapper.xml" />
+    	<mapper resource="sql-mapper/ContactMapper.xml" />
+    	<mapper resource="sql-mapper/ContactUserMapper.xml" />
+    	<mapper resource="sql-mapper/ContractMapper.xml" />
+    	<mapper resource="sql-mapper/ContractUserMapper.xml" />
+    	<mapper resource="sql-mapper/ContractProductMapper.xml" />
+    	<mapper resource="sql-mapper/OpportunityMapper.xml" />
+    	<mapper resource="sql-mapper/OpportunityUserMapper.xml" />
+    	<mapper resource="sql-mapper/OpportunityProductMapper.xml" />
+    	<mapper resource="sql-mapper/PaymentMapper.xml" />
+    	<mapper resource="sql-mapper/PaymentSheetMapper.xml" />
+    	<mapper resource="sql-mapper/DataDictionaryMapper.xml"/>
+    	<mapper resource="sql-mapper/SalesStageMapper.xml"/>
+    	<mapper resource="sql-mapper/RedundantFieldMapper.xml"/>
+    	<mapper resource="sql-mapper/RedundantFieldAppendMapper.xml" />
+ 		<mapper resource="sql-mapper/RedundantFieldExplainMapper.xml"/>
+ 		<mapper resource="sql-mapper/RedundantFieldTemplateMapper.xml"/>
+ 		<mapper resource="sql-mapper/PermissionMapper.xml"/>
+ 		<mapper resource="sql-mapper/ProductCategoryMapper.xml" />
+		<mapper resource="sql-mapper/ProductMapper.xml" />
+		<mapper resource="sql-mapper/RoleMapper.xml"/>
+		<mapper resource="sql-mapper/WeakManageMapper.xml"/>
+		<!-- 公司配置 -->
+		<mapper resource="sql-mapper/CompanyConfigMapper.xml" />
+				
+		<mapper resource="sql-mapper/ApiTokenMapper.xml" />
+		
+		<mapper resource="sql-mapper/CompanyMapper.xml" />
+		<!-- Api 文档 -->
+		<mapper resource="sql-mapper/ApiDocMapper.xml" />
+    </mappers>
+		
+</configuration>

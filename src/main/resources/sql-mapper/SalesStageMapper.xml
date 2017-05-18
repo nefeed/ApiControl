@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.SalesStageDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.SalesStageEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="code" column="code" />
+		<result property="stageName" column="stage_name" />
+		<result property="enable" column="enable" />
+		<result property="type" column="type" />
+		<result property="stageGuide" column="stage_guide" />
+		<result property="estimateWinRate" column="estimate_win_rate" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<result property="sort" column="sort" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.SalesStageEntity">
+  		INSERT INTO tb_sales_stage ( 
+			id,corpid,code,stage_name,enable,type,stage_guide,estimate_win_rate,add_time,update_time,del,sort			
+  		) VALUES (
+			#{id},#{corpid},#{code},#{stageName},#{enable},#{type},#{stageGuide},#{estimateWinRate},#{addTime},#{updateTime},#{del},#{sort}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.SalesStageEntity" >
+		UPDATE
+			tb_sales_stage
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="code!=null">, code = #{code} </if>
+			 <if test="stageName!=null">, stage_name = #{stageName} </if>
+			 <if test="enable!=null">, enable = #{enable} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="stageGuide!=null">, stage_guide = #{stageGuide} </if>
+			 <if test="estimateWinRate!=null">, estimate_win_rate = #{estimateWinRate} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="sort!=null">, sort = #{sort} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_sales_stage
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_sales_stage
+		SET
+			del = 1
+		<where>
+			id = #{key}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_sales_stage
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_sales_stage
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="sort" resultType="int">  
+        UPDATE tb_sales_stage 
+		    SET sort = CASE id 
+		        <foreach item="item" index="key" collection="sortMap" open="" separator="" close="">
+		        	WHEN #{key} THEN #{item}
+		        </foreach> 
+		    END
+			<where>
+				<include refid="compareParamColumns" />
+			</where>
+    </select>
+    
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.idIn!=null">
+  			AND  id IN
+	  		<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.code!=null">
+  			AND  code = #{param.code}
+  		</if>
+  		<if test="param.stageName!=null">
+  			AND  stage_name = #{param.stageName}
+  		</if>
+  		<if test="param.enable!=null">
+  			AND  enable = #{param.enable}
+  		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test = "param.typeIn!=null">
+	  		AND type IN
+	  		<foreach item="item" index="index" collection="param.typeIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+  		<if test="param.stageGuide!=null">
+  			AND  stage_guide = #{param.stageGuide}
+  		</if>
+  		<if test="param.estimateWinRate!=null">
+  			AND  estimate_win_rate = #{param.estimateWinRate}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		<if test="param.sort!=null">
+  			AND  sort = #{param.sort}
+  		</if>
+	</sql>
+	
+</mapper>

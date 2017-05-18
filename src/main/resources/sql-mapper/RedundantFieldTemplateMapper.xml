@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.RedundantFieldTemplateDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.RedundantFieldTemplateEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="isRedundant" column="is_redundant" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<result property="copyTemplateId" column="copy_template_id" />
+		<result property="isPublic" column="is_public" />
+		<result property="isCopy" column="is_copy" />
+		<result property="adaptation" column="adaptation" />
+		<result property="introduction" column="introduction" />
+		<result property="icon" column="icon" />
+		<result property="enable" column="enable" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		
+		<result property="ddFormUuid" column="dd_form_uuid" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldTemplateEntity">
+  		INSERT INTO tb_redundant_field_template ( 
+			id,corpid,is_redundant,type,name,copy_template_id,is_public,is_copy,adaptation,introduction,icon,enable,add_time,update_time,del,dd_form_uuid			
+  		) VALUES (
+			#{id},#{corpid},#{isRedundant},#{type},#{name},#{copyTemplateId},#{isPublic},#{isCopy},#{adaptation},#{introduction},#{icon},#{enable},#{addTime},#{updateTime},#{del},#{ddFormUuid}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.RedundantFieldTemplateEntity" >
+		UPDATE
+			tb_redundant_field_template
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="isRedundant!=null">, is_redundant = #{isRedundant} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="copyTemplateId!=null">, copy_template_id = #{copyTemplateId} </if>
+			 <if test="isPublic!=null">, is_public = #{isPublic} </if>
+			 <if test="isCopy!=null">, is_copy = #{isCopy} </if>
+			 <if test="adaptation!=null">, adaptation = #{adaptation} </if>
+			 <if test="introduction!=null">, introduction = #{introduction} </if>
+			 <if test="icon!=null">, icon = #{icon} </if>
+			 <if test="enable!=null">, enable = #{enable} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="ddFormUuid!=null">, dd_form_uuid = #{ddFormUuid} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_template
+		<where>
+			id = #{key} AND corpid = #{corpid}
+			<if test="del!=null">
+	  			AND  del = #{del}
+	  		</if>
+		</where>
+	</select>
+	
+	<select id="getByCorpIdAndDDFormUuid" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_template
+		<where>
+			corpid = #{corpid} AND dd_form_uuid = #{ddFormUuid} AND type = #{type}
+			<if test="del!=null">
+	  			AND  del = #{del}
+	  		</if>
+		</where>
+	</select>
+	
+	<select id="getByKeyPublic" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_template
+		<where>
+			id = #{key} AND is_public = 1  AND enable = 1 AND del = 0
+		</where>
+	</select>
+	
+	<select id="getMyNoCopyTemplate" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_template
+		<where>
+			corpid = #{corpid} AND type = #{type} AND is_copy = 0 AND enable = 1 AND del = 0
+		</where>
+	</select>
+	
+	<select id="getByKeyPublicOrMine" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_template
+		<where>
+			id = #{key} AND del = 0 AND (is_public = 1 OR corpid = #{corpid})
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_redundant_field_template
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<delete id="disableTemplateByKey">
+		UPDATE
+			tb_redundant_field_template
+		SET
+			enable = 0
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_redundant_field_template
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_redundant_field_template
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.isRedundant!=null">
+  			AND  is_redundant = #{param.isRedundant}
+  		</if>
+  		<if test="param.bgList!=null and param.bgCorpid!=null">
+  			AND  (is_public = 1 OR corpid = #{param.bgCorpid})
+  		</if>
+  		<if test="param.ddFormUuid!=null">
+			AND  dd_form_uuid = #{param.ddFormUuid} 
+		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.copyTemplateId!=null">
+  			AND  copy_template_id = #{param.copyTemplateId}
+  		</if>
+  		<if test="param.notCopy!=null">
+  			AND  copy_template_id = id
+  		</if>
+  		<if test="param.isPublic!=null">
+  			AND  is_public = #{param.isPublic}
+  		</if>
+  		<if test="param.isCopy!=null">
+  			AND  is_copy = #{param.isCopy}
+  		</if>
+  		<if test="param.enable!=null">
+  			AND  enable = #{param.enable}
+  		</if>
+  		<if test="param.adaptation!=null">
+  			AND  adaptation = #{param.adaptation}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+	</sql>
+	
+</mapper>

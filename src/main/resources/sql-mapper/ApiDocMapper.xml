@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ApiDocDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ApiDocEntity">
+		<result property="id" column="id" />
+		<result property="version" column="version" />
+		<result property="module" column="module" />
+		<result property="name" column="name" />
+		<result property="url" column="url" />
+		<result property="username" column="username" />
+		<result property="method" column="method" />
+		<result property="memo" column="memo" />
+		<result property="params" column="params" />
+		<result property="paramsDemo" column="params_demo" />
+		<result property="response" column="response" />
+		<result property="responseDemo" column="response_demo" />
+		<result property="wrongCode" column="wrong_code" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ApiDocEntity">
+  		INSERT INTO tb_api_doc ( 
+			id,version,module,name,url,username,method,memo,params,params_demo,response,response_demo,wrong_code,add_time,update_time,del
+  		) VALUES (
+			#{id},#{version},#{module},#{name},#{url},#{username},#{method},#{memo},#{params},#{paramsDemo},#{response},#{responseDemo},#{wrongCode},#{addTime},#{updateTime},#{del}
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ApiDocEntity" >
+		UPDATE
+			tb_api_doc
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="version!=null">, version = #{version} </if>
+			 <if test="module!=null">, module = #{module} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="url!=null">, url = #{url} </if>
+			 <if test="username!=null">, username = #{username} </if>
+			 <if test="method!=null">, method = #{method} </if>
+			 <if test="memo!=null">, memo = #{memo} </if>
+			 <if test="params!=null">, params = #{params} </if>
+			 <if test="paramsDemo!=null">, params_demo = #{paramsDemo} </if>
+			 <if test="response!=null">, response = #{response} </if>
+			 <if test="responseDemo!=null">, response_demo = #{responseDemo} </if>
+			 <if test="wrongCode!=null">, wrong_code = #{wrongCode} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_api_doc
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_api_doc
+		SET
+			del = 1
+		<where>
+			id = #{key}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		FROM
+			tb_api_doc INNER JOIN 
+		
+			(SELECT id  FROM tb_api_doc 
+			<where> <include refid="compareParamColumns" /> </where>
+			<if test="param.orderByStr!=null"> order by ${param.orderByStr} </if>	
+			<if test="param.start!=null and param.pageNum!=null"> LIMIT #{param.start},#{param.pageNum} </if>
+		 
+			 ) as  index_id 
+		
+		using(id)
+			<if test="param.groupByStr!=null"> group by ${param.groupByStr} </if>
+			<if test="param.orderByStrGroup!=null"> order by ${param.orderByStrGroup} </if>	
+			<if test="param.startGroup!=null and param.pageNumGroup!=null"> LIMIT #{param.startGroup},#{param.pageNumGroup} </if>
+    		 
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_api_doc
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.version!=null">
+  			AND  version = #{param.version}
+  		</if>
+  		<if test="param.module!=null">
+  			AND  module = #{param.module}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.url!=null">
+  			AND  url = #{param.url}
+  		</if>
+  		<if test="param.username!=null">
+  			AND  username = #{param.username}
+  		</if>
+  		<if test="param.method!=null">
+  			AND  method = #{param.method}
+  		</if>
+  		<if test="param.memo!=null">
+  			AND  memo = #{param.memo}
+  		</if>
+  		<if test="param.params!=null">
+  			AND  params = #{param.params}
+  		</if>
+  		<if test="param.paramsDemo!=null">
+  			AND  params_demo = #{param.paramsDemo}
+  		</if>
+  		<if test="param.response!=null">
+  			AND  response = #{param.response}
+  		</if>
+  		<if test="param.responseDemo!=null">
+  			AND  response_demo = #{param.responseDemo}
+  		</if>
+  		<if test="param.wrongCode!=null">
+  			AND  wrong_code = #{param.wrongCode}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+ 		
+	</sql>
+	
+	<!-- mybatis-config.xml 
+	<typeAlias alias="ApiDocEntity" 	type="com.xbongbong.dingxbb.entity.ApiDocEntity" />
+	<mapper resource="sql-mapper/ApiDocMapper.xml" />
+	-->
+	<!-- spring-dao-beans.xml
+	<bean id="ApiDocDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    	<property name="mapperInterface" value="com.xbongbong.dingxbb.dao.ApiDocDao" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean>
+	-->
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.RoleDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.RoleEntity">
+		<result property="id" column="id" />
+		<result property="roleName" column="role_name" />
+		<result property="roleAlias" column="role_alias" />
+		<result property="permissions" column="permissions" />
+		<result property="dataPermission" column="data_permission" />
+		<result property="corpid" column="corpid" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="isUse" column="is_use" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.RoleEntity">
+  		INSERT INTO tb_role ( 
+			id,role_name,role_alias,permissions,data_permission,corpid,add_time,update_time,is_use,del
+  		) VALUES (
+			#{id},#{roleName},#{roleAlias},#{permissions},#{dataPermission},#{corpid},#{addTime},#{updateTime},#{isUse},#{del}
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.RoleEntity" >
+		UPDATE
+			tb_role
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="roleName!=null">, role_name = #{roleName} </if>			 
+			 <if test="roleAlias!=null">, role_alias = #{roleAlias} </if>
+			 <if test="permissions!=null">, permissions = #{permissions} </if>
+			 <if test="dataPermission!=null">, data_permission = #{dataPermission} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="isUse!=null">, is_use = #{isUse} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_role
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_role
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_role
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_role
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+		<if test="param.idIn">
+			AND id IN
+  			<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+             	#{item}
+            </foreach>  
+		</if>
+		<!-- TODO 查找有用到的地方进行去除 不要出现IdOr的情况-->
+		<!-- <if test="param.companyIdOr!=null">
+			AND  (company_id = 0 OR company_id = #{param.companyIdOr}) 
+		</if> -->
+  		<if test="param.roleName!=null">
+  			AND  role_name = #{param.roleName}
+  		</if>
+  		<if test="param.roleAlias!=null">
+  			AND  role_alias = #{param.roleAlias}
+  		</if>
+  		<if test="param.permissions!=null">
+  			AND  permissions = #{param.permissions}
+  		</if>
+  		<if test="param.dataPermission!=null">
+  			AND  data_permission = #{param.dataPermission}
+  		</if>
+  		<if test="param.isUse!=null">
+  			AND  is_use = #{param.isUse}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		<if test="param.roleNameLike!=null">
+  			AND  role_name like CONCAT('%',#{param.roleNameLike},'%')
+  		</if>
+	</sql>
+	
+</mapper>

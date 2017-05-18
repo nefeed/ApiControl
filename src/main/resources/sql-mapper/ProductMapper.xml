@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ProductDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ProductEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="categoryId" column="category_id" />
+		<result property="name" column="name" />
+		<result property="productNo" column="product_no" />
+		<result property="specification" column="specification" />
+		<result property="thumbnail" column="thumbnail" />
+		<result property="productImgs" column="product_imgs" />
+		<result property="instruction" column="instruction" />
+		<result property="price" column="price" />
+		<result property="showPrice" column="show_price" />
+		<result property="cost" column="cost" />
+		<result property="showCost" column="show_cost" />
+		<result property="stock" column="stock" />
+		<result property="templateId" column="template_id" />
+		<result property="unit" column="unit" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ProductEntity">
+  		INSERT INTO tb_product ( 
+			id,corpid,category_id,name,product_no,specification,thumbnail,product_imgs,instruction,price,show_price,cost,show_cost,stock,template_id,unit,add_time,update_time,del			
+  		) VALUES (
+			#{id},#{corpid},#{categoryId},#{name},#{productNo},#{specification},#{thumbnail},#{productImgs},#{instruction},#{price},#{showPrice},#{cost},#{showCost},#{stock},#{templateId},#{unit},#{addTime},#{updateTime},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ProductEntity" >
+		UPDATE
+			tb_product
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="categoryId!=null">, category_id = #{categoryId} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="productNo!=null">, product_no = #{productNo} </if>
+			 <if test="specification!=null">, specification = #{specification} </if>
+			 <if test="thumbnail!=null">, thumbnail = #{thumbnail} </if>
+			 <if test="productImgs!=null">, product_imgs = #{productImgs} </if>
+			 <if test="instruction!=null">, instruction = #{instruction} </if>
+			 <if test="price!=null">, price = #{price} </if>
+			 <if test="showPrice!=null">, show_price = #{showPrice} </if>
+			 <if test="cost!=null">, cost = #{cost} </if>
+			 <if test="showCost!=null">, show_cost = #{showCost} </if>
+			 <if test="stock!=null">, stock = #{stock} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="unit!=null">, unit = #{unit} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_product
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_product
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_product
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_product
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.idNeg!=null">
+  			AND  id != #{param.idNeg}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.contractProductIds!=null">
+  			AND  id IN (SELECT product_id FROM tb_contract_product WHERE corpid = #{param.corpid} AND contract_id = #{param.contractId})
+  		</if>
+  		<if test="param.categoryId!=null">
+  			AND  category_id = #{param.categoryId}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.productNo!=null">
+  			AND  product_no = #{param.productNo}
+  		</if>
+  		<if test="param.specification!=null">
+  			AND  specification = #{param.specification}
+  		</if>
+  		<if test="param.specificationLike!=null">
+  			AND  specification like CONCAT('%',#{param.specificationLike},'%' )
+  		</if>
+  		<if test="param.thumbnail!=null">
+  			AND  thumbnail = #{param.thumbnail}
+  		</if>
+  		<if test="param.productImgs!=null">
+  			AND  product_imgs = #{param.productImgs}
+  		</if>
+  		<if test="param.instruction!=null">
+  			AND  instruction = #{param.instruction}
+  		</if>
+  		<if test="param.price!=null">
+  			AND  price = #{param.price}
+  		</if>
+  		<if test="param.showPrice!=null">
+  			AND  show_price = #{param.showPrice}
+  		</if>
+  		<if test="param.cost!=null">
+  			AND  cost = #{param.cost}
+  		</if>
+  		<if test="param.showCost!=null">
+  			AND  show_cost = #{param.showCost}
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.stock!=null">
+  			AND  stock = #{param.stock}
+  		</if>
+  		<if test="param.unit!=null">
+  			AND  unit = #{param.unit}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+	
+  		<if test="param.nameLike!=null">
+  			AND  name like CONCAT('%',#{param.nameLike},'%' )
+  		</if>
+  		<if test="param.productNoLike!=null">
+  			AND  product_no like CONCAT('%',#{param.productNoLike},'%' )
+  		</if>
+  		
+  		<!-- 添加时间筛选 -->
+  		<if test = "param.startAddTime!=null">
+  			<![CDATA[AND add_time >= #{param.startAddTime}]]>
+  		</if>
+  		<if test = "param.endAddTime!=null">
+  			<![CDATA[AND add_time < #{param.endAddTime}]]>
+  		</if>
+  		
+  		<!-- 产品id筛选 -->
+  		<if test="param.productIdIn!=null">
+  			AND id IN
+  			<foreach item="item" index="index" collection="param.productIdIn" open="(" separator="," close=")">
+  				#{item}
+  			</foreach>
+  		</if>
+  		
+  		<!-- 关联表tb_product_user暂未设置 -->
+  		<if test="param.userId!=null and param.depIdIn!=null">
+	  		AND id in (
+					SELECT product_id FROM tb_product_user
+					where (
+						(relation_id = #{param.userId} AND type = 0)
+						or 	(relation_id IN 
+								<foreach item="item" index="index" collection="param.depIdIn" open="(" separator="," close=")">
+					           		#{item}
+				            	</foreach>
+								AND type = 1
+							)
+						or (relation_id = 0 AND type = 1)<!-- 全公司都可查看情况 -->
+					)
+			)
+		</if>
+		<if test="param.userId!=null and param.depIdIn==null">
+  			AND id in (
+					SELECT product_id FROM tb_product_user
+					where (relation_id = #{param.userId} AND type = 0) 
+					or (relation_id = 0 AND type = 1)<!-- 全公司都可查看情况 -->
+			)
+  		</if>
+  		<if test="param.depIdIn!=null and param.userId==null">
+  			AND id in (
+					SELECT product_id FROM tb_product_user
+					where (relation_id IN  
+						<foreach item="item" index="index" collection="param.depIdIn" open="(" separator="," close=")">
+			           		#{item}
+		            	</foreach>
+						AND type = 1
+						)
+					 or (relation_id = 0 AND type = 1)<!-- 全公司都可查看情况 -->
+			)
+  		</if>
+		
+		<if test="param.categoryIdIn!=null">
+  		AND category_id in (
+				SELECT id FROM tb_product_category
+				where (parent_id = #{param.categoryIdIn} OR id =  ${param.categoryIdIn}) AND del = 0
+				)
+		</if>
+		<if test="param.userIdIn!=null">
+  			AND id IN (
+  				SELECT product_id FROM tb_product_user WHERE corpid = #{param.corpid} AND type = 1
+  				AND user_id IN 
+  				<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+	           		#{item}
+            	</foreach>
+  			)
+  		</if>
+	</sql>
+	
+</mapper>

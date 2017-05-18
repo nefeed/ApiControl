@@ -1,0 +1,63 @@
+#set($menus = $session.getAttribute("menuFormated"))
+<div class="page-sidebar nav-collapse collapse">
+
+    <ul class="page-sidebar-menu">
+        <li>
+            <div class="sidebar-toggler hidden-phone"></div>
+        </li>
+
+    #*
+
+    #foreach($menu in $!menus.entrySet())
+    <li class="#if($velocityCount == 1) start #end">
+        #if($menu.value.childMenuEntityList.size() <= 0)
+        <a class="ajaxify #if($velocityCount == 1) start #end" href="$!menu.value.aimUrl">
+            #if($menu.value.icon != "")
+            <i class="$!menu.value.icon"></i>
+            #end
+            <span class="title">$!menu.value.permissionName</span>
+        </a>
+        #else
+        <a href="javascript:;">
+            #if($menu.value.icon != "")
+            <i class="$!menu.value.icon"></i>
+            #end
+            <span class="title">$!menu.value.permissionName</span>
+            <span class="arrow "></span>
+        </a>
+        <ul class="sub-menu">
+            #set($outCount = $velocityCount)
+            #foreach($subMenu in $menu.value.childMenuEntityList)
+            <li>
+                <a class="ajaxify #if($outCount == 1 && $velocityCount == 1) start #end" href="$subMenu.aimUrl">$subMenu.permissionName</a>
+            </li>
+            #end
+        </ul>
+        #end
+    </li>
+    #end
+    *#
+        <li class="start active">
+            <a href="#">
+                <i class="icon-envelope"></i>
+                <span class="title">API接口</span>
+                <span class="arrow "></span>
+                <!-- <span class="selected"></span> -->
+            </a>
+            <ul class="sub-menu">
+                <li class="#if(${pageIndex} == "sign") active #end">
+                    <a href="/doc/sign.html">签名</a>
+                </li>
+                <li class="#if(${pageIndex} == "index") active #end">
+                    <a href="/xbbInterfaceDebugging.html">API测试</a>
+                </li>
+                <li class="#if(${pageIndex} == "item") active #end">
+                    <a href="/item.html">新建API</a>
+                </li>
+                <li class="#if(${pageIndex} == "list") active #end">
+                    <a href="/list.html">API列表</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

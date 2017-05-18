@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.CustomerDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.CustomerEntity">
+		<result property="id" column="id" />
+		<result property="templateId" column="template_id" />
+		<result property="corpid" column="corpid" />
+		<result property="parentId" column="parent_id" />
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="nameShort" column="name_short" />
+		<result property="country" column="country" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="district" column="district" />
+		<result property="address" column="address" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+		<result property="zipCode" column="zip_code" />
+		<result property="website" column="website" />
+		<result property="source" column="source" />
+		<result property="industry" column="industry" />
+		<result property="type" column="type" />
+		<result property="genre" column="genre" />
+		<result property="scale" column="scale" />
+		<result property="isIndividual" column="is_individual" />
+		<result property="importantDegree" column="important_degree" />
+		<result property="phone" column="phone" />
+		<result property="fax" column="fax" />
+		<result property="isPublic" column="is_public" />
+		<result property="instruction" column="instruction" />
+		<result property="healthDegree" column="health_degree" />
+		<result property="businessCard" column="business_card" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="lastConnectTime" column="last_connect_time" />
+		<result property="isArchived" column="is_archived" />
+		<result property="del" column="del" />
+		
+		<result property="userName" column="user_name" />		
+		<result property="dingtalkCustomerId" column="dd_customer_id" />
+		<result property="distributionTime" column="distribution_time" />
+		
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.CustomerEntity">
+  		INSERT INTO tb_customer ( 
+			id,template_id,corpid,parent_id,user_id,name,name_short,country,province,city,district,address,longitude,latitude,zip_code,website,source,industry,type,genre,scale,is_individual,important_degree,phone,fax,is_public,instruction,health_degree,business_card,add_time,update_time,last_connect_time,is_archived,del,dd_customer_id			
+  		) VALUES (
+			#{id},#{templateId},#{corpid},#{parentId},#{userId},#{name},#{nameShort},#{country},#{province},#{city},#{district},#{address},#{longitude},#{latitude},#{zipCode},#{website},#{source},#{industry},#{type},#{genre},#{scale},#{isIndividual},#{importantDegree},#{phone},#{fax},#{isPublic},#{instruction},#{healthDegree},#{businessCard},#{addTime},#{updateTime},#{lastConnectTime},#{isArchived},#{del},#{dingtalkCustomerId}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.CustomerEntity" >
+		UPDATE
+			tb_customer
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="parentId!=null">, parent_id = #{parentId} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="nameShort!=null">, name_short = #{nameShort} </if>
+			 <if test="country!=null">, country = #{country} </if>
+			 <if test="province!=null">, province = #{province} </if>
+			 <if test="city!=null">, city = #{city} </if>
+			 <if test="district!=null">, district = #{district} </if>
+			 <if test="address!=null">, address = #{address} </if>
+			 <if test="longitude!=null">, longitude = #{longitude} </if>
+			 <if test="latitude!=null">, latitude = #{latitude} </if>
+			 <if test="zipCode!=null">, zip_code = #{zipCode} </if>
+			 <if test="website!=null">, website = #{website} </if>
+			 <if test="source!=null">, source = #{source} </if>
+			 <if test="industry!=null">, industry = #{industry} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="genre!=null">, genre = #{genre} </if>
+			 <if test="scale!=null">, scale = #{scale} </if>
+			 <if test="isIndividual!=null">, is_individual = #{isIndividual} </if>
+			 <if test="importantDegree!=null">, important_degree = #{importantDegree} </if>
+			 <if test="phone!=null">, phone = #{phone} </if>
+			 <if test="fax!=null">, fax = #{fax} </if>
+			 <if test="isPublic!=null">, is_public = #{isPublic} </if>
+			 <if test="instruction!=null">, instruction = #{instruction} </if>
+			 <if test="healthDegree!=null">, health_degree = #{healthDegree} </if>
+			 <if test="businessCard!=null">, business_card = #{businessCard} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="lastConnectTime!=null">, last_connect_time = #{lastConnectTime} </if>
+			 <if test="isArchived!=null">, is_archived = #{isArchived} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 
+			 <if test="dingtalkCustomerId!=null">, dd_customer_id = #{dingtalkCustomerId} </if>
+			 
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_customer
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_customer
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_customer
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_customer
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="findEntitysJoinCustomerUser" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.*,GROUP_CONCAT(u.user_name) as user_name , u.distribution_time as distribution_time FROM (SELECT * FROM tb_customer WHERE corpid=#{param.corpidJoin}) c 
+			LEFT JOIN (SELECT * FROM tb_customer_user WHERE corpid=#{param.corpidJoin}) u ON c.id = u.customer_id 
+		<where>
+			<include refid="compareParamColumns" />
+			<!-- 现在逻辑只显示主负责人 -->
+			AND is_main = 1
+		</where>
+		    GROUP BY c.id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<!-- 除了可以通过isMain字段来查询是主负责人和非主负责人 之外 和  findEntitysJoinCustomerUser的查询功能一样-->
+	<select id="findEntitysJoinCustomerUserIsMain" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.*,GROUP_CONCAT(IF(is_main=1, u.user_name, "")) as user_name FROM (SELECT * FROM tb_customer WHERE corpid=#{param.corpidJoin}) c 
+			LEFT JOIN (SELECT * FROM tb_customer_user WHERE corpid=#{param.corpidJoin}) u ON c.id = u.customer_id
+		<if test="param.corpidJoin!=null">
+			AND u.corpid = #{param.corpidJoin}
+		</if>
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		    GROUP BY c.id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getJoinCustomerUserCount" parameterType="map" resultType="int">
+		SELECT COUNT(DISTINCT(c.id)) FROM (SELECT * FROM tb_customer WHERE corpid=#{param.corpidJoin}) c 
+			LEFT JOIN (SELECT * FROM tb_customer_user WHERE corpid=#{param.corpidJoin}   ) u ON c.id = u.customer_id AND c.corpid = u.corpid
+		<where>
+			<include refid="compareParamColumns" />
+			<!-- 现在逻辑只显示主负责人 -->
+			AND is_main = 1
+		</where>
+	</select>
+	
+	<select id="findUserIds" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.*,GROUP_CONCAT(u.user_name) as user_name FROM tb_customer c 
+			LEFT JOIN tb_customer_user u ON c.id = u.customer_id 
+				WHERE corpid = #{corpid} AND is_main = 1 AND del = 0
+	</select>
+	
+	<!-- 获取客户ID列表 -->
+	<select id="getCustomerIdsJoinCustomerUser" parameterType="map" resultType="Integer">
+		SELECT DISTINCT(c.id) FROM tb_customer c 
+			LEFT JOIN tb_customer_user u ON c.id = u.customer_id 
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		    GROUP BY c.id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<!-- 获取客户添加时间列表 -->
+	<select id="getCustomerAddTimeJoinCustomerUser" parameterType="map" resultType="Integer">
+		SELECT add_time FROM tb_customer c 
+			LEFT JOIN tb_customer_user u ON c.id = u.customer_id 
+		<where>
+			<include refid="compareParamColumns" />
+			<!-- 现在逻辑只显示主负责人 -->
+			AND is_main = 1
+		</where>
+		    GROUP BY c.id
+	</select>
+	
+	<!-- 统计新增客户 -->
+	<select id="getJoinUserCustomerCount" parameterType="map" resultType="int">
+		SELECT COUNT(DISTINCT(c.id)) FROM (SELECT * FROM tb_customer where corpid = #{param.corpidJoin} AND del = 0) c 
+			LEFT JOIN ( SELECT * FROM tb_customer_user where corpid = #{param.corpidJoin} ) u ON c.id = u.customer_id
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test = "param.idIn!=null">
+	  	    AND id IN
+	  		<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.idNeg!=null">
+  			AND  id != #{param.idNeg}
+  		</if>
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<if test="param.parentId!=null">
+  			AND  parent_id = #{param.parentId}
+  		</if>
+  		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId}
+  		</if>
+  		<if test = "param.userIdIn!=null">
+	  	    AND user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdIn" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.nameOrPhoneLike!=null">
+  			AND  (name like CONCAT('%',#{param.nameOrPhoneLike},'%' ) or phone like CONCAT('%',#{param.nameOrPhoneLike},'%' ) )
+  		</if>
+  		<if test="param.nameOr!=null and param.phoneLikeOr!=null">
+  			AND  (name like CONCAT('%',#{param.nameOr},'%' ) or phone like CONCAT('%',#{param.phoneLikeOr},'%' ) )
+  		</if>
+  		<if test="param.dingtalkCustomerId!=null">
+  			AND  dd_customer_id = #{param.dingtalkCustomerId}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.nameShort!=null">
+  			AND  name_short = #{param.nameShort}
+  		</if>
+  		<if test="param.country!=null">
+  			AND  country = #{param.country}
+  		</if>
+  		<if test="param.province!=null">
+  			AND  province = #{param.province}
+  		</if>
+  		<if test="param.city!=null">
+  			AND  city = #{param.city}
+  		</if>
+  		<if test="param.district!=null">
+  			AND  district = #{param.district}
+  		</if>
+  		<if test="param.address!=null">
+  			AND  address = #{param.address}
+  		</if>
+  		<if test="param.longitude!=null">
+  			AND  longitude = #{param.longitude}
+  		</if>
+  		<if test="param.latitude!=null">
+  			AND  latitude = #{param.latitude}
+  		</if>
+  		<if test="param.zipCode!=null">
+  			AND  zip_code = #{param.zipCode}
+  		</if>
+  		<if test="param.website!=null">
+  			AND  website = #{param.website}
+  		</if>
+  		<if test="param.industry!=null">
+  			AND  industry = #{param.industry}
+  		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test="param.scale!=null">
+  			AND  scale = #{param.scale}
+  		</if>
+  		<if test="param.isIndividual!=null">
+  			AND  is_individual = #{param.isIndividual}
+  		</if>
+  		<if test="param.importantDegree!=null">
+  			AND  important_degree = #{param.importantDegree}
+  		</if>
+  		<if test="param.importantDegreeMax!=null">
+  			<![CDATA[AND important_degree <= #{param.importantDegreeMax}]]>
+  		</if>
+  		<if test="param.phone!=null">
+  			AND  phone = #{param.phone}
+  		</if>
+  		<if test="param.fax!=null">
+  			AND  fax = #{param.fax}
+  		</if>
+  		<if test="param.instruction!=null">
+  			AND  instruction = #{param.instruction}
+  		</if>
+  		<if test="param.healthDegree!=null">
+  			AND  health_degree = #{param.healthDegree}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test = "param.startAddTime!=null">
+  			<![CDATA[AND add_time >= #{param.startAddTime}]]>
+  		</if>
+  		<if test = "param.endAddTime!=null">
+  			<![CDATA[AND add_time < #{param.endAddTime}]]>
+  		</if>
+  		
+  		<if test="param.updateTimeStart!=null">
+			<![CDATA[AND  update_time >= #{param.updateTimeStart}]]>
+  		</if>
+  		
+  		
+  		<if test="param.genre!=null">
+  			AND  genre = #{param.genre}
+  		</if>
+  		
+  		
+  		<if test = "param.visitStartTime!=null and param.visitEndTime!= null">
+  			<![CDATA[AND last_connect_time >= #{param.visitStartTime} AND last_connect_time < #{param.visitEndTime}]]>
+  		</if>
+  		<if test = "param.timeSpan!= null">
+  			<![CDATA[AND last_connect_time != 0 AND (UNIX_TIMESTAMP() - last_connect_time) > #{param.timeSpan}]]>
+  		</if>
+  		<if test = "param.LastConnectTimeSpan!= null">
+  			<![CDATA[AND last_connect_time != 0 AND (UNIX_TIMESTAMP() - last_connect_time) > #{param.LastConnectTimeSpan}]]>
+  		</if>
+  		<!-- 计算距离 -->
+  		<if test="param.distancePower!=null">
+  			<![CDATA[AND  ROUND(6378.138*2*asin(SQRT(POW(SIN((#{param.lat}*PI()/180-latitude*PI()/180)/2),2)+COS(#{param.lat}*PI()/180)*COS(latitude*PI()/180)*POW(SIN((#{param.lng}*PI()/180-longitude*PI()/180)/2),2)))*1000) < #{param.distancePower}]]>
+  		</if>
+  		
+  		<!-- JOIN -->
+  		<if test = "param.idJoin!=null">
+	  	    AND c.id = #{param.idJoin}
+  		</if>
+  		
+  		<if test = "param.idInJoin!=null">
+	  	    AND c.id IN
+	  		<foreach item="item" index="index" collection="param.idInJoin" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		
+  		<if test="param.corpidJoin!=null">
+  			AND  c.corpid = #{param.corpidJoin}
+  		</if>
+  		
+  		<!-- 用户获取指定用户负责的客户，不连表  kaka -->
+  		<if test = "param.userIdCustomerIn!=null">
+	  	     AND id IN (
+	  	    	SELECT customer_id FROM tb_customer_user WHERE corpid = #{param.corpid}
+	  	    	AND user_id In
+		  		<foreach item="item" index="index" collection="param.userIdCustomerIn" open="(" separator="," close=")">
+		           #{item}
+	            </foreach>
+	            <if test="param.isMain!=null">
+		  			AND  is_main = #{param.isMain}
+		  		</if>
+		  		<if test="param.distributionTimeSpan!=null">
+		  			<![CDATA[ AND distribution_time < (UNIX_TIMESTAMP() - #{param.distributionTimeSpan})]]>
+		  		</if>
+	  	    )
+  		</if>
+  		<!-- 与GROUP_CONCAT配合， 显示主负责人 -->
+  		<if test = "param.userIdInJoin!=null">
+	  	    AND c.id IN(
+	  	    	SELECT customer_id FROM tb_customer_user
+	  	    	WHERE 
+	  	    	1
+	  	    	<if test="param.corpidJoin!=null">
+		  			AND  corpid = #{param.corpidJoin}
+		  		</if>
+		  		AND
+		  		
+		  		user_id In
+		  		<foreach item="item" index="index" collection="param.userIdInJoin" open="(" separator="," close=")">
+		           #{item}
+	            </foreach>
+	  	    )
+  		</if>
+  		<!--筛选主负责人 的数据-->
+  		<if test = "param.userIdInJoinMain!=null">
+	  	    AND u.user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdInJoinMain" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test="param.mainAndAdd!=null"><!-- 是关联表的负责人添加的信息 -->
+			AND c.user_id = u.user_id
+		</if>
+  		
+  		<if test="param.userIdJoin!=null">
+  			AND  u.user_id = #{param.userIdJoin}
+  		</if>
+  		<if test="param.phoneLike!=null">
+  			AND  phone like CONCAT('%',#{param.phoneLike},'%' )
+  		</if> 
+  		<!-- <if test = "param.phoneLike!= null">
+  			AND  phone like CONCAT('%\"',#{param.phoneLike},'\"%')
+  		</if>-->
+  		<if test="param.nameLike!=null">
+			AND name LIKE CONCAT('%', #{param.nameLike},'%')
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND is_main = #{param.isMainJoin}
+		</if>
+  		
+  		<if test="param.delJoin!=null">
+  			AND  c.del = #{param.delJoin}
+  		</if>
+  		<if test = "param.startTime!=null and param.endTime != null">
+  			<![CDATA[AND add_time >= #{param.startTime} AND add_time < #{param.endTime}]]>
+  		</if>
+  		
+  		<if test="param.isPublic!=null">
+  			AND  is_public = #{param.isPublic}
+  		</if>
+  		<if test="param.isArchived!=null">
+  			AND  is_archived = #{param.isArchived}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		
+  		<if test="param.distributionTimeSpan!=null">
+  			<![CDATA[ AND u.distribution_time < (UNIX_TIMESTAMP() - #{param.distributionTimeSpan})]]>
+  		</if>
+  		<!-- 未审批的客户del!=2 -->
+  		<if test="param.normalDel!=null">
+  			AND  (del = 0 OR del = 1)
+  		</if>
+	</sql>
+	
+</mapper>

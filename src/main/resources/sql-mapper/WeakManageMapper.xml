@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.WeakManageDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.WeakManageEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="supStaffId" column="sup_staff_id" />
+		<result property="subStaffId" column="sub_staff_id" />
+		<result property="subDepId" column="sub_dep_id" />
+		<result property="type" column="type" />
+		<result property="addTime" column="add_time" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.WeakManageEntity">
+  		INSERT INTO tb_weak_manage ( 
+			id,corpid,sup_staff_id,sub_staff_id,sub_dep_id,type,add_time,del			
+  		) VALUES (
+			#{id},#{corpid},#{supStaffId},#{subStaffId},#{subDepId},#{type},#{addTime},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.WeakManageEntity" >
+		UPDATE
+			tb_weak_manage
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="supStaffId!=null">, sup_staff_id = #{supStaffId} </if>
+			 <if test="subStaffId!=null">, sub_staff_id = #{subStaffId} </if>
+			 <if test="subDepId!=null">, sub_dep_id = #{subDepId} </if>
+			 <if test="type!=null">, type = #{type} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_weak_manage
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_weak_manage
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_weak_manage
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="findOnlyIds" parameterType="map" resultType="int">
+		SELECT 
+		<choose>  
+	        <when test="param.idTypeDep != null">  
+	             sub_dep_id 
+	        </when>  
+	        <when test="param.idTypeStaff != null">  
+	             sub_staff_id  
+	        </when>  
+	        <otherwise>  
+	            sub_staff_id  
+	        </otherwise>  
+	    </choose>  
+		FROM
+			tb_weak_manage
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_weak_manage
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		corpid = #{param.corpid}
+  		<if test="param.supStaffId!=null">
+  			AND  sup_staff_id = #{param.supStaffId}
+  		</if>
+  		<if test="param.subStaffId!=null">
+  			AND  sub_staff_id = #{param.subStaffId}
+  		</if>
+  		<if test="param.subDepId!=null">
+  			AND  sub_dep_id = #{param.subDepId}
+  		</if>
+  		<if test="param.type!=null">
+  			AND  type = #{param.type}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+	</sql>
+	
+</mapper>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ContractProductDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ContractProductEntity">
+		<result property="corpid" column="corpid" />
+		<result property="contractId" column="contract_id" />
+		<result property="productId" column="product_id" />
+		<result property="productNum" column="product_num" />
+		<result property="productName" column="product_name" />
+		<result property="price" column="price" />
+		<result property="specification" column="specification" />
+		
+	    <result property="thumbnail" column="thumbnail" />
+	    <result property="spec" column="spec" />
+	    <result property="categoryId" column="category_id" />
+	    <result property="unit" column="unit" />
+	    
+	    <result property="signUserId" column="sign_user_id" />
+	    
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ContractProductEntity">
+  		INSERT INTO tb_contract_product ( 
+			corpid,contract_id,product_id,product_num,product_name,price,specification			
+  		) VALUES (
+			#{corpid},#{contractId},#{productId},#{productNum},#{productName},#{price},#{specification}			
+  		)
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ContractProductEntity" >
+		UPDATE
+			tb_contract_product
+		SET
+			 <if test="contractId!=null"> contract_id = #{contractId} </if>
+			 <if test="productId!=null">, product_id = #{productId} </if>
+			 <if test="productNum!=null">, product_num = #{productNum} </if>
+			 <if test="productName!=null">, product_name = #{productName} </if>
+			 <if test="price!=null">, price = #{price} </if>
+			 <if test="specification!=null">, specification = #{specification} </if>
+		<where>
+			corpid = #{corpid} AND contract_id = #{contractId} AND product_id = #{productId}
+		</where>
+	</update>
+	
+	<!-- @1通过corpid,contractId删除合同的所有产品 -->
+	<delete id="deleteContractAllProduct">
+		DELETE FROM
+			tb_contract_product
+		WHERE corpid = #{corpid} AND contract_id = #{contractId}
+	</delete>
+	<!-- @2通过contractId,productId删除合同的一个产品 -->
+	<delete id="deleteContractProduct">
+		DELETE FROM
+			tb_contract_product
+		WHERE corpid = #{corpid} AND contract_id = #{contractId} AND product_id = #{productId}
+	</delete>
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_contract_product
+		<where>
+			corpid = #{corpid} AND contract_id = #{contractId} AND product_id = #{productId}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_contract_product
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND contract_id = #{contractId} AND product_id = #{productId}
+		</where>
+	</delete>
+	
+	<delete id="deleteByContractId">
+		DELETE from
+			tb_contract_product 
+		<where>
+			contract_id = #{contractId} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_contract_product
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_contract_product
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<!-- 查找合同关联的产品信息 -->
+	<select id="findEntitysJoinProduct" parameterType="map" resultMap="BASE-RESULT">
+		SELECT c.*, thumbnail, category_id, p.specification AS spec, p.unit AS unit
+			FROM
+				(SELECT * FROM tb_contract_product WHERE corpid = #{param.corpid}) AS c 
+				LEFT JOIN (SELECT * FROM tb_product WHERE corpid = #{param.corpid}) AS p ON c.product_id = p.id
+			WHERE 
+				c.corpid = #{param.corpid}  AND c.contract_id = #{param.contractId}
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<!-- 报表中心统计产品销量时，获取合同签订人信息    只比findEntitys多查询出signUserId-->
+	<select id="findEntitysJoinContract" parameterType="map" resultMap="BASE-RESULT">
+		SELECT p.*, c.sign_user_id AS signUserId
+			FROM
+				tb_contract_product AS p LEFT JOIN tb_contract AS c ON p.contract_id = c.id AND p.corpid = c.corpid
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	<select id="getEntitysJoinContractCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+				tb_contract_product AS p LEFT JOIN tb_contract AS c ON p.contract_id = c.id AND p.corpid = c.corpid
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1  		
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.contractId!=null">
+  			AND  contract_id = #{param.contractId}
+  		</if>
+  		<if test = "param.contractIdIn!=null">
+	  		AND contract_id IN
+	  		<foreach item="item" index="index" collection="param.contractIdIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+  		<if test="param.productId!=null">
+  			AND  product_id = #{param.productId}
+  		</if>
+  		<if test="param.productNum!=null">
+  			AND  product_num = #{param.productNum}
+  		</if>
+  		<if test="param.productName!=null">
+  			AND  product_name = #{param.productName}
+  		</if>
+  		<if test="param.price!=null">
+  			AND  price = #{param.price}
+  		</if>
+  		<if test="param.specification!=null">
+  			AND  specification = #{param.specification}
+  		</if>
+  		
+  		<!-- JOIN -->
+  		<if test="param.corpidJoin!=null">
+  			AND  p.corpid = #{param.corpidJoin}
+  		</if>
+	</sql>
+	
+</mapper>

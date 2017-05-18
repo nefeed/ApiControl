@@ -1,0 +1,409 @@
+/*reset start*/
+html {
+    color: #000;
+    background: #e5e5e5;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0
+}
+body{
+    font-size: 16px;
+    font-family: "Microsoft Yahei", "simHei", Helvetica, Arial, sans-serif;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+fieldset, img {
+    border: 0
+}
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal
+}
+ol, ul {
+    list-style: none
+}
+caption, th {
+    text-align: left
+}
+q:before, q:after {
+    content: ''
+}
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+sup {
+    vertical-align: text-top
+}
+sub {
+    vertical-align: text-bottom
+}
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    *font-size: 100%
+}
+legend {
+    color: #000
+}
+a{
+    padding:0;margin:0;
+    line-height: 14px;
+}
+li{
+    list-style: none;
+}
+img{
+    border:none;
+}
+/*reset end*/
+/*global start*/
+.card_cont_h{
+    width:500px;height: 250px;
+    margin:25px auto 0;
+}
+/*global end*/
+/*************cardstyle1 start*************/
+.cardstyle_1{
+    width:100%;height: 100%;
+    background: url("/images/card/cardstyle_1/card_bg.png") top right no-repeat #ffffff ;
+}
+.cardstyle_1 .card_left,.cardstyle_1 .card_right{
+    width: 50%;height: 100%;
+    position: relative;
+    float:left;
+}
+.card1_erweima{
+    width: 237px;height:197px;
+    position: absolute;
+    top:30px;right:8px;
+    background: url("/images/card/cardstyle_1/ewm_bg.png") 0 0 no-repeat;
+}
+.card1_erweima .erweima{
+    width: 132px;height: 132px;
+    margin-left: 46px;margin-top: 31px;
+}
+.card1_info{
+    height:163px;
+    border-left:1px solid #9dc3c6;
+    position: absolute;
+    left:0;top:46px;
+}
+.card1_info .info{
+    list-style: none;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+.card1_info li{
+    height: 36px;
+    border-bottom: 1px solid #9dc3c6;
+    line-height: 36px;
+    padding-left: 40px;
+}
+.card1_info .info_name{
+    background: url("/images/card/cardstyle_1/name.png") 0 6px no-repeat;
+}
+.card1_info .info_phone{
+    background: url("/images/card/cardstyle_1/phone.png") 0 6px no-repeat;
+}
+.card1_info .info_company{
+    background: url("/images/card/cardstyle_1/company.png") 0 6px no-repeat;
+}
+.card1_info .info_address{
+    background: url("/images/card/cardstyle_1/address.png") 0 6px no-repeat;
+}
+/*************cardstyle1 end*************/
+/*************cardstyle2 start*************/
+.cardstyle_2{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+.cardstyle_2 .card_left,.cardstyle_2 .card_right{
+    height: 100%;
+    float: left;
+    position: relative;
+}
+.cardstyle_2 .card_left{
+    width: 60%;
+    background-color: #434343;
+}
+.cardstyle_2 .card_right{
+    width: 40%;
+    background-color: #ec7568;
+}
+.cardstyle_2 .icon_chat{
+    position: absolute;
+    left: 19px;
+    top: 15px;
+    width: 50px;height: 50px;
+    background: url("/images/card/cardstyle_2/icon_chat.png") 0 0 no-repeat;
+}
+.cardstyle_2 .info{
+    margin:100px 10px 10px 46px;
+    color: #fff;
+}
+.cardstyle_2 .name,.cardstyle_2 .phone,.cardstyle_2 .company,.cardstyle_2 .address{
+    margin-bottom: 8px;
+    line-height: 16px;
+}
+.cardstyle_2 .name{
+    font-size: 18px;
+    line-height: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.cardstyle_2 .erweima{
+    width: 132px;
+    height: 132px;
+    margin:40px auto;
+}
+.cardstyle_2 .erweima img{
+    width: inherit;
+    height: inherit;
+}
+.cardstyle_2 .triangle{
+    width: 34px;
+    height: 35px;
+    position: absolute;
+    left:0;top:180px;
+    background: url("/images/card/cardstyle_2/triangle.jpg") 0 0 no-repeat;
+}
+/*************cardstyle2 end*************/
+/*************cardstyle3 start*************/
+.cardstyle_3{
+    width: 100%;
+    height: 100%;
+    background-color: #362e2b;
+}
+.cardstyle_3 .card_left,.cardstyle_3 .card_right{
+    float: left;
+    width: 50%;
+    height: 203px;
+    position: relative;
+}
+.cardstyle_3 .erweima{
+    width: 143px;
+    height: 143px;
+    position: absolute;
+    left: 67px;
+    top: 40px;
+    background: url("/images/card/cardstyle_3/erweima_bg.png") 0 0 no-repeat;
+}
+.cardstyle_3 .erweima img{
+    width: 95px;
+    height: 95px;
+    margin:24px 0 0 24px
+}
+.cardstyle_3 .icon_arrow{
+    width: 28px;
+    height: 36px;
+    position: absolute;
+    left:214px;top:150px;
+    background: url("/images/card/cardstyle_3/icon_arrow.png") 0 0 no-repeat;
+}
+.cardstyle_3 .info{
+    margin: 60px 40px 40px 50px;
+    color: #fff;
+}
+.cardstyle_3 .name,.cardstyle_3 .phone,.cardstyle_3 .company,.cardstyle_3 .address{
+    margin-bottom: 8px;
+    line-height: 16px;
+}
+.cardstyle_3 .info .name{
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.cardstyle_3 .card_bottom{
+    clear: both;
+    width: 100%;
+    height: 47px;
+    background-color: #26211f;
+}
+.cardstyle_3 .decoration{
+    float: left;
+    width: 35px;
+    height: 100%;
+    margin-left: 152px;
+    background: url("/images/card/cardstyle_3/decoration.jpg");
+}
+/*************cardstyle3 end*************/
+/*************cardstyle4 start*************/
+.cardstyle_4{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+.cardstyle_4 .card_left,.cardstyle_4 .card_right{
+    height: 100%;
+    float: left;
+    position: relative;
+}
+.cardstyle_4 .card_left{
+    width: 60%;
+}
+.cardstyle_4 .card_right{
+    width: 40%;
+}
+.cardstyle_4 .erweima{
+    width: 100%;
+    height: 228px;
+    margin-top: 10px;
+    background-color: #13b5b1;
+    -webkit-border-radius: 0 114px 114px 0;
+    -moz-border-radius: 0 114px 114px 0;
+    border-radius: 0 114px 114px 0;
+    behavior:url("/js/lib/ie-css3.htc");
+    position: relative;
+}
+.cardstyle_4 .erweima img{
+    width: 156px;
+    height: 156px;
+    margin: 39px 0 0 50px;
+}
+.cardstyle_4 .icon_arrow{
+    width: 50px;
+    height: 51px;
+    background: url("/images/card/cardstyle_4/icon_arrow.png") 0 0 no-repeat;
+    position: absolute;
+    left: 238px;
+    top: 89px;
+}
+.cardstyle_4 .info{
+    margin:80px 20px 45px 45px;
+}
+.cardstyle_4 .name,.cardstyle_4 .phone,.cardstyle_4 .company,.cardstyle_4 .address{
+    margin-bottom: 8px;
+    line-height: 16px;
+}
+.cardstyle_4 .info .name{
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.cardstyle_4 .decoration_up{
+    width: 176px;
+    height: 35px;
+    background: url("/images/card/cardstyle_4/decoration_up.png") 0 0 no-repeat;
+    position: absolute;
+    right:0;top:0;
+}
+.cardstyle_4 .decoration_down{
+    width: 176px;
+    height: 37px;
+    background: url("/images/card/cardstyle_4/decoration_down.png") 0 0 no-repeat;
+    position: absolute;
+    left:24px;top:213px;
+}
+/*************cardstyle4 end*************/
+/*************cardstyle5 start*************/
+.cardstyle_5{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+.cardstyle_5 .card_left,.cardstyle_5 .card_right{
+    width: 50%;
+    height: 240px;
+    float: left;
+    position: relative;
+}
+.cardstyle_5 .triangle{
+    width: 103px;
+    height: 37px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url("/images/card/cardstyle_5/triangle.png") 0 0 no-repeat;
+}
+.cardstyle_5 .erweima{
+    width: 177px;
+    height: 177px;
+    background-color: #a4a4a4;
+    margin:47px auto 0;
+}
+.cardstyle_5 .erweima img{
+    width: 177px;
+    height: 177px;
+}
+.cardstyle_5 .icon_people{
+    width: 25px;
+    height: 25px;
+    background: url("/images/card/cardstyle_5/icon_people.png") 0 0 no-repeat;
+    position: absolute;
+    left: 20px;
+    top: 73px;
+}
+.cardstyle_5 .info{
+    margin:70px 20px 20px 60px;
+}
+.cardstyle_5 .name,.cardstyle_5 .phone,.cardstyle_5 .company,.cardstyle_5 .address{
+    margin-bottom: 8px;
+    line-height: 16px;
+}
+.cardstyle_5 .info .name{
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.cardstyle_5 .card_bottom{
+    clear: both;
+    width: 100%;
+    height: 10px;
+    background-color: #f8b856;
+}
+/*************cardstyle5 end*************/
+/*************cardstyle6 start*************/
+.cardstyle_6{
+    width: 100%;
+    height: 100%;
+    background-color: #093f5f;
+}
+.cardstyle_6 .card_left,.cardstyle_6 .card_right{
+    width: 50%;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+.cardstyle_6 .card_left{
+    background: url("/images/card/cardstyle_6/decoration_circle.png") 0 0 no-repeat;
+}
+.cardstyle_6 .card_right{
+    background: url("/images/card/cardstyle_6/decoration_angle.png") right bottom no-repeat;
+}
+.cardstyle_6 .erweima{
+    width: 155px;
+    height: 155px;
+}
+.cardstyle_6 .erweima img{
+    width: 155px;
+    height: 155px;
+    margin:52px 0 0 86px;
+}
+.cardstyle_6 .icon_chat{
+    width: 31px;
+    height: 28px;
+    background: url("/images/card/cardstyle_6/icon_chat.png") 0 0 no-repeat;
+    position: absolute;
+    left: 50px;
+    top:50px
+}
+.cardstyle_6 .info{
+    margin:84px 25px 20px 50px;
+    color: #fff;
+}
+.cardstyle_6 .name,.cardstyle_6 .phone,.cardstyle_6 .company,.cardstyle_6 .address{
+    margin-bottom: 8px;
+    line-height: 16px;
+}
+.cardstyle_6 .info .name{
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+/*************cardstyle6 end*************/

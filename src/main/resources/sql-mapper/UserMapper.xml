@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.UserDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.UserEntity">
+		<result property="id" column="id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="roleIds" column="role_ids" />
+		<result property="name" column="name" />
+		<result property="active" column="active" />
+		<result property="isAdmin" column="is_admin" />
+		<result property="isBoss" column="is_boss" />
+		<result property="dingId" column="ding_id" />
+		<result property="position" column="position" />
+		<result property="avatar" column="avatar" />
+		<result property="jobnumber" column="jobnumber" />
+		<result property="department" column="department" />
+		<result property="orderInDepts" column="order_in_depts" />
+		<result property="isLeaderInDepts" column="is_leader_in_depts" />
+		<result property="extattr" column="extattr" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<result property="isPushMessage" column="is_push_message" />
+		<result property="isVisible" column="is_visible" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.UserEntity">
+  		INSERT INTO tb_user ( 
+			corpid,user_id,name,role_ids,active,is_admin,is_boss,ding_id,position,avatar,jobnumber,department,order_in_depts,is_leader_in_depts,extattr,add_time,update_time,del,is_push_message,is_visible			
+  		) VALUES (
+			#{corpid},#{userId},#{name},#{roleIds},#{active},#{isAdmin},#{isBoss},#{dingId},#{position},#{avatar},#{jobnumber},#{department},#{orderInDepts},#{isLeaderInDepts},#{extattr},#{addTime},#{updateTime},#{del},#{isPushMessage},#{isVisible}					
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.UserEntity" >
+		UPDATE
+			tb_user
+		SET
+			 <if test="corpid!=null"> corpid = #{corpid} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="roleIds!=null">, role_ids = #{roleIds} </if>
+			 <if test="active!=null">, active = #{active} </if>
+			 <if test="isAdmin!=null">, is_admin = #{isAdmin} </if>
+			 <if test="isBoss!=null">, is_boss = #{isBoss} </if>
+			 <if test="dingId!=null">, ding_id = #{dingId} </if>
+			 <if test="position!=null">, position = #{position} </if>
+			 <if test="avatar!=null">, avatar = #{avatar} </if>
+			 <if test="jobnumber!=null">, jobnumber = #{jobnumber} </if>
+			 <if test="department!=null">, department = #{department} </if>
+			 <if test="orderInDepts!=null">, order_in_depts = #{orderInDepts} </if>
+			 <if test="isLeaderInDepts!=null">, is_leader_in_depts = #{isLeaderInDepts} </if>
+			 <if test="extattr!=null">, extattr = #{extattr} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="isPushMessage!=null">, is_push_message = #{isPushMessage} </if>
+			 <if test="isVisible!=null">, is_visible = #{isVisible} </if>
+		<where>
+			corpid = #{corpid} AND user_id = #{userId}
+		</where>
+	</update>
+	
+	<update id="updateAllVisibleByCorpId">
+		UPDATE
+			tb_user
+		SET
+			 is_visible = #{isVisible}
+		<where>
+			corpid = #{corpid}
+		</where>
+	</update>
+	
+	<update id="updateVisibleByCorpIdAndUserIdIn">
+		UPDATE
+			tb_user
+		SET
+			 is_visible = #{isVisible}
+		<where>
+			corpid = #{corpid} AND user_id IN 
+			<foreach item="item" index="index" collection="userIdIn" open="(" separator="," close=")">
+           		#{item}
+       		</foreach> 
+		</where>
+	</update>
+	
+	<update id="updateVisibleByCorpIdAndUserIdNotIn">
+		UPDATE
+			tb_user
+		SET
+			 is_visible = #{isVisible}
+		<where>
+			corpid = #{corpid} AND user_id NOT IN 
+			<foreach item="item" index="index" collection="userIdNotIn" open="(" separator="," close=")">
+           		#{item}
+       		</foreach> 
+		</where>
+	</update>
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_user
+		<where>
+			corpid = #{corpid} AND user_id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_user
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND user_id = #{key}  AND del = 0
+		</where>
+	</delete>
+	
+	<delete id="deleteByCorpId">
+		UPDATE
+			tb_user
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND del = 0
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getUserIds" parameterType="map" resultType="String">
+		SELECT user_id FROM
+			tb_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+	<select id="findEntitysJoin" parameterType="map" resultMap="BASE-RESULT">
+		SELECT DISTINCT u.* FROM tb_user AS u LEFT JOIN tb_user_department AS ud  
+			ON u.user_id = ud.user_id AND u.corpid = ud.corpid AND ud.del = 0
+  		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	<select id="getUserIdsJoin" parameterType="map" resultType="String">
+		SELECT DISTINCT u.user_id FROM tb_user AS u LEFT JOIN tb_user_department AS ud  
+			ON u.user_id = ud.user_id AND u.corpid = ud.corpid AND ud.del = 0
+  		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_user
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.corpid!=null">
+  			AND  corpid = #{param.corpid}
+  		</if>
+  		<if test="param.userId!=null">
+  			AND  user_id = #{param.userId}
+  		</if>
+  		<if test="param.roleIds!=null">
+  			AND  role_ids = #{param.roleIds}
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.active!=null">
+  			AND  active = #{param.active}
+  		</if>
+  		<if test="param.isAdmin!=null">
+  			AND  is_admin = #{param.isAdmin}
+  		</if>
+  		<if test="param.isBoss!=null">
+  			AND  is_boss = #{param.isBoss}
+  		</if>
+  		<if test="param.dingId!=null">
+  			AND  ding_id = #{param.dingId}
+  		</if>
+  		<if test="param.position!=null">
+  			AND  position = #{param.position}
+  		</if>
+  		<if test="param.avatar!=null">
+  			AND  avatar = #{param.avatar}
+  		</if>
+  		<if test="param.jobnumber!=null">
+  			AND  jobnumber = #{param.jobnumber}
+  		</if>
+  		<if test="param.department!=null">
+  			AND  department = #{param.department}
+  		</if>
+  		<if test="param.orderInDepts!=null">
+  			AND  order_in_depts = #{param.orderInDepts}
+  		</if>
+  		<if test="param.isLeaderInDepts!=null">
+  			AND  is_leader_in_depts = #{param.isLeaderInDepts}
+  		</if>
+  		<if test="param.isVisible!=null">
+  			AND  is_visible = #{param.isVisible}
+  		</if>
+  		<if test="param.extattr!=null">
+  			AND  extattr = #{param.extattr}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+  		<if test="param.negDel!=null">
+  			AND  del != #{param.negDel}
+  		</if>
+  		
+  		<!-- JOIN -->
+  		<if test="param.corpidJoin!=null" >
+	    	AND u.corpid = #{param.corpidJoin}
+ 		</if>
+  		<if test="param.depIdIn!=null" >
+	    	AND ud.department_id IN 
+			<foreach item="item" index="index" collection="param.depIdIn" open="(" separator="," close=")">
+           		#{item}
+       		</foreach>
+ 		</if>
+ 		<if test="param.delJoin!=null" >
+	    	AND u.del = #{param.delJoin}
+ 		</if>
+ 		
+  		<if test="param.departmentId!=null">
+  			AND ud.department_id = #{param.departmentId}
+  		</if>
+  		<if test="param.isPushMessage!=null">
+  			AND  is_push_message = #{param.isPushMessage}
+  		</if>
+	</sql>
+	
+</mapper>

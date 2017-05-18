@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.OpportunityDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.OpportunityEntity">		
+		<result property="id" column="id" />
+		<result property="templateId" column="template_id" />
+		<result property="corpid" column="corpid" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="customerId" column="customer_id" />
+		<result property="contactId" column="contact_id" />
+		<result property="contactName" column="contact_name" />
+		<result property="name" column="name" />
+		<result property="salesStageId" column="sales_stage_id" />
+		<result property="salesStage" column="sales_stage" />
+		<result property="otherCharge" column="other_charge" />
+		<result property="discount" column="discount" />
+		<result property="customerName" column="customer_name" />
+		<result property="estimateAmount" column="estimate_amount" />
+		<result property="estimateEndTime" column="estimate_end_time" />
+		<result property="estimateWinRate" column="estimate_win_rate" />
+		<result property="importantDegree" column="important_degree" />
+		<result property="isArchived" column="is_archived" />
+		<result property="decisionMakerId" column="decision_maker_id" />
+		<result property="decisionMaker" column="decision_maker" />
+		<result property="competitor" column="competitor" />
+		<result property="addTime" column="add_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="del" column="del" />
+		<result property="currency" column="currency" />
+		<result property="unit" column="unit" />
+		<result property="exchangeRate" column="exchange_rate" />
+		
+		<result property="opportunityUserName" column="opportunity_user_name" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.OpportunityEntity">
+  		INSERT INTO tb_opportunity ( 
+			id,template_id,corpid,user_id,user_name,customer_id,contact_id,contact_name,name,sales_stage_id,sales_stage,other_charge,discount,customer_name,estimate_amount,estimate_end_time,estimate_win_rate,important_degree,is_archived,decision_maker_id,decision_maker,competitor,add_time,update_time,del,currency,unit,exchange_rate	
+  		) VALUES (
+			#{id},#{templateId},#{corpid},#{userId},#{userName},#{customerId},#{contactId},#{contactName},#{name},#{salesStageId},#{salesStage},#{otherCharge},#{discount},#{customerName},#{estimateAmount},#{estimateEndTime},#{estimateWinRate},#{importantDegree},#{isArchived},#{decisionMakerId},#{decisionMaker},#{competitor},#{addTime},#{updateTime},#{del},#{currency},#{unit},#{exchangeRate}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.OpportunityEntity" >
+		UPDATE
+			tb_opportunity
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="templateId!=null">, template_id = #{templateId} </if>
+			 <if test="corpid!=null">, corpid = #{corpid} </if>
+			 <if test="userId!=null">, user_id = #{userId} </if>
+			 <if test="userName!=null">, user_name = #{userName} </if>
+			 <if test="customerId!=null">, customer_id = #{customerId} </if>
+			 <if test="contactId!=null">, contact_id = #{contactId} </if>
+			 <if test="contactName!=null">, contact_name = #{contactName} </if>
+			 <if test="name!=null">, name = #{name} </if>
+			 <if test="salesStageId!=null">, sales_stage_id = #{salesStageId} </if>
+			 <if test="salesStage!=null">, sales_stage = #{salesStage} </if>
+			 <if test="otherCharge!=null">, other_charge = #{otherCharge} </if>
+			 <if test="discount!=null">, discount = #{discount} </if>
+			 <if test="customerName!=null">, customer_name = #{customerName} </if>
+			 <if test="estimateAmount!=null">, estimate_amount = #{estimateAmount} </if>
+			 <if test="estimateEndTime!=null">, estimate_end_time = #{estimateEndTime} </if>
+			 <if test="estimateWinRate!=null">, estimate_win_rate = #{estimateWinRate} </if>
+			 <if test="importantDegree!=null">, important_degree = #{importantDegree} </if>
+			 <if test="isArchived!=null">, is_archived = #{isArchived} </if>
+			 <if test="decisionMakerId!=null">, decision_maker_id = #{decisionMakerId} </if>
+			 <if test="decisionMaker!=null">, decision_maker = #{decisionMaker} </if>
+			 <if test="competitor!=null">, competitor = #{competitor} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+			 <if test="currency!=null">, currency = #{currency} </if>
+			 <if test="unit!=null">, unit = #{unit} </if>
+			 <if test="exchangeRate!=null">, exchange_rate = #{exchangeRate} </if>
+		<where>
+			id = #{id} AND corpid = #{corpid}
+		</where>
+	</update>
+	
+	<update id="dataConsistencyUpdate" >
+		UPDATE
+			tb_opportunity
+		SET
+			 customer_name = #{customerName}
+		<where>
+			corpid = #{corpid} AND customer_id = #{customerId}
+		</where>
+	</update>
+	
+	<update id="dataConsistencyUpdateUser" >
+		UPDATE
+			tb_opportunity
+		SET
+			 corpid = #{corpid}
+			 <if test="userName!=null">, user_name = #{userName} </if>
+			 <!-- <if test="userAvatar!=null">, user_avatar = #{userAvatar} </if> -->
+		<where>
+			corpid = #{corpid} AND user_id = #{userId}
+		</where>
+	</update>
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_opportunity
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_opportunity
+		SET
+			del = 1
+		<where>
+			id = #{key} AND corpid = #{corpid}
+		</where>
+	</delete>
+	
+	<delete id="deleteByCustomerId">
+		UPDATE
+			tb_opportunity
+		SET
+			del = 1
+		<where>
+			corpid = #{corpid} AND customer_id = #{customerId}
+		</where>
+	</delete>
+	
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		
+		FROM
+			tb_opportunity
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_opportunity
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<select id="findEntitysJoinOpportunityUser" parameterType="map" resultMap="BASE-RESULT">
+		SELECT o.*,GROUP_CONCAT(u.user_name) as opportunity_user_name FROM (SELECT * FROM tb_opportunity where corpid = #{param.corpidJoin}) o 
+			LEFT JOIN (SELECT * FROM tb_opportunity_user where corpid = #{param.corpidJoin}) u ON o.id = u.opportunity_id AND u.del = 0
+		<where>
+			<include refid="compareParamColumnsJoin" />
+			<!-- 现在逻辑只显示主负责人 -->
+			AND is_main = 1
+		</where>
+		    GROUP BY o.id
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+<!-- 	<select id="findEntitysJoinOpportunityUserIsMain" parameterType="map" resultMap="BASE-RESULT"> -->
+<!-- 		SELECT o.*,GROUP_CONCAT(IF(is_main=1, u.user_name, "")) as opportunity_user_name FROM (SELECT * FROM tb_opportunity where corpid = #{param.corpidJoin}) o  -->
+<!-- 			LEFT JOIN (SELECT * FROM tb_opportunity_user where corpid = #{param.corpidJoin}) u ON o.id = u.opportunity_id AND u.del = 0 -->
+<!-- 		<where> -->
+<!-- 			<include refid="compareParamColumns" /> -->
+<!-- 		</where> -->
+<!-- 		    GROUP BY o.id -->
+<!-- 		<if test="param.orderByStr!=null"> -->
+<!-- 			order by ${param.orderByStr} -->
+<!-- 		</if> -->
+<!-- 		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if> -->
+<!-- 	</select> -->
+
+
+	<select id="getEntitysJoinOpportunityUserCount" parameterType="map" resultType="int">
+		SELECT COUNT(DISTINCT(o.id)) FROM (SELECT * FROM tb_opportunity where corpid = #{param.corpidJoin}) o 
+			LEFT JOIN (SELECT * FROM tb_opportunity_user where corpid = #{param.corpidJoin}) u ON o.id = u.opportunity_id AND o.corpid = u.corpid  AND u.del = 0
+		<where>
+			<include refid="compareParamColumnsJoin" />
+		</where>
+	</select>
+	
+<!-- 	<select id="getByStaffId" parameterType="map" resultMap="BASE-RESULT"> -->
+<!-- 		SELECT * FROM -->
+<!-- 			tb_opportunity where user_id = #{param.userId} -->
+<!-- 	</select>	 -->
+	
+	<!-- 各状态总数量 -->
+	<select id="countReportByStage" parameterType="map" resultMap="BASE-RESULT">
+		SELECT sales_stage_id,name,count(id) AS count FROM tb_opportunity
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		GROUP BY sales_stage_id
+		ORDER BY sales_stage_id
+	</select>
+	
+	<!-- 各状态总金额 -->
+	<select id="amountReportByStage" parameterType="map" resultMap="BASE-RESULT">
+		SELECT sales_stage_id,name,SUM(estimate_amount) AS estimate_amount FROM tb_opportunity
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+		GROUP BY sales_stage_id
+		ORDER BY sales_stage_id
+	</select>
+	
+	<!-- 跟统计相关的方法 -->
+	<select id="opportunityStatic" parameterType="map" resultType="hashmap">
+		SELECT customer_name as customerName,customer_id as customerId,u.user_name as userName,u.user_id as userId,SUM(estimate_amount) as totalAmount 
+			FROM tb_opportunity o 
+			LEFT JOIN tb_opportunity_user u ON o.id = u.opportunity_id AND o.corpid = u.corpid AND u.del = 0
+		WHERE o.corpid = #{param.corpidJoin}
+  		<if test="param.delJoin!=null">
+  			AND  o.del = #{param.delJoin}
+  		</if>
+		<if test="param.userId!=null">
+			AND u.user_id = #{param.userId}
+		</if>		
+  		<if test = "param.salesStageIdIn!=null">
+	  		AND sales_stage_id IN
+	  		<foreach item="item" index="index" collection="param.salesStageIdIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+		<if test="param.startEstimateTime!=null and param.endEstimateTime!=null">
+			<![CDATA[ AND  estimate_end_time >= #{param.startEstimateTime} AND  estimate_end_time < #{param.endEstimateTime} ]]>
+		</if>
+		<if test="param.isArchived!=null">
+			AND is_archived = #{param.isArchived}
+		</if>
+		<!--筛选主负责人 的数据-->
+		<if test="param.userIdInJoinMain!=null">
+	  	    AND u.user_id IN
+		  		<foreach item="item" index="index" collection="param.userIdInJoinMain" open="(" separator="," close=")">
+		           #{item}
+	            </foreach>
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND u.is_main = #{param.isMainJoin}
+		</if>
+  		
+		<if test="param.groupBy!=null">
+			GROUP BY customer_id
+		</if>
+		<if test="param.groupByUserId!=null">
+			GROUP BY u.user_id
+		</if>
+		<if test="param.orderByStr!=null">
+			order by ${param.orderByStr}
+		</if>
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	
+	
+	<!-- 跟统计相关的方法  add by HU-->
+	<select id="opportunityStaticList" parameterType="map" resultMap="BASE-RESULT">
+		SELECT * 
+			FROM tb_opportunity o 
+			LEFT JOIN tb_opportunity_user u ON o.id = u.opportunity_id AND o.corpid = u.corpid AND u.del = 0
+		WHERE o.corpid = #{param.corpidJoin}
+  		<if test="param.delJoin!=null">
+  			AND  o.del = #{param.delJoin}
+  		</if>
+		<if test="param.userId!=null">
+			AND u.user_id = #{param.userId}
+		</if>		
+  		<if test = "param.salesStageIdIn!=null">
+	  		AND sales_stage_id IN
+	  		<foreach item="item" index="index" collection="param.salesStageIdIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+		<if test="param.startEstimateTime!=null and param.endEstimateTime!=null">
+			<![CDATA[ AND  estimate_end_time >= #{param.startEstimateTime} AND  estimate_end_time < #{param.endEstimateTime} ]]>
+		</if>
+		<if test="param.isArchived!=null">
+			AND is_archived = #{param.isArchived}
+		</if>
+		<!--筛选主负责人 的数据-->
+		<if test="param.userIdInJoinMain!=null">
+	  	    AND u.user_id IN
+		  		<foreach item="item" index="index" collection="param.userIdInJoinMain" open="(" separator="," close=")">
+		           #{item}
+	            </foreach>
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND u.is_main = #{param.isMainJoin}
+		</if>
+  		
+		<if test="param.start!=null and param.pageNum!=null">LIMIT #{param.start},#{param.pageNum}</if>
+	</select>
+	
+	
+	
+	<sql id="compareParamColumns">
+		1
+		<if test="param.corpid!=null">
+			AND corpid = #{param.corpid}
+		</if>
+		<if test="param.idIn!=null">
+			AND id IN
+			<foreach item="item" index="index" collection="param.idIn"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<choose>
+			<when test="param.distinctAndJoin!=null">
+				AND id IN (
+					SELECT DISTINCT(opportunity_id) FROM tb_opportunity_user
+					WHERE 
+						corpid = #{param.corpid}  
+						<if test="param.userIdIn!=null">
+							AND user_id IN
+							<foreach item="item" index="index" collection="param.userIdIn"
+								open="(" separator="," close=")">
+								#{item}
+							</foreach>
+						</if>
+						<if test="param.userId!=null">
+							AND user_id = #{param.userId}
+						</if>
+						<if test="param.isMain!=null">
+							AND is_main = #{param.isMain}
+						</if>
+						AND del = 0
+				)
+			</when>
+			<otherwise>
+								
+				<if test="param.userId!=null">
+					AND user_id = #{param.userId}
+				</if>
+				<if test="param.userIdIn!=null">
+					AND user_id IN
+					<foreach item="item" index="index" collection="param.userIdIn"
+						open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+			</otherwise>
+		</choose>
+  		<if test="param.userName!=null">
+			AND user_name = #{param.userName}
+		</if>
+  		<if test="param.customerId!=null">
+  			AND  customer_id = #{param.customerId}
+  		</if>
+  		<if test="param.customerIdIn!=null">
+			AND customer_id IN
+			<foreach item="item" index="index" collection="param.customerIdIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+  		</if>
+  		<if test="param.name!=null">
+  			AND  name = #{param.name}
+  		</if>
+  		<if test="param.nameLike!=null">
+  			AND  name like CONCAT('%',#{param.nameLike},'%' )
+  		</if>
+  		<if test="param.salesStageId!=null">
+  			AND  sales_stage_id = #{param.salesStageId}
+  		</if>
+  		<if test="param.salesStage!=null">
+  			AND  sales_stage = #{param.salesStage}
+  		</if>
+  		<if test="param.otherCharge!=null">
+  			AND  other_charge = #{param.otherCharge}
+  		</if>
+  		<if test="param.discount!=null">
+  			AND  discount = #{param.discount}
+  		</if>
+  		<if test="param.customerName!=null">
+  			AND  customer_name = #{param.customerName}
+  		</if>
+  		<if test="param.estimateAmount!=null">
+  			AND  estimate_amount = #{param.estimateAmount}
+  		</if>
+  		<if test="param.estimateEndTime!=null">
+  			AND  estimate_end_time = #{param.estimateEndTime}
+  		</if>
+  		<if test="param.estimateWinRate!=null">
+  			AND  estimate_win_rate = #{param.estimateWinRate}
+  		</if>
+  		<if test="param.importantDegree!=null">
+  			AND  important_degree = #{param.importantDegree}
+  		</if>
+  		<if test="param.isArchived!=null">
+  			AND  is_archived = #{param.isArchived}
+  		</if>
+  		<if test="param.decisionMakerId!=null">
+  			AND  decision_maker_id = #{param.decisionMakerId}
+  		</if>
+  		<if test="param.decisionMaker!=null">
+  			AND  decision_maker = #{param.decisionMaker}
+  		</if>
+  		<if test="param.competitor!=null">
+  			AND  competitor = #{param.competitor}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.startAmount!=null">
+  			<![CDATA[AND  estimate_amount >= #{param.startAmount}]]>
+  		</if>
+  		<if test="param.endAmount!=null">
+  			<![CDATA[AND  estimate_amount < #{param.endAmount}]]>
+  		</if>
+  		<if test="param.searchOpportunityName!=null">
+  			AND  name like CONCAT('%',#{param.searchOpportunityName},'%' )
+  		</if>
+  		<if test = "param.salesStageIdIn!=null">
+	  		AND sales_stage_id IN
+	  		<foreach item="item" index="index" collection="param.salesStageIdIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+  		<if test = "param.importantDegreeIn!=null">
+	  		AND important_degree IN
+	  		<foreach item="item" index="index" collection="param.importantDegreeIn" open="(" separator="," close=")">
+	             	#{item}
+            </foreach> 
+  		</if>
+  		
+  		<if test="param.startEstimateTime!=null">
+			<![CDATA[ AND  estimate_end_time >= #{param.startEstimateTime} ]]>
+		</if>
+		<if test="param.endEstimateTime!=null">
+			<![CDATA[ AND  estimate_end_time < #{param.endEstimateTime} ]]>
+		</if>
+  		
+		<if test="param.startTime!=null">
+			<![CDATA[ AND  add_time >= #{param.startTime} ]]>
+		</if>
+		<if test="param.endTime!=null">
+			<![CDATA[ AND  add_time < #{param.endTime} ]]>
+		</if>
+
+		<if test = "param.startAddTime!=null">
+  			<![CDATA[AND add_time >= #{param.startAddTime}]]>
+  		</if>
+  		<if test = "param.endAddTime!=null">
+  			<![CDATA[AND add_time < #{param.endAddTime}]]>
+  		</if>
+  		
+  		<if test = "param.startAddTimeJoin!=null">
+  			<![CDATA[AND o.add_time >= #{param.startAddTimeJoin}]]>
+  		</if>
+  		<if test = "param.endAddTimeJoin!=null">
+  			<![CDATA[AND o.add_time < #{param.endAddTimeJoin}]]>
+  		</if>
+
+
+		<if test="param.del!=null">
+			AND del = #{param.del}
+		</if>
+  		<if test="param.templateId!=null">
+  			AND  template_id = #{param.templateId}
+  		</if>
+  		<!-- hgj XX时间内 -->
+  		<if test = "param.timeSpan!= null">
+  			<![CDATA[AND (UNIX_TIMESTAMP() - add_time) < #{param.timeSpan}]]>
+  		</if>
+  		
+  		<!-- JOIN 为了兼容 -->
+  		<if test="param.opportunityIdInJoin!=null">
+  			AND o.id IN
+	  		<foreach item="item" index="index" collection="param.opportunityIdInJoin" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test = "param.customerIdJoin!=null">
+	  	    AND o.customer_id = #{param.customerIdJoin}
+  		</if>
+  		<if test="param.corpidJoin!=null">
+  			AND  o.corpid = #{param.corpidJoin}
+  		</if>
+  		<if test="param.delJoin!=null">
+  			AND  o.del = #{param.delJoin}
+  		</if>
+		<if test="param.userIdJoin!=null">
+			AND o.user_id = #{param.userIdJoin}
+		</if>
+		<!-- 与GROUP_CONCAT配合， 显示主负责人 -->
+		<if test="param.userIdInJoin!=null">
+	  	    AND o.id IN(
+	  	    	SELECT opportunity_id FROM tb_opportunity_user
+	  	    	WHERE del = 0 
+	  	    	AND user_id In
+		  		<foreach item="item" index="index" collection="param.userIdInJoin" open="(" separator="," close=")">
+		           #{item}
+	            </foreach>
+	  	    ) 
+		</if>
+		<!--筛选主负责人 的数据-->
+		<if test="param.userIdInJoinMain!=null">
+	  	    AND u.user_id IN
+		  		<foreach item="item" index="index" collection="param.userIdInJoinMain" open="(" separator="," close=")">
+		           #{item}
+	            </foreach>
+		</if>
+  		
+  		<if test="param.mainAndAdd!=null"><!-- 是关联表的负责人添加的信息 -->
+			AND o.user_id = u.user_id
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND u.is_main = #{param.isMainJoin}
+		</if>
+		
+		
+		<if test="param.customerNameLike!=null">
+			AND customer_name like CONCAT('%',#{param.customerNameLike},'%' )
+		</if>
+		
+		<if test="param.decisionMakerLike!=null">
+			AND decision_maker like CONCAT('%',#{param.decisionMakerLike},'%' )
+		</if>
+		
+		<if test="param.oppIdIn!=null">
+			AND id IN
+			<foreach item="item" index="index" collection="param.oppIdIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+  		</if>
+		
+		<if test="param.currency!=null">
+  			AND  currency = #{param.currency}
+  		</if>
+  		
+		<!-- 客户联系人，竞争对手 -->
+		<if test="param.contactNameLike!=null">
+			AND contact_name like CONCAT('%',#{param.contactNameLike},'%' )
+		</if>
+		
+		<if test="param.competitorLike!=null">
+			AND competitor like CONCAT('%',#{param.competitorLike},'%' )
+		</if>
+		
+	</sql>
+	
+	<sql id="compareParamColumnsJoin">
+  		<!-- JOIN -->
+  		<if test="param.corpidJoin!=null">
+  			AND  o.corpid = #{param.corpidJoin}
+  		</if>
+  		<if test="param.delJoin!=null">
+  			AND  o.del = #{param.delJoin}
+  		</if>
+		<if test="param.userIdJoin!=null">
+			AND o.user_id = #{param.userIdJoin}
+		</if>
+		<if test="param.userIdInJoin!=null"><!-- 以主表的创建人为主 -->
+		 	AND o.user_id IN
+	  		<foreach item="item" index="index" collection="param.userIdInJoin" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+		</if>
+  		
+  		<if test="param.mainAndAdd!=null"><!-- 是关联表的负责人添加的信息 -->
+			AND o.user_id = u.user_id
+		</if>
+		<if test="param.isMainJoin!=null">
+			AND u.is_main = #{param.isMainJoin}
+		</if>
+
+
+
+<!-- JOIN 为了兼容 -->
+  		<if test="param.opportunityIdInJoin!=null">
+  			AND o.id IN
+	  		<foreach item="item" index="index" collection="param.opportunityIdInJoin" open="(" separator="," close=")">
+	           #{item}
+            </foreach>
+  		</if>
+  		<if test = "param.customerIdJoin!=null">
+	  	    AND o.customer_id = #{param.customerIdJoin}
+  		</if>
+  		<if test="param.corpidJoin!=null">
+  			AND  o.corpid = #{param.corpidJoin}
+  		</if>
+  		<if test="param.delJoin!=null">
+  			AND  o.del = #{param.delJoin}
+  		</if>
+		<if test="param.userIdJoin!=null">
+			AND o.user_id = #{param.userIdJoin}
+		</if>
+
+
+	</sql>
+	
+</mapper>
