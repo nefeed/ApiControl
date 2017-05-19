@@ -166,12 +166,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- author：huajun.zhang
 -- date: 2017-05-16
 -- ----------------------------
---  Table structure for `tb_api_module`
+--  Table structure for `tb_sys_module`
 -- ----------------------------
 DROP TABLE
-IF EXISTS `tb_api_module`;
+IF EXISTS `tb_sys_module`;
 
-CREATE TABLE `tb_api_module`(
+CREATE TABLE `tb_sys_module`(
   `id` INT(10) NOT NULL COMMENT '模块主键' ,
   `module` VARCHAR(50) DEFAULT NULL COMMENT '模块名称' ,
   `del` TINYINT(1) DEFAULT '0' COMMENT '是否删除' ,
@@ -179,13 +179,13 @@ CREATE TABLE `tb_api_module`(
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
 -- ----------------------------
---  Records of `tb_api_module`
+--  Records of `tb_sys_module`
 -- ----------------------------
 
 BEGIN
 ;
 
-INSERT INTO `tb_api_module`
+INSERT INTO `tb_sys_module`
 VALUES
   ('1' , '客户模块' , '0') ,
   ('2' , '销售机会模块' , '0') ,

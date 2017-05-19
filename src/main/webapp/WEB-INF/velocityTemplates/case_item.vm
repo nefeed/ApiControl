@@ -290,6 +290,9 @@
             intoApiDetail: function(apiId) {
                 window.location = '/item.html?id=' + apiId
             },
+            /**
+             * 校验返回状态码是否"200"
+             */
             checkStateCode: function(code) {
                 if (code == 200) {
                     return true;
@@ -297,6 +300,9 @@
                     return false;
                 }
             },
+            /**
+             * 校验返回结果是否"Pass"
+             */
             checkResult: function (result) {
                 if (result == 'Pass') {
                     return true;
@@ -304,6 +310,9 @@
                     return false;
                 }
             },
+            /**
+             * 新建编辑
+             */
             item: function () {
                 var params = {
                     id: this.id,

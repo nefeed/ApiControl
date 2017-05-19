@@ -70,7 +70,14 @@
                                     {{ item.expectedStateCode }}
                                 </td>
                                 <td>
-                                    <div v-if="item.testResult">{{ item.testResult }}</div>
+                                    <div v-if="item.testResult">
+                                        <div v-if="checkResult(item.testResult)" style="color: limegreen">
+                                            {{ item.testResult }}
+                                        </div>
+                                        <div v-else style="color: orangered">
+                                            {{ item.testResult }}
+                                        </div>
+                                    </div>
                                     <div v-else>-</div>
                                 </td>
                                 <td>
@@ -189,6 +196,16 @@
                 }
                 this.page = index
                 this.loadCaseList()
+            },
+            /**
+             * 校验返回结果是否"Pass"
+             */
+            checkResult: function (result) {
+                if (result == 'Pass') {
+                    return true;
+                } else {
+                    return false;
+                }
             },
             /**
              * 跳转到详情页
