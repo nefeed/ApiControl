@@ -57,6 +57,12 @@
                             <div id="portlet_tab1" class="tab-pane active">
                                 <!-- BEGIN FORM-->
                                 <form class="form-horizontal" action="#">
+                                    <div class="control-group" v-if="apiName" >
+                                        <label class="control-label">API</label>
+                                        <div class="controls">
+                                            <a href="#" @click="intoApiDetail(apiId)" style="font-size: 18px;">[{{ apiModule }}]{{ apiName }} - v{{ apiVersion }}</a>
+                                        </div>
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">用例名称</label>
                                         <div class="controls">
@@ -162,6 +168,9 @@
     var vm = new Vue({
         el: '#vmItem',
         data: {
+            apiModule: '',
+            apiName: '',
+            apiVersion: '',
             id: null,
             caseName: '',
             apiId: 0,
@@ -240,6 +249,32 @@
                         self.del = result.ret.del
                         self.btnSave = '更新'
                         self.formTitle = '更新表单'
+                        self.loadApiDetail(self.apiId)
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                    }
+                });
+            },
+            /**
+             * 获取Api详情
+             */
+            loadApiDetail: function (apiId) {
+                var self = this
+                $.ajax({
+                    url: '/api/doc/detail.do',
+                    type: 'POST',
+                    data: {
+                        id: apiId
+                    },
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        if (result.ret) {
+                            self.apiVersion = result.ret.version
+                            self.apiModule = result.ret.module
+                            self.apiName = result.ret.name
+                        }
                         $('#loading').modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -247,6 +282,9 @@
                         $('#loading').modal('hide');
                     }
                 });
+            },
+            intoApiDetail: function(apiId) {
+                window.location = '/item.html?id=' + apiId
             },
             checkStateCode: function(code) {
                 if (code == 200) {

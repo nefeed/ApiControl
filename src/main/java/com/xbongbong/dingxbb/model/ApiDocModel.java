@@ -3,7 +3,6 @@ package com.xbongbong.dingxbb.model;
 
 import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.dao.ApiDocDao;
-import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.entity.ApiVersionEntity;
 import com.xbongbong.dingxbb.entity.SysModuleEntity;
@@ -26,7 +25,7 @@ import java.util.Map;
 public class ApiDocModel extends BaseModel implements IModel {
 
     @Autowired
-    private ApiDocDao dao;
+    private ApiDocDao apiDocDao;
     @Autowired
     private ApiVersionModel apiVersionModel;
     @Autowired
@@ -39,13 +38,13 @@ public class ApiDocModel extends BaseModel implements IModel {
         ((ApiDocEntity) entity).setAddTime(now);
         ((ApiDocEntity) entity).setUpdateTime(now);
 
-        return dao.insert((ApiDocEntity) entity);
+        return apiDocDao.insert((ApiDocEntity) entity);
     }
 
     public Integer update(Object entity) {
         ((ApiDocEntity) entity).setUpdateTime(DateUtil.getInt());
 
-        return dao.update((ApiDocEntity) entity);
+        return apiDocDao.update((ApiDocEntity) entity);
     }
 
     public Integer save(ApiDocEntity entity) {
@@ -61,7 +60,7 @@ public class ApiDocModel extends BaseModel implements IModel {
 
 
     public Integer deleteByKey(final Integer key) {
-        Integer code = dao.deleteByKey(key);
+        Integer code = apiDocDao.deleteByKey(key);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -72,15 +71,15 @@ public class ApiDocModel extends BaseModel implements IModel {
     }
 
     public ApiDocEntity getByKey(Integer key) {
-        return dao.getByKey(key);
+        return apiDocDao.getByKey(key);
     }
 
     public List<ApiDocEntity> findEntitys(Map<String, Object> param) {
-        return dao.findEntitys(param);
+        return apiDocDao.findEntitys(param);
     }
 
     public Integer getEntitysCount(Map<String, Object> param) {
-        return dao.getEntitysCount(param);
+        return apiDocDao.getEntitysCount(param);
     }
 
     public List<ApiDocEntity> findApiDocList(Integer page, Integer pageNum) {

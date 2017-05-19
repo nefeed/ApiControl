@@ -22,20 +22,20 @@ import java.util.Map;
 public class ApiCaseModel extends BaseModel implements IModel {
 
     @Autowired
-    private ApiCaseDao dao;
+    private ApiCaseDao apiCaseDao;
 
     public Integer insert(Object entity) {
         Integer now = DateUtil.getInt();
         ((ApiCaseEntity) entity).setAddTime(now);
         ((ApiCaseEntity) entity).setUpdateTime(now);
 
-        return dao.insert((ApiCaseEntity) entity);
+        return apiCaseDao.insert((ApiCaseEntity) entity);
     }
 
     public Integer update(Object entity) {
         ((ApiCaseEntity) entity).setUpdateTime(DateUtil.getInt());
 
-        return dao.update((ApiCaseEntity) entity);
+        return apiCaseDao.update((ApiCaseEntity) entity);
     }
 
     public Integer save(ApiCaseEntity entity) {
@@ -48,23 +48,23 @@ public class ApiCaseModel extends BaseModel implements IModel {
 
 
     public Integer deleteByKey(Integer key) {
-        return dao.deleteByKey(key);
+        return apiCaseDao.deleteByKey(key);
     }
 
     public Integer deleteByApiId(Integer apiId) {
-        return dao.deleteByApiId(apiId);
+        return apiCaseDao.deleteByApiId(apiId);
     }
 
     public ApiCaseEntity getByKey(Integer key) {
-        return dao.getByKey(key);
+        return apiCaseDao.getByKey(key);
     }
 
     public List<ApiCaseEntity> findEntitys(Map<String, Object> param) {
-        return dao.findEntitys(param);
+        return apiCaseDao.findEntitys(param);
     }
 
     public Integer getEntitysCount(Map<String, Object> param) {
-        return dao.getEntitysCount(param);
+        return apiCaseDao.getEntitysCount(param);
     }
 
     public List<ApiCaseEntity> findApiCaseList(Integer page, Integer pageNum) {
@@ -116,7 +116,7 @@ public class ApiCaseModel extends BaseModel implements IModel {
                         update(apiCase);
                     }
                 } else {
-                    save(new ApiCaseEntity(apiDoc.getName(), apiDoc.getId(), requestParameters, expectedContent));
+                    save(new ApiCaseEntity(apiDoc.getName() + "__1", apiDoc.getId(), requestParameters, expectedContent));
                 }
             }
         }).start();
