@@ -143,6 +143,9 @@ public class ApiCaseModel extends BaseModel implements IModel {
             case "Boolean":
                 json.put(key, "true");
                 break;
+            case "JsonObject":
+                json.put(key, "{}");
+                break;
             case "Float":
                 json.put(key, 0.0f);
                 break;

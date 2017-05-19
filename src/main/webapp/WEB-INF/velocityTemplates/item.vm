@@ -421,6 +421,7 @@
                 {key: 'Integer', value: 'Integer'},
                 {key: 'Array', value: 'Array'},
                 {key: 'Boolean', value: 'Boolean'},
+                {key: 'JsonObject', value: 'JsonObject'},
                 {key: 'Float', value: 'Float'},
                 {key: 'Double', value: 'Double'}
             ],
