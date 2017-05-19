@@ -33,10 +33,11 @@ public class ApiCaseController extends BasicController {
                      HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         ApiCaseEntity apiCase = analysisRequest(request, response, modelMap);
+        Integer copyNum = Integer.parseInt(request.getParameter("copyNum"));
         if (apiCase == null) {
             return;
         }
-        modelMap.put("code", apiCaseModel.save(apiCase.copyOne()));
+        modelMap.put("code", apiCaseModel.save(apiCase.copyOne(copyNum)));
         modelMap.put("msg", "复制成功，请返回列表查看");
         returnSuccessJsonData(request, response, modelMap);
     }

@@ -80,47 +80,43 @@ public class ApiCaseModel extends BaseModel implements IModel {
 
 
     public void formatApiDocToCase(final ApiDocEntity apiDoc) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<ApiDocParamsPojo> apiDocParamsList = JSON.parseArray(apiDoc.getParams(), ApiDocParamsPojo.class);
-                JSONObject params = new JSONObject();
-                if (apiDocParamsList != null && apiDocParamsList.size() > 0) {
-                    for (ApiDocParamsPojo apiDocParamsPojo : apiDocParamsList) {
-                        insertJsonParam(params, apiDocParamsPojo.getType(), apiDocParamsPojo.getKey());
-                    }
-                }
-                List<ApiDocResponsePojo> apiResponseParamsList = JSON.parseArray(apiDoc.getResponse(), ApiDocResponsePojo.class);
-                JSONObject response = new JSONObject();
-                if (apiResponseParamsList != null && apiResponseParamsList.size() > 0) {
-                    for (ApiDocResponsePojo apiDocResponsePojo : apiResponseParamsList) {
-                        insertJsonParam(response, apiDocResponsePojo.getType(), apiDocResponsePojo.getKey());
-                    }
-                }
-                JSONObject expectedContentJSON = new JSONObject();
-                expectedContentJSON.put("code", 0);
-                expectedContentJSON.put("msg", "操作成功");
-                expectedContentJSON.put("result", JSON.toJSONString(response));
-                String requestParameters = JSON.toJSONString(params);
-                String expectedContent = JSON.toJSONString(expectedContentJSON);
-
-                // 查询是否已经生成相关测试用例
-                Map<String, Object> findParams = new HashMap<>();
-                findParams.put("apiId", apiDoc.getId());
-                findParams.put("del", 0);
-                List<ApiCaseEntity> apiCaseList = findEntitys(findParams);
-                if (apiCaseList != null && apiCaseList.size() > 0) {
-                    for (ApiCaseEntity apiCase : apiCaseList) {
-                        apiCase.setRequestParameters(requestParameters);
-                        apiCase.setExpectedContent(expectedContent);
-                        update(apiCase);
-                    }
-                } else {
-                    save(new ApiCaseEntity(apiDoc.getName() + "__1", apiDoc.getId(), requestParameters, expectedContent));
-                }
+        List<ApiDocParamsPojo> apiDocParamsList = JSON.parseArray(apiDoc.getParams(), ApiDocParamsPojo.class);
+        JSONObject params = new JSONObject();
+        if (apiDocParamsList != null && apiDocParamsList.size() > 0) {
+            for (ApiDocParamsPojo apiDocParamsPojo : apiDocParamsList) {
+                insertJsonParam(params, apiDocParamsPojo.getType(), apiDocParamsPojo.getKey());
             }
-        }).start();
+        }
+        List<ApiDocResponsePojo> apiResponseParamsList = JSON.parseArray(apiDoc.getResponse(), ApiDocResponsePojo.class);
+        JSONObject response = new JSONObject();
+        if (apiResponseParamsList != null && apiResponseParamsList.size() > 0) {
+            for (ApiDocResponsePojo apiDocResponsePojo : apiResponseParamsList) {
+                insertJsonParam(response, apiDocResponsePojo.getType(), apiDocResponsePojo.getKey());
+            }
+        }
+        JSONObject expectedContentJSON = new JSONObject();
+        expectedContentJSON.put("code", 0);
+        expectedContentJSON.put("msg", "操作成功");
+        expectedContentJSON.put("result", JSON.toJSONString(response));
+        String requestParameters = JSON.toJSONString(params);
+        String expectedContent = JSON.toJSONString(expectedContentJSON);
+
+        // 查询是否已经生成相关测试用例
+        Map<String, Object> findParams = new HashMap<>();
+        findParams.put("apiId", apiDoc.getId());
+        findParams.put("del", 0);
+        List<ApiCaseEntity> apiCaseList = findEntitys(findParams);
+        if (apiCaseList != null && apiCaseList.size() > 0) {
+            for (ApiCaseEntity apiCase : apiCaseList) {
+                apiCase.setRequestParameters(requestParameters);
+                apiCase.setExpectedContent(expectedContent);
+                update(apiCase);
+            }
+        } else {
+            save(new ApiCaseEntity(apiDoc.getName() + "__1", apiDoc.getId(), requestParameters, expectedContent));
+        }
     }
+
 
     /**
      * 根据数据类型，向参数json插入初始化参数

@@ -61,12 +61,7 @@ public class ApiDocModel extends BaseModel implements IModel {
 
     public Integer deleteByKey(final Integer key) {
         Integer code = apiDocDao.deleteByKey(key);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                apiCaseModel.deleteByApiId(key);
-            }
-        }).start();
+        apiCaseModel.deleteByApiId(key);
         return code;
     }
 

@@ -187,11 +187,11 @@ public class ApiCaseEntity implements Serializable, Cloneable {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public ApiCaseEntity copyOne() {
+    public ApiCaseEntity copyOne(Integer copyNum) {
         if (caseName.contains("__")) {
             Integer index = caseName.indexOf("__");
             Integer num = Integer.parseInt(caseName.substring(index + 2, caseName.length()));
-            caseName = caseName.substring(0, index + 2) + (++num);
+            caseName = caseName.substring(0, index + 2) + (num + copyNum);
         } else {
             caseName = caseName + "__1";
         }
