@@ -171,4 +171,17 @@ public class ApiDocController extends BasicController {
         }
         return apiDoc;
     }
+
+    @RequestMapping(value = "/delete", produces = "application/json")
+    public void delete(HttpServletRequest request,
+                       HttpServletResponse response, Map<String, Object> modelMap)
+            throws Exception {
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        if (id == 0) {
+            returnJsonData(request, response, 100005, "缺少 Api 文档主键", modelMap);
+            return;
+        }
+        returnSuccessJsonData(request, response, apiDocModel.deleteByKey(id));
+    }
 }

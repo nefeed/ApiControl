@@ -36,10 +36,10 @@
                 </template>
             </select>
             <br/>
-            <label>Token:</label>
-            <input type="text" class="m-wrap large" placeholder="请输入Token"
-                   v-model="accessToken">
-            <label>不输入代表不需要登陆</label>
+##            <label>Token:</label>
+##            <input type="text" class="m-wrap large" placeholder="请输入Token"
+##                   v-model="accessToken">
+##            <label>不输入代表不需要登陆</label>
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
@@ -558,7 +558,7 @@
                 }
                 var mymessage = confirm('确认保存吗？');
                 if (mymessage == true) {
-                    this.save()
+                    this.item()
                 } else if (mymessage == false) {
                     // Hide
                 }
@@ -629,7 +629,7 @@
                     }
                 });
             },
-            save: function () {
+            item: function () {
                 var params = {
                     id: this.id,
                     version: this.version,
@@ -734,6 +734,8 @@
                     response: JSON.stringify(this.response),
                     responseDemo: this.responseDemo,
                     wrongCode: JSON.stringify(this.wrongCode),
+                    addTime: this.addTime,
+                    updateTime: this.updateTime,
                     del: this.del
                 }
                 var self = this

@@ -59,4 +59,38 @@ public class IndexController {
 		modelMap.put("pageIndex", "list");
 		return "list";
 	}
+
+	/**
+	 * 测试用例列表
+	 *
+	 * @param request
+	 * @param response
+	 * @param modelMap
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/case/list")
+	public String caseList(HttpServletRequest request,
+					   HttpServletResponse response, Map<String, Object> modelMap)throws Exception {
+
+		modelMap.put("pageIndex", "case_list");
+		return "case_list";
+	}
+
+	/**
+	 * 测试用例编辑
+	 *
+	 * @param request
+	 * @param response
+	 * @param modelMap
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/case/item")
+	public String caseItem(HttpServletRequest request,
+						   HttpServletResponse response, Map<String, Object> modelMap)throws Exception {
+
+		modelMap.put("pageIndex", "case_item");
+		return "case_item";
+	}
 }

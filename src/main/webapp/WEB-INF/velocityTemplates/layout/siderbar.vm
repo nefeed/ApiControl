@@ -57,6 +57,9 @@
                 <li class="#if(${pageIndex} == "list") active #end">
                     <a href="/list.html">API列表</a>
                 </li>
+                <li class="#if(${pageIndex} == "case/list") active #end">
+                    <a href="/case/list.html">用例列表</a>
+                </li>
             </ul>
         </li>
     </ul>

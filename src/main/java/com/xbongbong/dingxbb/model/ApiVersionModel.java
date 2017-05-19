@@ -27,9 +27,9 @@ public class ApiVersionModel implements IModel{
 	public Integer save(ApiVersionEntity entity){
 		
 		if(entity.getId() == null || entity.getId().equals(0)) {
-			return dao.insert(entity);
+			return insert(entity);
 		}
-		return dao.update(entity);
+		return update(entity);
 	}
 
 	 

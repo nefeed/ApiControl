@@ -158,4 +158,9 @@
         <property name="mapperInterface" value="com.xbongbong.dingxbb.dao.SysModuleDao"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+    <!-- Api测试用例 -->
+    <bean id="ApiCaseDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.xbongbong.dingxbb.dao.ApiCaseDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
 </beans>

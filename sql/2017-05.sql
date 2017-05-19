@@ -206,3 +206,109 @@ COMMIT;
 
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- 创建 接口用例表
+-- author：huajun.zhang
+-- date: 2017-05-19
+-- ----------------------------
+--  Table structure for `tb_api_case`
+-- ----------------------------
+DROP TABLE
+IF EXISTS `tb_api_case`;
+
+CREATE TABLE `tb_api_case`(
+  `id` INT(10) NOT NULL AUTO_INCREMENT COMMENT 'api用例id' ,
+  `case_name` VARCHAR(50) NOT NULL COMMENT 'api用例名称' ,
+  `api_id` INT(10) NOT NULL COMMENT 'api关联表 id' ,
+  `request_parameters` text COMMENT 'api请求参数' ,
+  `expected_state_code` INT(10) DEFAULT NULL COMMENT 'api预期返回 code' ,
+  `actual_state_code` INT(10) DEFAULT NULL COMMENT 'api实际返回 code' ,
+  `expected_content` text COMMENT 'api预期返回文本' ,
+  `actual_content` text COMMENT 'api实际返回文本' ,
+  `content_judge_logic` VARCHAR(10)  DEFAULT NULL COMMENT 'api比较方式：equal或contains' ,
+  `duration_time` INT(10) DEFAULT NULL COMMENT '请求耗时ms' ,
+  `test_result` VARCHAR(10) DEFAULT NULL COMMENT 'api验证结果：Pass或Fail' ,
+  `update_time` INT(10) DEFAULT NULL COMMENT '更新时间' ,
+  `add_time` INT(10) DEFAULT NULL COMMENT '创建时间' ,
+  `del` TINYINT(1) DEFAULT '0' COMMENT '是否删除' ,
+  PRIMARY KEY(`id`)
+) ENGINE = INNODB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8;
+
+-- ----------------------------
+--  Records of `tb_api_case`
+-- ----------------------------
+
+BEGIN
+;
+
+INSERT INTO `tb_api_case`
+VALUES
+  (
+    '1' ,
+    'get_customer_item_without_any_parameters' ,
+    '6' ,
+    '{\"corpid\":\"\",\"nowUserId\":\"\"}' ,
+    '200' ,
+    '200' ,
+    '{\"code\":19,\"msg\":\"登录参数缺失！\"}' ,
+    '{\"code\":19,\"msg\":\"登录参数缺失！\"}' ,
+    ' contains' ,
+    '1' ,
+    'Fail' ,
+    '1494845023' ,
+    '1494845023' ,
+    '0'
+  ) ,
+  (
+    '2' ,
+    'get_customer_item_without_corpid' ,
+    '6' ,
+    '{\"corpid\":\"\",\"nowUserId\":\"1\"}' ,
+    '200' ,
+    '200' ,
+    '{\"code\":19,\"msg\":\"登录参数缺失！\"}' ,
+    '{\"code\":19,\"msg\":\"登录参数缺失！\"}' ,
+    ' contains' ,
+    '1' ,
+    'Fail' ,
+    '1494845023' ,
+    '1494845023' ,
+    '0'
+  ) ,
+  (
+    '3' ,
+    'get_customer_item_without_nowUserId' ,
+    '6' ,
+    '{\"corpid\":\"\",\"nowUserId\":\"\"}' ,
+    '200' ,
+    '200' ,
+    '{\"code\":19,\"msg\":\"登录参数缺失！\"}' ,
+    '{\"code\":19,\"msg\":\"登录参数缺失！\"}' ,
+    ' contains' ,
+    '1' ,
+    'Fail' ,
+    '1494845023' ,
+    '1494845023' ,
+    '0'
+  ) ,
+  (
+    '4' ,
+    'get_customer_item_successfully' ,
+    '6' ,
+    '{\"corpid\":\"ding9debe4701d59e5d8\",\"nowUserId\":\"03472117635634\"}' ,
+    '200' ,
+    '200' ,
+    '{\"isApproval\":false,\"isNameCheck\":true,\"isPhoneCheck\":true,\"checkPhoneType\":\"2\",\"result\":[{\"attr\":\"userId\",\"attrName\":\"创建人\",\"required\":0,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":[{\"id\":\"03472117635634\",\"name\":\"胡顺旋\"}],\"validate\":\"array\",\"isMultiple\":0},{\"attr\":\"nameShort\",\"attrName\":\"客户简称\",\"required\":0,\"isRedundant\":0,\"fieldType\":1,\"attrValue\":\"\"},{\"attr\":\"name\",\"attrName\":\"客户名称\",\"required\":1,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":\"\",\"validate\":\"string\"},{\"attr\":\"phone\",\"attrName\":\"客户电话\",\"required\":0,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":[],\"validate\":\"array\"},{\"attr\":\"genre\",\"attrName\":\"客户类型\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"最终客户\",\"key\":\"1\"},{\"value\":\"类型1\",\"key\":\"4\"},{\"value\":\"渠道客户\",\"key\":\"2\"},{\"value\":\"竞争对手\",\"key\":\"3\"}],\"dictionaryCode\":13},{\"attr\":\"type\",\"attrName\":\"客户状态\",\"required\":1,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"潜在客户\",\"key\":\"1\"},{\"value\":\"初步接触1\",\"key\":\"2\"},{\"value\":\"持续跟进\",\"key\":\"3\"},{\"value\":\"成交客户\",\"key\":\"4\"},{\"value\":\"忠诚客户\",\"key\":\"5\"},{\"value\":\"无效客户\",\"key\":\"6\"}],\"dictionaryCode\":3},{\"attr\":\"isIndividual\",\"attrName\":\"客户性质\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"个人客户\",\"key\":\"2\"},{\"value\":\"企业客户\",\"key\":\"1\"},{\"value\":\"测试字段\",\"key\":\"4\"},{\"value\":\"政府事业单位\",\"key\":\"3\"}],\"dictionaryCode\":4},{\"attr\":\"scale\",\"attrName\":\"客户分级\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"小型\",\"key\":\"3\"},{\"value\":\"中型\",\"key\":\"2\"},{\"value\":\"大型\",\"key\":\"1\"}]},{\"attr\":\"industry\",\"attrName\":\"客户行业\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"新兴产业\",\"key\":\"16\"},{\"value\":\"金融\",\"key\":\"1\"},{\"value\":\"电信\",\"key\":\"2\"},{\"value\":\"教育\",\"key\":\"3\"},{\"value\":\"零售\",\"key\":\"9\"},{\"value\":\"媒体\",\"key\":\"10\"},{\"value\":\"娱乐\",\"key\":\"11\"},{\"value\":\"咨询\",\"key\":\"12\"},{\"value\":\"非营利事业\",\"key\":\"13\"},{\"value\":\"公用事业\",\"key\":\"14\"},{\"value\":\"其他\",\"key\":\"15\"}],\"dictionaryCode\":6},{\"attr\":\"attr1\",\"attrName\":\"单行输入\",\"required\":0,\"isRedundant\":1,\"fieldType\":1,\"initValue\":\"\",\"attrValue\":\"\"},{\"attr\":\"importantDegree\",\"attrName\":\"重要程度\",\"required\":0,\"isRedundant\":0,\"fieldType\":10,\"attrValue\":\"\"},{\"attr\":\"country\",\"attrName\":\"国家\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"中国\",\"key\":\"中国\"},{\"value\":\"美国\",\"key\":\"美国\"},{\"value\":\"澳大利亚\",\"key\":\"澳大利亚\"},{\"value\":\"巴西\",\"key\":\"巴西\"},{\"value\":\"英国\",\"key\":\"英国\"},{\"value\":\"加拿大\",\"key\":\"加拿大\"},{\"value\":\"中国\",\"key\":\"中国\"},{\"value\":\"埃及\",\"key\":\"埃及\"},{\"value\":\"法国\",\"key\":\"法国\"},{\"value\":\"德国\",\"key\":\"德国\"},{\"value\":\"希腊\",\"key\":\"希腊\"},{\"value\":\"印度\",\"key\":\"印度\"},{\"value\":\"爱尔兰\",\"key\":\"爱尔兰\"},{\"value\":\"以色列\",\"key\":\"以色列\"},{\"value\":\"意大利\",\"key\":\"意大利\"},{\"value\":\"日本\",\"key\":\"日本\"},{\"value\":\"荷兰\",\"key\":\"荷兰\"},{\"value\":\"新西兰\",\"key\":\"新西兰\"},{\"value\":\"葡萄牙\",\"key\":\"葡萄牙\"},{\"value\":\"俄国\",\"key\":\"俄国\"},{\"value\":\"西班牙\",\"key\":\"西班牙\"},{\"value\":\"瑞典\",\"key\":\"瑞典\"},{\"value\":\"瑞士\",\"key\":\"瑞士\"}],\"dictionaryCode\":11},{\"attr\":\"address\",\"attrName\":\"客户地址\",\"required\":0,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":\"\",\"validate\":\"object\"},{\"attr\":\"source\",\"attrName\":\"客户来源\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"网络推广\",\"key\":\"网络推广\"},{\"value\":\"电话销售\",\"key\":\"电话销售\"},{\"value\":\"第四来源1\",\"key\":\"第四来源1\"},{\"value\":\"渠道代理\",\"key\":\"渠道代理\"}],\"dictionaryCode\":12},{\"attr\":\"website\",\"attrName\":\"客户官网\",\"required\":0,\"isRedundant\":0,\"fieldType\":1,\"attrValue\":\"\"},{\"attr\":\"instruction\",\"attrName\":\"客户简介\",\"required\":0,\"isRedundant\":0,\"fieldType\":7,\"attrValue\":\"\"},{\"attr\":\"attr2\",\"attrName\":\"客户生日\",\"required\":0,\"isRedundant\":1,\"fieldType\":4,\"initValue\":\"\",\"attrValue\":\"\"}],\"code\":1,\"msg\":\"操作成功\"}' ,
+    '{\"isApproval\":false,\"isNameCheck\":true,\"isPhoneCheck\":true,\"checkPhoneType\":\"2\",\"result\":[{\"attr\":\"userId\",\"attrName\":\"创建人\",\"required\":0,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":[{\"id\":\"03472117635634\",\"name\":\"胡顺旋\"}],\"validate\":\"array\",\"isMultiple\":0},{\"attr\":\"nameShort\",\"attrName\":\"客户简称\",\"required\":0,\"isRedundant\":0,\"fieldType\":1,\"attrValue\":\"\"},{\"attr\":\"name\",\"attrName\":\"客户名称\",\"required\":1,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":\"\",\"validate\":\"string\"},{\"attr\":\"phone\",\"attrName\":\"客户电话\",\"required\":0,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":[],\"validate\":\"array\"},{\"attr\":\"genre\",\"attrName\":\"客户类型\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"最终客户\",\"key\":\"1\"},{\"value\":\"类型1\",\"key\":\"4\"},{\"value\":\"渠道客户\",\"key\":\"2\"},{\"value\":\"竞争对手\",\"key\":\"3\"}],\"dictionaryCode\":13},{\"attr\":\"type\",\"attrName\":\"客户状态\",\"required\":1,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"潜在客户\",\"key\":\"1\"},{\"value\":\"初步接触1\",\"key\":\"2\"},{\"value\":\"持续跟进\",\"key\":\"3\"},{\"value\":\"成交客户\",\"key\":\"4\"},{\"value\":\"忠诚客户\",\"key\":\"5\"},{\"value\":\"无效客户\",\"key\":\"6\"}],\"dictionaryCode\":3},{\"attr\":\"isIndividual\",\"attrName\":\"客户性质\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"个人客户\",\"key\":\"2\"},{\"value\":\"企业客户\",\"key\":\"1\"},{\"value\":\"测试字段\",\"key\":\"4\"},{\"value\":\"政府事业单位\",\"key\":\"3\"}],\"dictionaryCode\":4},{\"attr\":\"scale\",\"attrName\":\"客户分级\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"小型\",\"key\":\"3\"},{\"value\":\"中型\",\"key\":\"2\"},{\"value\":\"大型\",\"key\":\"1\"}]},{\"attr\":\"industry\",\"attrName\":\"客户行业\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"新兴产业\",\"key\":\"16\"},{\"value\":\"金融\",\"key\":\"1\"},{\"value\":\"电信\",\"key\":\"2\"},{\"value\":\"教育\",\"key\":\"3\"},{\"value\":\"零售\",\"key\":\"9\"},{\"value\":\"媒体\",\"key\":\"10\"},{\"value\":\"娱乐\",\"key\":\"11\"},{\"value\":\"咨询\",\"key\":\"12\"},{\"value\":\"非营利事业\",\"key\":\"13\"},{\"value\":\"公用事业\",\"key\":\"14\"},{\"value\":\"其他\",\"key\":\"15\"}],\"dictionaryCode\":6},{\"attr\":\"attr1\",\"attrName\":\"单行输入\",\"required\":0,\"isRedundant\":1,\"fieldType\":1,\"initValue\":\"\",\"attrValue\":\"\"},{\"attr\":\"importantDegree\",\"attrName\":\"重要程度\",\"required\":0,\"isRedundant\":0,\"fieldType\":10,\"attrValue\":\"\"},{\"attr\":\"country\",\"attrName\":\"国家\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"中国\",\"key\":\"中国\"},{\"value\":\"美国\",\"key\":\"美国\"},{\"value\":\"澳大利亚\",\"key\":\"澳大利亚\"},{\"value\":\"巴西\",\"key\":\"巴西\"},{\"value\":\"英国\",\"key\":\"英国\"},{\"value\":\"加拿大\",\"key\":\"加拿大\"},{\"value\":\"中国\",\"key\":\"中国\"},{\"value\":\"埃及\",\"key\":\"埃及\"},{\"value\":\"法国\",\"key\":\"法国\"},{\"value\":\"德国\",\"key\":\"德国\"},{\"value\":\"希腊\",\"key\":\"希腊\"},{\"value\":\"印度\",\"key\":\"印度\"},{\"value\":\"爱尔兰\",\"key\":\"爱尔兰\"},{\"value\":\"以色列\",\"key\":\"以色列\"},{\"value\":\"意大利\",\"key\":\"意大利\"},{\"value\":\"日本\",\"key\":\"日本\"},{\"value\":\"荷兰\",\"key\":\"荷兰\"},{\"value\":\"新西兰\",\"key\":\"新西兰\"},{\"value\":\"葡萄牙\",\"key\":\"葡萄牙\"},{\"value\":\"俄国\",\"key\":\"俄国\"},{\"value\":\"西班牙\",\"key\":\"西班牙\"},{\"value\":\"瑞典\",\"key\":\"瑞典\"},{\"value\":\"瑞士\",\"key\":\"瑞士\"}],\"dictionaryCode\":11},{\"attr\":\"address\",\"attrName\":\"客户地址\",\"required\":0,\"isRedundant\":0,\"fieldType\":0,\"attrValue\":\"\",\"validate\":\"object\"},{\"attr\":\"source\",\"attrName\":\"客户来源\",\"required\":0,\"isRedundant\":0,\"fieldType\":3,\"attrValue\":\"\",\"valueArrMap\":[{\"value\":\"网络推广\",\"key\":\"网络推广\"},{\"value\":\"电话销售\",\"key\":\"电话销售\"},{\"value\":\"第四来源1\",\"key\":\"第四来源1\"},{\"value\":\"渠道代理\",\"key\":\"渠道代理\"}],\"dictionaryCode\":12},{\"attr\":\"website\",\"attrName\":\"客户官网\",\"required\":0,\"isRedundant\":0,\"fieldType\":1,\"attrValue\":\"\"},{\"attr\":\"instruction\",\"attrName\":\"客户简介\",\"required\":0,\"isRedundant\":0,\"fieldType\":7,\"attrValue\":\"\"},{\"attr\":\"attr2\",\"attrName\":\"客户生日\",\"required\":0,\"isRedundant\":1,\"fieldType\":4,\"initValue\":\"\",\"attrValue\":\"\"}],\"code\":1,\"msg\":\"操作成功\"}' ,
+    ' contains' ,
+    '1' ,
+    'Fail' ,
+    '1494845023' ,
+    '1494845023' ,
+    '0'
+  );
+
+COMMIT;
+
+
+SET FOREIGN_KEY_CHECKS = 1;

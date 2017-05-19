@@ -30,9 +30,9 @@ public class SysModuleModel implements IModel{
 	public Integer save(SysModuleEntity entity){
 		
 		if(entity.getId() == null || entity.getId().equals(0)) {
-			return dao.insert(entity);
+			return insert(entity);
 		}
-		return dao.update(entity);
+		return update(entity);
 	}
 
 	 

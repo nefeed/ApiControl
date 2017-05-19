@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbongbong.dingxbb.dao.ApiCaseDao">
+
+	<resultMap id="BASE-RESULT" type="com.xbongbong.dingxbb.entity.ApiCaseEntity">
+		<result property="id" column="id" />
+		<result property="caseName" column="case_name" />
+		<result property="apiId" column="api_id" />
+		<result property="requestParameters" column="request_parameters" />
+		<result property="expectedStateCode" column="expected_state_code" />
+		<result property="actualStateCode" column="actual_state_code" />
+		<result property="expectedContent" column="expected_content" />
+		<result property="actualContent" column="actual_content" />
+		<result property="contentJudgeLogic" column="content_judge_logic" />
+		<result property="durationTime" column="duration_time" />
+		<result property="testResult" column="test_result" />
+		<result property="updateTime" column="update_time" />
+		<result property="addTime" column="add_time" />
+		<result property="del" column="del" />
+	</resultMap>
+
+	
+  	<insert id="insert" parameterType="com.xbongbong.dingxbb.entity.ApiCaseEntity">
+  		INSERT INTO tb_api_case ( 
+			id,case_name,api_id,request_parameters,expected_state_code,actual_state_code,expected_content,actual_content,content_judge_logic,duration_time,test_result,update_time,add_time,del			
+  		) VALUES (
+			#{id},#{caseName},#{apiId},#{requestParameters},#{expectedStateCode},#{actualStateCode},#{expectedContent},#{actualContent},#{contentJudgeLogic},#{durationTime},#{testResult},#{updateTime},#{addTime},#{del}			
+  		)   
+    	<selectKey resultType="Integer" keyProperty="id">    
+      		SELECT LAST_INSERT_ID()     
+		</selectKey>
+  	</insert>
+  	
+  	<update id="update" parameterType="com.xbongbong.dingxbb.entity.ApiCaseEntity" >
+		UPDATE
+			tb_api_case
+		SET
+			 <if test="id!=null"> id = #{id} </if>
+			 <if test="caseName!=null">, case_name = #{caseName} </if>
+			 <if test="apiId!=null">, api_id = #{apiId} </if>
+			 <if test="requestParameters!=null">, request_parameters = #{requestParameters} </if>
+			 <if test="expectedStateCode!=null">, expected_state_code = #{expectedStateCode} </if>
+			 <if test="actualStateCode!=null">, actual_state_code = #{actualStateCode} </if>
+			 <if test="expectedContent!=null">, expected_content = #{expectedContent} </if>
+			 <if test="actualContent!=null">, actual_content = #{actualContent} </if>
+			 <if test="contentJudgeLogic!=null">, content_judge_logic = #{contentJudgeLogic} </if>
+			 <if test="durationTime!=null">, duration_time = #{durationTime} </if>
+			 <if test="testResult!=null">, test_result = #{testResult} </if>
+			 <if test="updateTime!=null">, update_time = #{updateTime} </if>
+			 <if test="addTime!=null">, add_time = #{addTime} </if>
+			 <if test="del!=null">, del = #{del} </if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	
+	<select id="getByKey" resultMap="BASE-RESULT">
+		SELECT * FROM
+			tb_api_case
+		<where>
+			id = #{key}
+		</where>
+	</select>
+	
+	<delete id="deleteByKey">
+		UPDATE
+			tb_api_case
+		SET
+			del = 1
+		<where>
+			id = #{key}
+		</where>
+	</delete>
+
+	<delete id="deleteByApiId">
+		UPDATE
+		tb_api_case
+		SET
+		del = 1
+		<where>
+			api_id = #{apiId}
+		</where>
+	</delete>
+
+	<select id="findEntitys" parameterType="map" resultMap="BASE-RESULT">
+		SELECT 
+		<choose>
+			<when test="param.columns!=null">
+				${param.columns}
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		FROM
+			tb_api_case INNER JOIN 
+		
+			(SELECT id  FROM tb_api_case 
+			<where> <include refid="compareParamColumns" /> </where>
+			<if test="param.orderByStr!=null"> order by ${param.orderByStr} </if>	
+			<if test="param.start!=null and param.pageNum!=null"> LIMIT #{param.start},#{param.pageNum} </if>
+		 
+			 ) as  index_id 
+		
+		using(id)
+			<if test="param.groupByStr!=null"> group by ${param.groupByStr} </if>
+			<if test="param.orderByStrGroup!=null"> order by ${param.orderByStrGroup} </if>	
+			<if test="param.startGroup!=null and param.pageNumGroup!=null"> LIMIT #{param.startGroup},#{param.pageNumGroup} </if>
+    		 
+	</select>
+
+
+	<select id="getEntitysCount" parameterType="map" resultType="int">
+		SELECT count(*) FROM
+			tb_api_case
+		<where>
+			<include refid="compareParamColumns" />
+		</where>
+	</select>
+	
+	<sql id="compareParamColumns">
+		1
+  		<if test="param.id!=null">
+  			AND  id = #{param.id}
+  		</if>
+  		<if test="param.caseName!=null">
+  			AND  case_name = #{param.caseName}
+  		</if>
+  		<if test="param.apiId!=null">
+  			AND  api_id = #{param.apiId}
+  		</if>
+  		<if test="param.requestParameters!=null">
+  			AND  request_parameters = #{param.requestParameters}
+  		</if>
+  		<if test="param.expectedStateCode!=null">
+  			AND  expected_state_code = #{param.expectedStateCode}
+  		</if>
+  		<if test="param.actualStateCode!=null">
+  			AND  actual_state_code = #{param.actualStateCode}
+  		</if>
+  		<if test="param.expectedContent!=null">
+  			AND  expected_content = #{param.expectedContent}
+  		</if>
+  		<if test="param.actualContent!=null">
+  			AND  actual_content = #{param.actualContent}
+  		</if>
+  		<if test="param.contentJudgeLogic!=null">
+  			AND  content_judge_logic = #{param.contentJudgeLogic}
+  		</if>
+  		<if test="param.durationTime!=null">
+  			AND  duration_time = #{param.durationTime}
+  		</if>
+  		<if test="param.testResult!=null">
+  			AND  test_result = #{param.testResult}
+  		</if>
+  		<if test="param.updateTime!=null">
+  			AND  update_time = #{param.updateTime}
+  		</if>
+  		<if test="param.addTime!=null">
+  			AND  add_time = #{param.addTime}
+  		</if>
+  		<if test="param.del!=null">
+  			AND  del = #{param.del}
+  		</if>
+ 		
+	</sql>
+	
+	<!-- mybatis-config.xml 
+	<typeAlias alias="ApiCaseEntity" 	type="com.xbongbong.dingxbb.entity.ApiCaseEntity" />
+	<mapper resource="sql-mapper/ApiCaseMapper.xml" />
+	-->
+	<!-- spring-dao-beans.xml
+	<bean id="ApiCaseDao" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    	<property name="mapperInterface" value="com.xbongbong.dingxbb.dao.ApiCaseDao" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean>
+	-->
+</mapper>

@@ -39,6 +39,8 @@
 		<typeAlias alias="ApiVersionEntity" 	type="com.xbongbong.dingxbb.entity.ApiVersionEntity" />
 		<!-- Api 模块 -->
 		<typeAlias alias="SysModuleEntity" 	type="com.xbongbong.dingxbb.entity.SysModuleEntity" />
+		<!-- Api 测试 -->
+		<typeAlias alias="ApiCaseEntity" type="com.xbongbong.dingxbb.entity.ApiCaseEntity" />
     </typeAliases>  
      
     <mappers> 
@@ -79,6 +81,8 @@
 		<mapper resource="sql-mapper/ApiVersionMapper.xml" />
 		<!-- Api 模块 -->
 		<mapper resource="sql-mapper/SysModuleMapper.xml" />
+		<!-- Api测试用例 -->
+		<mapper resource="sql-mapper/ApiCaseMapper.xml" />
     </mappers>
 		
 </configuration>

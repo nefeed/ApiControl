@@ -3,6 +3,7 @@ package com.xbongbong.dingxbb.model;
 
 import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.dao.ApiDocDao;
+import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.entity.ApiVersionEntity;
 import com.xbongbong.dingxbb.entity.SysModuleEntity;
@@ -30,6 +31,8 @@ public class ApiDocModel extends BaseModel implements IModel {
     private ApiVersionModel apiVersionModel;
     @Autowired
     private SysModuleModel sysModuleModel;
+    @Autowired
+    private ApiCaseModel apiCaseModel;
 
     public Integer insert(Object entity) {
         Integer now = DateUtil.getInt();
@@ -46,15 +49,26 @@ public class ApiDocModel extends BaseModel implements IModel {
     }
 
     public Integer save(ApiDocEntity entity) {
+        Integer code;
         if (entity.getId() == null || entity.getId().equals(0)) {
-            return insert(entity);
+            code = insert(entity);
+        } else {
+            code = update(entity);
         }
-        return update(entity);
+        apiCaseModel.formatApiDocToCase(entity);
+        return code;
     }
 
 
-    public Integer deleteByKey(Integer key) {
-        return dao.deleteByKey(key);
+    public Integer deleteByKey(final Integer key) {
+        Integer code = dao.deleteByKey(key);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                apiCaseModel.deleteByApiId(key);
+            }
+        }).start();
+        return code;
     }
 
     public ApiDocEntity getByKey(Integer key) {
