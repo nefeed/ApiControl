@@ -61,7 +61,7 @@
                     <span class="icon-angle-right"></span>
                 </li>
                 <li>
-                    <a href="#">API接口</a>
+                    <a href="/list.html">API列表</a>
                     <span class="icon-angle-right"></span>
                 </li>
                 <li><a href="#">新建API</a></li>

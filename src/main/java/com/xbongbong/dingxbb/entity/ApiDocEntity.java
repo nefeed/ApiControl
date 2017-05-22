@@ -2,6 +2,7 @@
 package com.xbongbong.dingxbb.entity;
 
 import com.xbongbong.util.DateUtil;
+import com.xbongbong.util.StringUtil;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -178,5 +179,17 @@ public class ApiDocEntity implements Serializable{
     public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
+    public void checkArray() {
+		if (StringUtil.isEmpty(this.params)) {
+			this.params = "[]";
+		}
+		if (StringUtil.isEmpty(this.response)) {
+			this.response = "[]";
+		}
+		if (StringUtil.isEmpty(this.wrongCode)) {
+			this.wrongCode = "[]";
+		}
+	}
 }
 

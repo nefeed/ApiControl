@@ -98,7 +98,9 @@ public class ApiDocController extends BasicController {
             returnJsonData(request, response, 100005, "缺少 Api 文档主键", modelMap);
             return;
         }
-        returnSuccessJsonData(request, response, apiDocModel.getByKey(id));
+        ApiDocEntity apiDoc = apiDocModel.getByKey(id);
+        apiDoc.checkArray();
+        returnSuccessJsonData(request, response, apiDoc);
     }
 
     @RequestMapping(value = "/outputMarkdown", produces = "application/json")

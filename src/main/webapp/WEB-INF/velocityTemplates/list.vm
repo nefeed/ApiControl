@@ -28,10 +28,6 @@
                     <a href="/list.html">销帮帮</a>
                     <span class="icon-angle-right"></span>
                 </li>
-                <li>
-                    <a href="#">API接口</a>
-                    <span class="icon-angle-right"></span>
-                </li>
                 <li><a href="#">Api列表</a></li>
             </ul>
         </div>

@@ -30,7 +30,7 @@
                     <span class="icon-angle-right"></span>
                 </li>
                 <li>
-                    <a href="#">API接口</a>
+                    <a href="/case/list.html">用例列表</a>
                     <span class="icon-angle-right"></span>
                 </li>
                 <li><a href="#">测试用例</a></li>
