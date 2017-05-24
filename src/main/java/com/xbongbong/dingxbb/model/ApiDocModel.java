@@ -144,6 +144,13 @@ public class ApiDocModel extends BaseModel implements IModel {
             content.append("无请求参数<br />");
         }
         content.append("<br />");
+        if (!StringUtil.isEmpty(entity.getParamsDemo())) {
+            content.append("#### " + (++index) + ". 请求实例" + "<br />");
+            content.append("```JSON" + "<br />");
+            content.append(entity.getParamsDemo() + "<br />");
+            content.append("```" + "<br />");
+            content.append("<br />");
+        }
         List<ApiDocResponsePojo> responses = JSON.parseArray(entity.getResponse(), ApiDocResponsePojo.class);
         content.append("#### " + (++index) + ". 主要返回内容" + "<br />");
         if (responses != null && responses.size() > 0) {
@@ -166,13 +173,6 @@ public class ApiDocModel extends BaseModel implements IModel {
             }
         }
         content.append("<br />");
-        if (!StringUtil.isEmpty(entity.getParamsDemo())) {
-            content.append("#### " + (++index) + ". 请求实例" + "<br />");
-            content.append("```JSON" + "<br />");
-            content.append(entity.getParamsDemo() + "<br />");
-            content.append("```" + "<br />");
-            content.append("<br />");
-        }
         if (!StringUtil.isEmpty(entity.getResponseDemo())) {
             content.append("#### " + (++index) + ". 返回实例" + "<br />");
             content.append("```JSON" + "<br />");

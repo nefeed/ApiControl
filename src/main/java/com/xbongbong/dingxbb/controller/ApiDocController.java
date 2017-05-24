@@ -3,6 +3,7 @@ package com.xbongbong.dingxbb.controller;
 import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.model.ApiDocModel;
+import com.xbongbong.dingxbb.pojo.ResponseDemoPojo;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class ApiDocController extends BasicController {
 
     @RequestMapping(value = "/version", produces = "application/json")
     public void version(HttpServletRequest request,
-                     HttpServletResponse response, Map<String, Object> modelMap)
+                        HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         List<String> versionList = apiDocModel.findApiVersionList();
         returnSuccessJsonData(request, response, versionList);
@@ -41,7 +42,7 @@ public class ApiDocController extends BasicController {
 
     @RequestMapping(value = "/module", produces = "application/json")
     public void module(HttpServletRequest request,
-                        HttpServletResponse response, Map<String, Object> modelMap)
+                       HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         List<String> moduleList = apiDocModel.findApiModuleList();
         returnSuccessJsonData(request, response, moduleList);
@@ -171,6 +172,21 @@ public class ApiDocController extends BasicController {
             returnJsonData(request, response, 100005, "缺少 Api 作者大名", modelMap);
             return null;
         }
+        if (StringUtil.isEmpty(apiDoc.getParamsDemo())) {
+            returnJsonData(request, response, 100005, "缺少请求 Demo，请务必填写，生成用例必须！", modelMap);
+            return null;
+        }
+        if (StringUtil.isEmpty(apiDoc.getResponseDemo())) {
+            returnJsonData(request, response, 100005, "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
+            return null;
+        }
+        ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);
+        if (responseDemoPojo == null || responseDemoPojo.getCode() == null) {
+            returnJsonData(request, response, 100005, "返回 Demo 缺少结果code", modelMap);
+            return null;
+        }
+        apiDoc.setUrl(StringUtil.trim(apiDoc.getUrl()))
+                .setModule(StringUtil.trim(apiDoc.getModule()));
         return apiDoc;
     }
 

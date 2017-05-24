@@ -1,13 +1,10 @@
 
 package com.xbongbong.dingxbb.model;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xbongbong.dingxbb.dao.ApiCaseDao;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
-import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo;
-import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo;
 import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,26 +77,30 @@ public class ApiCaseModel extends BaseModel implements IModel {
 
 
     public void formatApiDocToCase(final ApiDocEntity apiDoc) {
-        List<ApiDocParamsPojo> apiDocParamsList = JSON.parseArray(apiDoc.getParams(), ApiDocParamsPojo.class);
-        JSONObject params = new JSONObject();
-        if (apiDocParamsList != null && apiDocParamsList.size() > 0) {
-            for (ApiDocParamsPojo apiDocParamsPojo : apiDocParamsList) {
-                insertJsonParam(params, apiDocParamsPojo.getType(), apiDocParamsPojo.getKey());
-            }
-        }
-        List<ApiDocResponsePojo> apiResponseParamsList = JSON.parseArray(apiDoc.getResponse(), ApiDocResponsePojo.class);
-        JSONObject response = new JSONObject();
-        if (apiResponseParamsList != null && apiResponseParamsList.size() > 0) {
-            for (ApiDocResponsePojo apiDocResponsePojo : apiResponseParamsList) {
-                insertJsonParam(response, apiDocResponsePojo.getType(), apiDocResponsePojo.getKey());
-            }
-        }
-        JSONObject expectedContentJSON = new JSONObject();
-        expectedContentJSON.put("code", 0);
-        expectedContentJSON.put("msg", "操作成功");
-        expectedContentJSON.put("result", JSON.toJSONString(response));
-        String requestParameters = JSON.toJSONString(params);
-        String expectedContent = JSON.toJSONString(expectedContentJSON);
+        // todo  以下是需要完善功能的代码，暂时注释
+//        List<ApiDocParamsPojo> apiDocParamsList = JSON.parseArray(apiDoc.getParams(), ApiDocParamsPojo.class);
+//        JSONObject params = new JSONObject();
+//        if (apiDocParamsList != null && apiDocParamsList.size() > 0) {
+//            for (ApiDocParamsPojo apiDocParamsPojo : apiDocParamsList) {
+//                insertJsonParam(params, apiDocParamsPojo.getType(), apiDocParamsPojo.getKey());
+//            }
+//        }
+//        List<ApiDocResponsePojo> apiResponseParamsList = JSON.parseArray(apiDoc.getResponse(), ApiDocResponsePojo.class);
+//        JSONObject response = new JSONObject();
+//        if (apiResponseParamsList != null && apiResponseParamsList.size() > 0) {
+//            for (ApiDocResponsePojo apiDocResponsePojo : apiResponseParamsList) {
+//                insertJsonParam(response, apiDocResponsePojo.getType(), apiDocResponsePojo.getKey());
+//            }
+//        }
+//        JSONObject expectedContentJSON = new JSONObject();
+//        expectedContentJSON.put("code", 0);
+//        expectedContentJSON.put("msg", "操作成功");
+//        expectedContentJSON.put("result", JSON.toJSONString(response));
+//        String requestParameters = JSON.toJSONString(params);
+//        String expectedContent = JSON.toJSONString(expectedContentJSON);
+        // todo 2017-05-24 初步使用 Demo 填充
+        String requestParameters = apiDoc.getParamsDemo();
+        String expectedContent = apiDoc.getResponseDemo();
 
         // 查询是否已经生成相关测试用例
         Map<String, Object> findParams = new HashMap<>();
