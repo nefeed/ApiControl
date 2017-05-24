@@ -46,6 +46,39 @@
             <a href="#" class="btn green" @click="runTest" data-dismiss="modal" aria-hidden="true">开始</a>
         </div>
     </div>
+    <div class="modal hide fade" id="newVersionDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         data-backdrop="static">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>新建版本号</h3>
+        </div>
+        <div class="modal-body">
+            <p>只输入版本号的具体数字，如3.7</p>
+            <label>版本号:</label>
+            <input type="text" class="m-wrap large" placeholder="请输入Version"
+                   v-model="newVersion">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+            <a href="#" class="btn blue" @click="itemVersion" data-dismiss="modal" aria-hidden="true">保存</a>
+        </div>
+    </div>
+    <div class="modal hide fade" id="newModuleDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         data-backdrop="static">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>新建模块</h3>
+        </div>
+        <div class="modal-body">
+            <label>模块名称:</label>
+            <input type="text" class="m-wrap large" placeholder="请输入模块名称"
+                   v-model="newModule">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+            <a href="#" class="btn blue" @click="itemModule" data-dismiss="modal" aria-hidden="true">保存</a>
+        </div>
+    </div>
     <div class="row-fluid">
         <div class="span12">
             <!-- BEGIN STYLE CUSTOMIZER -->
@@ -94,21 +127,30 @@
                                             <select class="m-wrap medium" name="apiVersion"
                                                     v-model="version">
                                                 <template v-for="(item, index) in versionArray">
-                                                    <option v-if="index === 0" selected :value="item.key">{{ item.value
-                                                        }}
+                                                    <option v-if="index === 0" selected :value="item.key">{{ item.value }}
                                                     </option>
                                                     <option v-else :value="item.key"
                                                             :selected="{selected: (index == 0)}">{{ item.value }}
                                                     </option>
                                                 </template>
                                             </select>
+                                            <button class="btn blue" type="button" data-toggle="modal" data-target="#newVersionDialog"><i class="icon-plus"></i></button>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">模块</label>
                                         <div class="controls">
-                                            <input type="text" class="m-wrap medium" placeholder="请输入模块"
-                                                   name="apiModule" v-model="module">
+                                            <select class="m-wrap medium" name="apiModule"
+                                                    v-model="module">
+                                                <template v-for="(item, index) in moduleArray">
+                                                    <option v-if="index === 0" selected :value="item.key">{{ item.value }}
+                                                    </option>
+                                                    <option v-else :value="item.key"
+                                                            :selected="{selected: (index == 0)}">{{ item.value }}
+                                                    </option>
+                                                </template>
+                                            </select>
+                                            <button class="btn blue" type="button" data-toggle="modal" data-target="#newModuleDialog"><i class="icon-plus"></i></button>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -416,6 +458,9 @@
                 {key: '3.3', value: '3.3'},
                 {key: '3.2', value: '3.2'}
             ],
+            newVersion: '',
+            moduleArray: [],
+            newModule: '',
             typeOptions: [
                 {key: 'String', value: 'String'},
                 {key: 'Integer', value: 'Integer'},
@@ -587,6 +632,43 @@
                                         value: versionList[i]
                                     })
                                 }
+                                vm.loadModuleList()
+                            }
+                        } else {
+                            alert(result.msg)
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+            },
+            /**
+             * 获取模块列表
+             */
+            loadModuleList: function () {
+                var self = this
+                $.ajax({
+                    url: "/api/doc/module.do",
+                    type: "POST",
+                    data: {},
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            var moduleList = result.ret;
+                            if (moduleList && moduleList.length > 0) {
+                                self.module = moduleList[0]
+                                self.moduleArray = []
+                                for (var i = 0; i < moduleList.length; i++) {
+                                    self.moduleArray.push({
+                                        key: moduleList[i],
+                                        value: moduleList[i]
+                                    })
+                                }
+                            }
+                            if (getQueryString('id')) {
+                                vm.id = getQueryString('id')
+                                vm.loadDetail()
                             }
                         } else {
                             alert(result.msg)
@@ -782,6 +864,68 @@
                         $('#loading').modal('hide');
                     }
                 });
+            },
+            /**
+             * 增加版本号
+             */
+            itemVersion: function () {
+                var self = this
+                $('#loading').modal('show');
+                $.ajax({
+                    url: "/api/doc/version/item.do",
+                    type: "POST",
+                    data: {
+                        version: self.newVersion
+                    },
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            self.versionArray.push({
+                                key: self.newVersion,
+                                value: self.newVersion
+                            })
+                            alert('新建版本成功，请查看列表')
+                        } else {
+                            alert(result.msg)
+                        }
+                        $('#loading').modal('hide');
+                        self.newVersion = ''
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+            },
+            /**
+             * 增加模块
+             */
+            itemModule: function () {
+                var self = this
+                $('#loading').modal('show');
+                $.ajax({
+                    url: "/api/doc/module/item.do",
+                    type: "POST",
+                    data: {
+                        module: self.newModule
+                    },
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            self.moduleArray.push({
+                                key: self.newModule,
+                                value: self.newModule
+                            })
+                            alert('新建模块成功，请查看列表')
+                        } else {
+                            alert(result.msg)
+                        }
+                        $('#loading').modal('hide');
+                        self.newModule = ''
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
             }
         }
     });
@@ -793,10 +937,5 @@
         if (r != null)return unescape(r[2]);
         return null;
     }
-
     vm.loadVersionList()
-    if (getQueryString('id')) {
-        vm.id = getQueryString('id')
-        vm.loadDetail()
-    }
 </script>

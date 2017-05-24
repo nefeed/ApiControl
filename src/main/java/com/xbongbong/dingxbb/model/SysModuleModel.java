@@ -18,17 +18,14 @@ public class SysModuleModel implements IModel{
 	private SysModuleDao dao;
 	
 	public Integer insert(Object entity){
-		
 		return dao.insert((SysModuleEntity)entity);
 	}
 
 	public Integer update(Object entity){
-		
 		return dao.update((SysModuleEntity)entity);
 	}
 	
 	public Integer save(SysModuleEntity entity){
-		
 		if(entity.getId() == null || entity.getId().equals(0)) {
 			return insert(entity);
 		}

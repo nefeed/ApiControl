@@ -14,6 +14,11 @@ public class SysModuleEntity implements Serializable{
 	public SysModuleEntity(){
 		del = 0;
 	}
+
+	public SysModuleEntity(String module) {
+		this();
+		this.module = module;
+	}
 	//========== properties ==========
 	
 	//模块主键

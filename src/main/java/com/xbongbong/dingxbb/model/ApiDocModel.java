@@ -111,6 +111,23 @@ public class ApiDocModel extends BaseModel implements IModel {
     };
 
     /**
+     * 新增版本
+     *
+     * @return
+     */
+    public Integer itemVersion(String version) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("version", version);
+        params.put("del", 0);
+        List<ApiVersionEntity> versionList = apiVersionModel.findEntitys(params);
+        if (versionList == null || versionList.isEmpty()) {
+            return apiVersionModel.save(new ApiVersionEntity(version));
+        } else {
+            return -1;
+        }
+    }
+
+    /**
      * 获取所有记录在案的Api模块
      *
      * @return
@@ -120,11 +137,36 @@ public class ApiDocModel extends BaseModel implements IModel {
         params.put("orderByStr", "id DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params.put("del", 0);
         List<SysModuleEntity> apiModuleList = sysModuleModel.findEntitys(params);
+        Collections.sort(apiModuleList, MODULE_COMPARATOR);
         List<String> moduleList = new ArrayList<>();
         for (SysModuleEntity apiModule : apiModuleList) {
             moduleList.add(apiModule.getModule());
         }
         return moduleList;
+    }
+
+    // 按模块的 id 倒叙排列
+    private static final Comparator<SysModuleEntity> MODULE_COMPARATOR = new Comparator<SysModuleEntity>() {
+        public int compare(SysModuleEntity o1, SysModuleEntity o2) {
+            return o2.getId().compareTo(o1.getId());
+        }
+    };
+
+    /**
+     * 新增模块
+     *
+     * @return
+     */
+    public Integer itemModule(String moduleName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("moduleLike", "%" + moduleName + "%");
+        params.put("del", 0);
+        List<SysModuleEntity> moduleList = sysModuleModel.findEntitys(params);
+        if (moduleList == null || moduleList.isEmpty()) {
+            return sysModuleModel.save(new SysModuleEntity(moduleName));
+        } else {
+            return -1;
+        }
     }
 
     public String formatMarkdownContent(ApiDocEntity entity) {

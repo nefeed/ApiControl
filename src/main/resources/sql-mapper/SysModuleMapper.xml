@@ -97,6 +97,9 @@
   		<if test="param.module!=null">
   			AND  module = #{param.module}
   		</if>
+		<if test="param.moduleLike!=null">
+			AND  module like #{param.moduleLike}
+		</if>
   		<if test="param.del!=null">
   			AND  del = #{param.del}
   		</if>

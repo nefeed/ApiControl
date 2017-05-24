@@ -2,12 +2,15 @@ package com.xbongbong.dingxbb.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
+import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
+import com.xbongbong.dingxbb.model.SysModuleModel;
 import com.xbongbong.dingxbb.pojo.ResponseDemoPojo;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +34,8 @@ public class ApiDocController extends BasicController {
 
     @Autowired
     private ApiDocModel apiDocModel;
+    @Autowired
+    private SysModuleModel sysModuleModel;
 
     @RequestMapping(value = "/version", produces = "application/json")
     public void version(HttpServletRequest request,
@@ -40,12 +45,34 @@ public class ApiDocController extends BasicController {
         returnSuccessJsonData(request, response, versionList);
     }
 
+    @RequestMapping(value = "/version/item", produces = "application/json")
+    public void versionItem(@RequestParam(required = true) String version, HttpServletRequest request,
+                           HttpServletResponse response, Map<String, Object> modelMap)
+            throws Exception {
+        if (apiDocModel.itemVersion(version) != -1) {
+            returnSuccessJsonData(request, response, version);
+        } else {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100015.getCode(), "该版本号已经存在，请校验列表", null);
+        }
+    }
+
     @RequestMapping(value = "/module", produces = "application/json")
     public void module(HttpServletRequest request,
                        HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         List<String> moduleList = apiDocModel.findApiModuleList();
         returnSuccessJsonData(request, response, moduleList);
+    }
+
+    @RequestMapping(value = "/module/item", produces = "application/json")
+    public void moduleItem(@RequestParam(required = true) String module, HttpServletRequest request,
+                       HttpServletResponse response, Map<String, Object> modelMap)
+            throws Exception {
+        if (apiDocModel.itemModule(module) != -1) {
+            returnSuccessJsonData(request, response, module);
+        } else {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100015.getCode(), "已经存在类似模块，请校验列表", null);
+        }
     }
 
     @RequestMapping(value = "/item", produces = "application/json")
@@ -96,7 +123,7 @@ public class ApiDocController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            jsonOut(request, response, 100005, "缺少 Api 文档主键", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 文档主键", modelMap);
             return;
         }
         ApiDocEntity apiDoc = apiDocModel.getByKey(id);
@@ -152,37 +179,37 @@ public class ApiDocController extends BasicController {
     private ApiDocEntity analysisRequest(HttpServletRequest request, HttpServletResponse response, Map<String, Object> modelMap) {
         String params = request.getParameter("params");
         if (StringUtil.isEmpty(params)) {
-            jsonOut(request, response, 100005, "缺少必填参数", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少必填参数", modelMap);
             return null;
         }
         ApiDocEntity apiDoc = JSON.parseObject(params, ApiDocEntity.class);
         if (StringUtil.isEmpty(apiDoc.getModule())) {
-            jsonOut(request, response, 100005, "缺少所属模块名称", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少所属模块名称", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getName())) {
-            jsonOut(request, response, 100005, "缺少 Api 名称", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 名称", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getUrl())) {
-            jsonOut(request, response, 100005, "缺少 Api 请求地址", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 请求地址", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getUsername())) {
-            jsonOut(request, response, 100005, "缺少 Api 作者大名", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 作者大名", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getParamsDemo())) {
-            jsonOut(request, response, 100005, "缺少请求 Demo，请务必填写，生成用例必须！", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少请求 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getResponseDemo())) {
-            jsonOut(request, response, 100005, "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
         }
         ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);
         if (responseDemoPojo == null || responseDemoPojo.getCode() == null) {
-            jsonOut(request, response, 100005, "返回 Demo 缺少结果code", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "返回 Demo 缺少结果code", modelMap);
             return null;
         }
         apiDoc.setUrl(StringUtil.trim(apiDoc.getUrl()))
@@ -197,7 +224,7 @@ public class ApiDocController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            jsonOut(request, response, 100005, "缺少 Api 文档主键", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 文档主键", modelMap);
             return;
         }
         returnSuccessJsonData(request, response, apiDocModel.deleteByKey(id));

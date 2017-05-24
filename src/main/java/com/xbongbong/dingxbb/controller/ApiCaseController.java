@@ -2,6 +2,7 @@ package com.xbongbong.dingxbb.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
+import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiCaseModel;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +93,7 @@ public class ApiCaseController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            jsonOut(request, response, 100005, "缺少 Api 测试用例主键", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 测试用例主键", modelMap);
             return;
         }
         returnSuccessJsonData(request, response, apiCaseModel.getByKey(id));
@@ -105,7 +106,7 @@ public class ApiCaseController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            jsonOut(request, response, 100005, "缺少 Api 测试用例主键", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 测试用例主键", modelMap);
             return;
         }
         returnSuccessJsonData(request, response, apiCaseModel.deleteByKey(id));
@@ -114,16 +115,16 @@ public class ApiCaseController extends BasicController {
     private ApiCaseEntity analysisRequest(HttpServletRequest request, HttpServletResponse response, Map<String, Object> modelMap) {
         String params = request.getParameter("params");
         if (StringUtil.isEmpty(params)) {
-            jsonOut(request, response, 100005, "缺少必填参数", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少必填参数", modelMap);
             return null;
         }
         ApiCaseEntity apiCase = JSON.parseObject(params, ApiCaseEntity.class);
         if (StringUtil.isEmpty(apiCase.getCaseName())) {
-            jsonOut(request, response, 100005, "缺少用例名称名称", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少用例名称名称", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiCase.getExpectedContent())) {
-            jsonOut(request, response, 100005, "缺少预期返回参数", modelMap);
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少预期返回参数", modelMap);
             return null;
         }
         return apiCase;

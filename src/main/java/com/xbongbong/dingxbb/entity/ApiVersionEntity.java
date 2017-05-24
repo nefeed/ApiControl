@@ -14,6 +14,12 @@ public class ApiVersionEntity implements Serializable{
 	public ApiVersionEntity(){
 		del = 0;
 	}
+
+	public ApiVersionEntity(String version) {
+		this();
+		this.version = version;
+	}
+
 	//========== properties ==========
 	
 	//版本Id

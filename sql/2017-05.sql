@@ -172,7 +172,7 @@ DROP TABLE
 IF EXISTS `tb_sys_module`;
 
 CREATE TABLE `tb_sys_module`(
-  `id` INT(10) NOT NULL COMMENT '模块主键' ,
+  `id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '模块主键' ,
   `module` VARCHAR(50) DEFAULT NULL COMMENT '模块名称' ,
   `del` TINYINT(1) DEFAULT '0' COMMENT '是否删除' ,
   PRIMARY KEY(`id`)
