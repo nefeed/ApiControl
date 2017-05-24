@@ -57,10 +57,11 @@
                             <div id="portlet_tab1" class="tab-pane active">
                                 <!-- BEGIN FORM-->
                                 <form class="form-horizontal" action="#">
-                                    <div class="control-group" v-if="apiName" >
+                                    <div class="control-group" v-if="apiName">
                                         <label class="control-label">API</label>
                                         <div class="controls">
-                                            <a href="#" @click="intoApiDetail(apiId)" style="font-size: 18px;">[{{ apiModule }}]{{ apiName }} - v{{ apiVersion }}</a>
+                                            <a href="#" @click="intoApiDetail(apiId)" style="font-size: 18px;">[{{
+                                                apiModule }}]{{ apiName }} - v{{ apiVersion }}</a>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -237,23 +238,28 @@
                     cache: false,
                     success: function (result) {
                         result = JSON.parse(result)
-                        self.id = result.ret.id
-                        self.caseName = result.ret.caseName
-                        self.apiId = result.ret.apiId
-                        self.requestParameters = result.ret.requestParameters
-                        self.expectedStateCode = result.ret.expectedStateCode
-                        self.actualStateCode = result.ret.actualStateCode
-                        self.expectedContent = result.ret.expectedContent
-                        self.actualContent = result.ret.actualContent
-                        self.contentJudgeLogic = result.ret.contentJudgeLogic
-                        self.durationTime = result.ret.durationTime
-                        self.testResult = result.ret.testResult
-                        self.addTime = result.ret.addTime
-                        self.updateTime = result.ret.updateTime
-                        self.del = result.ret.del
-                        self.btnSave = '更新'
-                        self.formTitle = '更新表单'
-                        self.loadApiDetail(self.apiId)
+                        if (result.code == 0) {
+                            self.id = result.ret.id
+                            self.caseName = result.ret.caseName
+                            self.apiId = result.ret.apiId
+                            self.requestParameters = result.ret.requestParameters
+                            self.expectedStateCode = result.ret.expectedStateCode
+                            self.actualStateCode = result.ret.actualStateCode
+                            self.expectedContent = result.ret.expectedContent
+                            self.actualContent = result.ret.actualContent
+                            self.contentJudgeLogic = result.ret.contentJudgeLogic
+                            self.durationTime = result.ret.durationTime
+                            self.testResult = result.ret.testResult
+                            self.addTime = result.ret.addTime
+                            self.updateTime = result.ret.updateTime
+                            self.del = result.ret.del
+                            self.btnSave = '更新'
+                            self.formTitle = '更新表单'
+                            self.loadApiDetail(self.apiId)
+                        } else {
+                            alert(result.msg)
+                            window.location = '/case/list.html'
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -274,12 +280,17 @@
                     cache: false,
                     success: function (result) {
                         result = JSON.parse(result)
-                        if (result.ret) {
-                            self.apiVersion = result.ret.version
-                            self.apiModule = result.ret.module
-                            self.apiName = result.ret.name
+                        if (result.code == 0) {
+                            if (result.ret) {
+                                self.apiVersion = result.ret.version
+                                self.apiModule = result.ret.module
+                                self.apiName = result.ret.name
+                            }
+                            $('#loading').modal('hide');
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
                         }
-                        $('#loading').modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -287,13 +298,13 @@
                     }
                 });
             },
-            intoApiDetail: function(apiId) {
+            intoApiDetail: function (apiId) {
                 window.location = '/item.html?id=' + apiId
             },
             /**
              * 校验返回状态码是否"200"
              */
-            checkStateCode: function(code) {
+            checkStateCode: function (code) {
                 if (code == 200) {
                     return true;
                 } else {
@@ -342,15 +353,16 @@
                     success: function (result) {
                         self.result = result
                         result = JSON.parse(result)
-                        self.id = result.ret.id
-                        if (result.errorcode == 0) {
+                        if (result.code == 0) {
+                            self.id = result.ret.id
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             alert('保存成功！')
+                            $('#loading').modal('hide');
                         } else {
-                            alert('服务器返回错误信息：' + result.msg)
+                            alert(result.msg)
+                            $('#loading').modal('hide');
                         }
-                        $('#loading').modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -380,8 +392,15 @@
                     },
                     cache: false,
                     success: function (result) {
-                        alert('删除成功')
-                        self.location = document.referrer;
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            alert('删除成功')
+                            self.location = document.referrer;
+                            $('#loading').modal('hide');
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -392,7 +411,7 @@
             /**
              * 复制一份测试用例
              */
-            clone: function() {
+            clone: function () {
                 var params = {
                     id: this.id,
                     caseName: this.caseName,
@@ -421,8 +440,18 @@
                     cache: false,
                     success: function (result) {
                         result = JSON.parse(result)
-                        alert(result.ret.msg)
-                        $('#loading').modal('hide');
+                        if (result.code == 0) {
+                            var mymessage = confirm(result.ret.msg);
+                            if (mymessage == true) {
+                                window.location = '/case/item.html?id=' + result.ret.id
+                            } else if (mymessage == false) {
+                                $('#loading').modal('hide');
+                                // Hide
+                            }
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)

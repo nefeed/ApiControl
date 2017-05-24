@@ -209,13 +209,6 @@ public abstract class BasicController {
         return dataJson;
     }
 
-    /**
-     * 接口返回参数方法
-     */
-    protected void returnSuccessJsonData(HttpServletRequest request, HttpServletResponse response, Object ret) {
-
-        this.returnJsonData(request, response, 0, "操作成功", ret);
-    }
 
     /**
      * 接口返回参数方法
@@ -235,4 +228,31 @@ public abstract class BasicController {
         }
     }
 
+    /**
+     * 接口返回参数方法
+     */
+    protected void returnSuccessJsonData(HttpServletRequest request, HttpServletResponse response, Object ret) {
+        this.jsonOut(request, response, 0, "操作成功", ret);
+    }
+
+    /**
+     * 接口返回参数方法
+     * <p>
+     * Author: huajun.zhang
+     * Date: 2017-05-24
+     */
+    protected void jsonOut(HttpServletRequest request, HttpServletResponse response, Integer code, String msg, Object ret) {
+        response.addHeader("content-type", "application/json;charset=utf-8");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("code", code);
+        param.put("msg", msg);
+        param.put("ret", ret);
+        try {
+            HttpUtil.jsonOut(request, response, param);
+        } catch (IOException e) {
+            LOG.error(e.getLocalizedMessage());
+        }
+    }
 }

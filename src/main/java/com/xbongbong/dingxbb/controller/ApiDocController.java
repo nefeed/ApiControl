@@ -96,7 +96,7 @@ public class ApiDocController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            returnJsonData(request, response, 100005, "缺少 Api 文档主键", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 文档主键", modelMap);
             return;
         }
         ApiDocEntity apiDoc = apiDocModel.getByKey(id);
@@ -126,7 +126,7 @@ public class ApiDocController extends BasicController {
         if (apiDocFile.exists()) {
             boolean result = apiDocFile.delete();
             if (!result) {
-                returnJsonData(request, response, 100004, "服务器删除旧 Markdown 文件失败！", modelMap);
+                jsonOut(request, response, 100004, "服务器删除旧 Markdown 文件失败！", modelMap);
             }
         }
         try {
@@ -152,37 +152,37 @@ public class ApiDocController extends BasicController {
     private ApiDocEntity analysisRequest(HttpServletRequest request, HttpServletResponse response, Map<String, Object> modelMap) {
         String params = request.getParameter("params");
         if (StringUtil.isEmpty(params)) {
-            returnJsonData(request, response, 100005, "缺少必填参数", modelMap);
+            jsonOut(request, response, 100005, "缺少必填参数", modelMap);
             return null;
         }
         ApiDocEntity apiDoc = JSON.parseObject(params, ApiDocEntity.class);
         if (StringUtil.isEmpty(apiDoc.getModule())) {
-            returnJsonData(request, response, 100005, "缺少所属模块名称", modelMap);
+            jsonOut(request, response, 100005, "缺少所属模块名称", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getName())) {
-            returnJsonData(request, response, 100005, "缺少 Api 名称", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 名称", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getUrl())) {
-            returnJsonData(request, response, 100005, "缺少 Api 请求地址", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 请求地址", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getUsername())) {
-            returnJsonData(request, response, 100005, "缺少 Api 作者大名", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 作者大名", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getParamsDemo())) {
-            returnJsonData(request, response, 100005, "缺少请求 Demo，请务必填写，生成用例必须！", modelMap);
+            jsonOut(request, response, 100005, "缺少请求 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiDoc.getResponseDemo())) {
-            returnJsonData(request, response, 100005, "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
+            jsonOut(request, response, 100005, "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
         }
         ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);
         if (responseDemoPojo == null || responseDemoPojo.getCode() == null) {
-            returnJsonData(request, response, 100005, "返回 Demo 缺少结果code", modelMap);
+            jsonOut(request, response, 100005, "返回 Demo 缺少结果code", modelMap);
             return null;
         }
         apiDoc.setUrl(StringUtil.trim(apiDoc.getUrl()))
@@ -197,7 +197,7 @@ public class ApiDocController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            returnJsonData(request, response, 100005, "缺少 Api 文档主键", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 文档主键", modelMap);
             return;
         }
         returnSuccessJsonData(request, response, apiDocModel.deleteByKey(id));

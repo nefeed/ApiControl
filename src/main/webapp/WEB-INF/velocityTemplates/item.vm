@@ -36,10 +36,10 @@
                 </template>
             </select>
             <br/>
-##            <label>Token:</label>
-##            <input type="text" class="m-wrap large" placeholder="请输入Token"
-##                   v-model="accessToken">
-##            <label>不输入代表不需要登陆</label>
+        ##            <label>Token:</label>
+        ##            <input type="text" class="m-wrap large" placeholder="请输入Token"
+        ##                   v-model="accessToken">
+        ##            <label>不输入代表不需要登陆</label>
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
@@ -565,7 +565,7 @@
                 }
             },
             /**
-             * 获取Api文档列表
+             * 获取Api文档版本号列表
              */
             loadVersionList: function () {
                 var self = this
@@ -575,16 +575,21 @@
                     data: {},
                     cache: false,
                     success: function (result) {
-                        var versionList = JSON.parse(result).ret;
-                        if (versionList && versionList.length > 0) {
-                            self.version = versionList[0]
-                            self.versionArray = []
-                            for (var i = 0; i < versionList.length; i++) {
-                                self.versionArray.push({
-                                    key: versionList[i],
-                                    value: versionList[i]
-                                })
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            var versionList = result.ret;
+                            if (versionList && versionList.length > 0) {
+                                self.version = versionList[0]
+                                self.versionArray = []
+                                for (var i = 0; i < versionList.length; i++) {
+                                    self.versionArray.push({
+                                        key: versionList[i],
+                                        value: versionList[i]
+                                    })
+                                }
                             }
+                        } else {
+                            alert(result.msg)
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -606,23 +611,28 @@
                     cache: false,
                     success: function (result) {
                         result = JSON.parse(result)
-                        self.id = result.ret.id
-                        self.version = result.ret.version
-                        self.module = result.ret.module
-                        self.name = result.ret.name
-                        self.url = result.ret.url
-                        self.username = result.ret.username
-                        self.method = result.ret.method
-                        self.memo = result.ret.memo
-                        self.params = JSON.parse(result.ret.params)
-                        self.paramsDemo = result.ret.paramsDemo
-                        self.response = JSON.parse(result.ret.response)
-                        self.responseDemo = result.ret.responseDemo
-                        self.wrongCode = JSON.parse(result.ret.wrongCode)
-                        self.del = result.ret.del
-                        self.btnSave = '更新'
-                        self.formTitle = '更新表单'
-                        $('#loading').modal('hide');
+                        if (result.code == 0) {
+                            self.id = result.ret.id
+                            self.version = result.ret.version
+                            self.module = result.ret.module
+                            self.name = result.ret.name
+                            self.url = result.ret.url
+                            self.username = result.ret.username
+                            self.method = result.ret.method
+                            self.memo = result.ret.memo
+                            self.params = JSON.parse(result.ret.params)
+                            self.paramsDemo = result.ret.paramsDemo
+                            self.response = JSON.parse(result.ret.response)
+                            self.responseDemo = result.ret.responseDemo
+                            self.wrongCode = JSON.parse(result.ret.wrongCode)
+                            self.del = result.ret.del
+                            self.btnSave = '更新'
+                            self.formTitle = '更新表单'
+                            $('#loading').modal('hide');
+                        } else {
+                            alert(result.msg)
+                            window.location = '/list.html'
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -659,13 +669,13 @@
                     success: function (result) {
                         self.result = result
                         result = JSON.parse(result)
-                        self.id = result.ret.id
-                        if (result.errorcode == 0) {
+                        if (result.code == 0) {
+                            self.id = result.ret.id
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             alert('保存成功！')
                         } else {
-                            alert('服务器返回错误信息：' + result.msg)
+                            alert(result.msg)
                         }
                         $('#loading').modal('hide');
                     },
@@ -751,8 +761,8 @@
                     success: function (result) {
                         self.result = result
                         result = JSON.parse(result)
-                        self.id = result.ret.id
-                        if (result.errorcode == 0) {
+                        if (result.code == 0) {
+                            self.id = result.ret.id
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             var markdownContentDiv = document.getElementById('markdownContent')
@@ -761,8 +771,11 @@
                             setTimeout(function () {
                                 $('body').scrollTop($('body').height());
                             }, 300)
+                            $('#loading').modal('hide');
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
                         }
-                        $('#loading').modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)

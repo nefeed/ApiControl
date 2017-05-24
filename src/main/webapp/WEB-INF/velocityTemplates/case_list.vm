@@ -132,6 +132,7 @@
              */
             loadCount: function () {
                 var self = this
+                $('#loading').modal('show');
                 $.ajax({
                     url: "/api/case/count.do",
                     type: "POST",
@@ -139,17 +140,22 @@
                     cache: false,
                     success: function (result) {
                         result = JSON.parse(result)
-                        self.count = result.ret.count
-                        if (self.count % self.pageSize == 0) {
-                            self.pageCount = self.count / self.pageSize
+                        if (result.code == 0) {
+                            self.count = result.ret.count
+                            if (self.count % self.pageSize == 0) {
+                                self.pageCount = self.count / self.pageSize
+                            } else {
+                                self.pageCount = self.count / self.pageSize + 1
+                            }
+                            if (self.pageCount == 0) {
+                                self.pageCount = 1
+                            }
+                            self.pageCount = Math.floor(self.pageCount)
+                            self.loadCaseList()
                         } else {
-                            self.pageCount = self.count / self.pageSize + 1
+                            alert(result.msg)
+                            $('#loading').modal('hide');
                         }
-                        if (self.pageCount == 0) {
-                            self.pageCount = 1
-                        }
-                        self.pageCount = Math.floor(self.pageCount)
-                        self.loadCaseList()
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -165,15 +171,20 @@
                     pageSize: this.pageSize
                 }
                 var self = this
-                $('#loading').modal('show');
                 $.ajax({
                     url: "/api/case/list.do",
                     type: "POST",
                     data: params,
                     cache: false,
                     success: function (result) {
-                        self.list = JSON.parse(result).ret
-                        $('#loading').modal('hide');
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            self.list = result.ret
+                            $('#loading').modal('hide');
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
@@ -231,8 +242,14 @@
                     },
                     cache: false,
                     success: function (result) {
-                        alert('删除成功')
-                        location.reload()
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            alert('删除成功')
+                            location.reload()
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)

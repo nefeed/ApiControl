@@ -37,8 +37,10 @@ public class ApiCaseController extends BasicController {
         if (apiCase == null) {
             return;
         }
-        modelMap.put("code", apiCaseModel.save(apiCase.copyOne(copyNum)));
-        modelMap.put("msg", "复制成功，请返回列表查看");
+        ApiCaseEntity cloneItem = apiCase.copyOne(copyNum);
+        modelMap.put("code", apiCaseModel.save(cloneItem));
+        modelMap.put("id", cloneItem.getId());
+        modelMap.put("msg", "复制成功，是否跳转复制的用例详情页？");
         returnSuccessJsonData(request, response, modelMap);
     }
 
@@ -90,7 +92,7 @@ public class ApiCaseController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            returnJsonData(request, response, 100005, "缺少 Api 测试用例主键", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 测试用例主键", modelMap);
             return;
         }
         returnSuccessJsonData(request, response, apiCaseModel.getByKey(id));
@@ -103,7 +105,7 @@ public class ApiCaseController extends BasicController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
-            returnJsonData(request, response, 100005, "缺少 Api 测试用例主键", modelMap);
+            jsonOut(request, response, 100005, "缺少 Api 测试用例主键", modelMap);
             return;
         }
         returnSuccessJsonData(request, response, apiCaseModel.deleteByKey(id));
@@ -112,16 +114,16 @@ public class ApiCaseController extends BasicController {
     private ApiCaseEntity analysisRequest(HttpServletRequest request, HttpServletResponse response, Map<String, Object> modelMap) {
         String params = request.getParameter("params");
         if (StringUtil.isEmpty(params)) {
-            returnJsonData(request, response, 100005, "缺少必填参数", modelMap);
+            jsonOut(request, response, 100005, "缺少必填参数", modelMap);
             return null;
         }
         ApiCaseEntity apiCase = JSON.parseObject(params, ApiCaseEntity.class);
         if (StringUtil.isEmpty(apiCase.getCaseName())) {
-            returnJsonData(request, response, 100005, "缺少用例名称名称", modelMap);
+            jsonOut(request, response, 100005, "缺少用例名称名称", modelMap);
             return null;
         }
         if (StringUtil.isEmpty(apiCase.getExpectedContent())) {
-            returnJsonData(request, response, 100005, "缺少预期返回参数", modelMap);
+            jsonOut(request, response, 100005, "缺少预期返回参数", modelMap);
             return null;
         }
         return apiCase;

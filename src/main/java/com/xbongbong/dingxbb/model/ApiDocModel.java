@@ -15,10 +15,7 @@ import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Component
@@ -98,12 +95,20 @@ public class ApiDocModel extends BaseModel implements IModel {
         params.put("orderByStr", "id DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params.put("del", 0);
         List<ApiVersionEntity> apiVersionList = apiVersionModel.findEntitys(params);
+        Collections.sort(apiVersionList, VERSION_COMPARATOR);
         List<String> versionList = new ArrayList<>();
         for (ApiVersionEntity apiVersion : apiVersionList) {
             versionList.add(apiVersion.getVersion());
         }
         return versionList;
     }
+
+    // 按版本号的 id 倒叙排列
+    private static final Comparator<ApiVersionEntity> VERSION_COMPARATOR = new Comparator<ApiVersionEntity>() {
+        public int compare(ApiVersionEntity o1, ApiVersionEntity o2) {
+            return o2.getId().compareTo(o1.getId());
+        }
+    };
 
     /**
      * 获取所有记录在案的Api模块
