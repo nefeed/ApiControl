@@ -120,6 +120,12 @@
   		<if test="param.id!=null">
   			AND  id = #{param.id}
   		</if>
+		<if test="param.idIn!=null">
+			AND id IN
+			<foreach item="item" index="index" collection="param.idIn" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
   		<if test="param.version!=null">
   			AND  version = #{param.version}
   		</if>

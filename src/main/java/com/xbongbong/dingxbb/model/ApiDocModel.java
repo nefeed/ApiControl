@@ -85,6 +85,13 @@ public class ApiDocModel extends BaseModel implements IModel {
                 params, pageHelper, this);
     }
 
+    public List<ApiDocEntity> findApiDocList(List<Integer> apiIdList) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("idIn", apiIdList);
+        params.put("del", 0);
+        return findEntitys(params);
+    }
+
     /**
      * 获取所有记录在案的Api版本号
      *

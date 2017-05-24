@@ -83,7 +83,7 @@ public class ApiCaseController extends BasicController {
             pageSize = 20;
         }
         List<ApiCaseEntity> apiCaseList = apiCaseModel.findApiCaseList(page, pageSize);
-        returnSuccessJsonData(request, response, apiCaseList);
+        returnSuccessJsonData(request, response, apiCaseModel.formatCasePojoList(apiCaseList));
     }
 
     @RequestMapping(value = "/detail", produces = "application/json")

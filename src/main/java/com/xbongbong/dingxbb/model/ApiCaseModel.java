@@ -1,23 +1,25 @@
 
 package com.xbongbong.dingxbb.model;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xbongbong.dingxbb.dao.ApiCaseDao;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
+import com.xbongbong.dingxbb.pojo.ApiCaseListItemPojo;
 import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Component
 public class ApiCaseModel extends BaseModel implements IModel {
 
+    @Autowired
+    private ApiDocModel apiDocModel;
     @Autowired
     private ApiCaseDao apiCaseDao;
 
@@ -150,6 +152,56 @@ public class ApiCaseModel extends BaseModel implements IModel {
                 json.put(key, 0.0d);
                 break;
         }
+    }
+
+    /**
+     * 格式化用例列表返回列表数据
+     *
+     * @param apiCaseList
+     * @return
+     */
+    public List<ApiCaseListItemPojo> formatCasePojoList(List<ApiCaseEntity> apiCaseList) {
+        List<ApiCaseListItemPojo> pojoList = new ArrayList<>();
+        List<Integer> apiIdList = new ArrayList<>();
+        for (ApiCaseEntity item : apiCaseList) {
+            apiIdList.add(item.getApiId());
+        }
+        apiIdList = duplicateChecking(apiIdList);
+        List<ApiDocEntity> apiDocList = apiDocModel.findApiDocList(apiIdList);
+        for (ApiCaseEntity item : apiCaseList) {
+            for (ApiDocEntity doc : apiDocList) {
+                if (Objects.equals(doc.getId(), item.getApiId())) {
+                    pojoList.add(formatCase(item, doc));
+                    break;
+                }
+            }
+        }
+        return pojoList;
+    }
+
+
+    private ApiCaseListItemPojo formatCase(ApiCaseEntity apiCase, ApiDocEntity apiDoc) {
+        ApiCaseListItemPojo item = JSON.parseObject(JSON.toJSONString(apiCase), ApiCaseListItemPojo.class);
+        item.setApiModule(apiDoc.getModule())
+                .setApiName(apiDoc.getName())
+                .setApiVersion(apiDoc.getVersion());
+        return item;
+    }
+
+    /**
+     * 查重队列中的重复部分，返回干净的队列
+     * @param list
+     * @return
+     */
+    private List<Integer> duplicateChecking(List<Integer> list) {
+        if (list == null || list.size() == 0) {
+            return new ArrayList<>();
+        }
+        Set tempSet = new HashSet();
+        tempSet.addAll(list);
+        list.clear();
+        list.addAll(tempSet);
+        return list;
     }
 }
 
