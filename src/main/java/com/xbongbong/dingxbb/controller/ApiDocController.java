@@ -5,7 +5,6 @@ import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
-import com.xbongbong.dingxbb.pojo.ResponseDemoPojo;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -207,11 +206,12 @@ public class ApiDocController extends BasicController {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
         }
-        ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);
-        if (responseDemoPojo == null || responseDemoPojo.getCode() == null) {
-            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "返回 Demo 缺少结果code", modelMap);
-            return null;
-        }
+        // TODO 2017-05-25 因为返回 Demo 并非正确的 json 格式，无法解析
+//        ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);
+//        if (responseDemoPojo == null || responseDemoPojo.getCode() == null) {
+//            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "返回 Demo 缺少结果code", modelMap);
+//            return null;
+//        }
         apiDoc.setUrl(StringUtil.trim(apiDoc.getUrl()))
                 .setModule(StringUtil.trim(apiDoc.getModule()));
         return apiDoc;

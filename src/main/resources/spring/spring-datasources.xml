@@ -11,14 +11,14 @@
     </bean>
 
     <bean id="defaultDataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
-        <!--<property name="driverClassName" value="${prop.jdbc.default.driver}" />-->
-        <!--<property name="url" value="${prop.jdbc.default.url}" />-->
-        <!--<property name="username" value="${prop.jdbc.default.username}" />-->
-        <!--<property name="password" value="${prop.jdbc.default.password}" />-->
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://192.168.10.100:3306/db_xbb_dingtalk?connectTimeout=2000&amp;socketTimeout=8000&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false" />
-        <property name="username" value="ms2" />
-        <property name="password" value="ms2.com.cn" />
+        <property name="driverClassName" value="${prop.jdbc.default.driver}" />
+        <property name="url" value="${prop.jdbc.default.url}" />
+        <property name="username" value="${prop.jdbc.default.username}" />
+        <property name="password" value="${prop.jdbc.default.password}" />
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+        <!--<property name="url" value="jdbc:mysql://192.168.10.100:3306/db_xbb_dingtalk?connectTimeout=2000&amp;socketTimeout=8000&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;failOverReadOnly=false" />-->
+        <!--<property name="username" value="ms2" />-->
+        <!--<property name="password" value="ms2.com.cn" />-->
 
         <property name="defaultAutoCommit" value="true"/>
         <!-- READ_COMMITTED  -->

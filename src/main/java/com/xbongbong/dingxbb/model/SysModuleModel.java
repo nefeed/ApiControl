@@ -3,7 +3,6 @@ package com.xbongbong.dingxbb.model;
 
 import com.xbongbong.dingxbb.dao.SysModuleDao;
 import com.xbongbong.dingxbb.entity.SysModuleEntity;
-import com.xbongbong.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +14,14 @@ import java.util.Map;
 public class SysModuleModel implements IModel{
 
 	@Autowired
-	private SysModuleDao dao;
+	private SysModuleDao sysModuleDao;
 	
 	public Integer insert(Object entity){
-		return dao.insert((SysModuleEntity)entity);
+		return sysModuleDao.insert((SysModuleEntity)entity);
 	}
 
 	public Integer update(Object entity){
-		return dao.update((SysModuleEntity)entity);
+		return sysModuleDao.update((SysModuleEntity)entity);
 	}
 	
 	public Integer save(SysModuleEntity entity){
@@ -34,18 +33,18 @@ public class SysModuleModel implements IModel{
 
 	 
 	public Integer deleteByKey( Integer key){
-		return dao.deleteByKey(key);
+		return sysModuleDao.deleteByKey(key);
 	}
 	
 	public SysModuleEntity getByKey(Integer key){
-		return dao.getByKey(key);
+		return sysModuleDao.getByKey(key);
 	}
 	 
 	public List<SysModuleEntity> findEntitys(Map<String ,Object>  param){
-		return dao.findEntitys(param);
+		return sysModuleDao.findEntitys(param);
 	}
 	public Integer getEntitysCount(Map<String ,Object>  param){
-		return dao.getEntitysCount(param);
+		return sysModuleDao.getEntitysCount(param);
 	}
 	 
 
