@@ -1,6 +1,6 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
-<div id="vmItem">
+<div>
     <!-- loading -->
     <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          data-backdrop="static">
@@ -15,463 +15,471 @@
             </div>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="span12">
-            <!-- BEGIN STYLE CUSTOMIZER -->
-            <!-- END BEGIN STYLE CUSTOMIZER -->
-            <h3 class="page-title">
-                测试用例
-                <small>销帮帮API</small>
-            </h3>
-            <ul class="breadcrumb">
-                <li>
-                    <i class="icon-home"></i>
-                    <a href="/list.html">销帮帮</a>
-                    <span class="icon-angle-right"></span>
-                </li>
-                <li>
-                    <a href="/case/list.html">用例列表</a>
-                    <span class="icon-angle-right"></span>
-                </li>
-                <li><a href="#">测试用例</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="row-fluid">
-        <div class="span12">
-            <!-- BEGIN SAMPLE FORM PORTLET-->
-            <div class="portlet box blue tabbable">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-reorder"></i>
-                        <span class="hidden-480">{{ formTitle }}</span>
-                    </div>
+    <div class="row-fluid span12">
+        <div class="span6">
+            <div class="row-fluid">
+                <div class="span12">
+                    <!-- BEGIN STYLE CUSTOMIZER -->
+                    <!-- END BEGIN STYLE CUSTOMIZER -->
+                    <h3 class="page-title">
+                        测试用例
+                        <small>销帮帮API</small>
+                    </h3>
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="icon-home"></i>
+                            <a href="/list.html">销帮帮</a>
+                            <span class="icon-angle-right"></span>
+                        </li>
+                        <li>
+                            <a href="/case/list.html">用例列表</a>
+                            <span class="icon-angle-right"></span>
+                        </li>
+                        <li><a href="#">测试用例</a></li>
+                    </ul>
                 </div>
-                <div class="portlet-body form">
-                    <div class="tabbable portlet-tabs">
-                        <ul class="nav nav-tabs">
-                            <li class=""><a data-toggle="tab" href="#portlet_tab3">&nbsp;</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div id="portlet_tab1" class="tab-pane active">
-                                <!-- BEGIN FORM-->
-                                <form class="form-horizontal" action="#">
-                                    <div class="control-group" v-if="apiName">
-                                        <label class="control-label">API</label>
-                                        <div class="controls">
-                                            <a href="#" @click="intoApiDetail(apiId)" style="font-size: 18px;">[{{
-                                                apiModule }}]{{ apiName }} - v{{ apiVersion }}</a>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">用例名称</label>
-                                        <div class="controls">
-                                            <input type="text" class="m-wrap medium" placeholder="请输入用例名"
-                                                   name="caseName" v-model="caseName">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">请求参数</label>
-                                        <div class="controls">
+            </div>
+            <div class="row-fluid" id="vmItem">
+                <div class="span12">
+                    <!-- BEGIN SAMPLE FORM PORTLET-->
+                    <div class="portlet box blue tabbable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-reorder"></i>
+                                <span class="hidden-480">{{ formTitle }}</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <div class="tabbable portlet-tabs">
+                                <ul class="nav nav-tabs">
+                                    <li class=""><a data-toggle="tab" href="#portlet_tab3">&nbsp;</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="portlet_tab1" class="tab-pane active">
+                                        <!-- BEGIN FORM-->
+                                        <form class="form-horizontal" action="#">
+                                            <div class="control-group" v-if="apiName">
+                                                <label class="control-label">API</label>
+                                                <div class="controls">
+                                                    <a href="#" @click="intoApiDetail(apiId)" style="font-size: 18px;">[{{
+                                                        apiModule }}]{{ apiName }} - v{{ apiVersion }}</a>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">用例名称</label>
+                                                <div class="controls">
+                                                    <input type="text" class="m-wrap medium" placeholder="请输入用例名"
+                                                           name="caseName" v-model="caseName">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">请求参数</label>
+                                                <div class="controls">
                                             <textarea rows="5" class="large m-wrap" name="caseRequestParameters"
                                                       v-model="requestParameters"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">预期返回Code</label>
-                                        <div class="controls">
-                                            <input type="text" class="m-wrap medium" placeholder="请输入预期Code"
-                                                   name="caseExpectedStateCode" v-model="expectedStateCode">
-                                        </div>
-                                    </div>
-                                    <div class="control-group" v-if="actualStateCode">
-                                        <label class="control-label">实际返回Code</label>
-                                        <div class="controls">
-                                            <div v-if="checkStateCode(actualStateCode)">
-                                                <h3 style="color: limegreen">{{ actualStateCode }}</h3>
+                                                </div>
                                             </div>
-                                            <div v-else>
-                                                <h3 style="color: orangered">{{ actualStateCode }}</h3>
+                                            <div class="control-group">
+                                                <label class="control-label">预期返回Code</label>
+                                                <div class="controls">
+                                                    <input type="text" class="m-wrap medium" placeholder="请输入预期Code"
+                                                           name="caseExpectedStateCode" v-model="expectedStateCode">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">预期返回</label>
-                                        <div class="controls">
+                                            <div class="control-group" v-if="actualStateCode">
+                                                <label class="control-label">实际返回Code</label>
+                                                <div class="controls">
+                                                    <div v-if="checkStateCode(actualStateCode)">
+                                                        <h3 style="color: limegreen">{{ actualStateCode }}</h3>
+                                                    </div>
+                                                    <div v-else>
+                                                        <h3 style="color: orangered">{{ actualStateCode }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">预期返回</label>
+                                                <div class="controls">
                                             <textarea rows="5" class="large m-wrap" name="caseExpectedContent"
                                                       v-model="expectedContent"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="control-group" v-if="actualContent">
-                                        <label class="control-label">实际返回</label>
-                                        <div class="controls">
-                                            <label>{{ actualContent }}</label>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">比较方式</label>
-                                        <div class="controls">
-                                            <select class="large m-wrap" name="apiContentJudgeLogic"
-                                                    v-model="contentJudgeLogic">
-                                                <option value="contains" selected>contains</option>
-                                                <option value="equal">equal</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group" v-if="durationTime">
-                                        <label class="control-label">访问耗时</label>
-                                        <div class="controls">
-                                            <h3>{{ durationTime }}ms</h3>
-                                        </div>
-                                    </div>
-                                    <div class="control-group" v-if="testResult">
-                                        <label class="control-label">验证结果</label>
-                                        <div class="controls">
-                                            <div v-if="checkResult(testResult)">
-                                                <h3 style="color: limegreen">{{ testResult }}</h3>
+                                                </div>
                                             </div>
-                                            <div v-else>
-                                                <h3 style="color: orangered">{{ testResult }}</h3>
+                                            <div class="control-group" v-if="actualContent">
+                                                <label class="control-label">实际返回</label>
+                                                <div class="controls">
+                                                    <label>{{ actualContent }}</label>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="control-group">
+                                                <label class="control-label">比较方式</label>
+                                                <div class="controls">
+                                                    <select class="large m-wrap" name="apiContentJudgeLogic"
+                                                            v-model="contentJudgeLogic">
+                                                        <option value="contains" selected>contains</option>
+                                                        <option value="equal">equal</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group" v-if="durationTime">
+                                                <label class="control-label">访问耗时</label>
+                                                <div class="controls">
+                                                    <h3>{{ durationTime }}ms</h3>
+                                                </div>
+                                            </div>
+                                            <div class="control-group" v-if="testResult">
+                                                <label class="control-label">验证结果</label>
+                                                <div class="controls">
+                                                    <div v-if="checkResult(testResult)">
+                                                        <h3 style="color: limegreen">{{ testResult }}</h3>
+                                                    </div>
+                                                    <div v-else>
+                                                        <h3 style="color: orangered">{{ testResult }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group" v-if="updateTime">
+                                                <label class="control-label">更新时间</label>
+                                                <div class="controls">
+                                                    <label>{{ formatTime(updateTime) }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button class="btn blue" type="button" @click="showConfirmDialog">
+                                                    <i class="icon-ok" style="margin-right: 10px;"></i>{{ btnSave }}
+                                                </button>
+                                                <button class="btn red" type="button" @click="showDeleteDialog">
+                                                    <i class="icon-remove" style="margin-right: 10px;"></i>删除
+                                                </button>
+                                                <button class="btn gray" type="button" @click="clone">
+                                                    <i class="icon-copy" style="margin-right: 10px;"></i>复制
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
                                     </div>
-                                    <div class="control-group" v-if="updateTime">
-                                        <label class="control-label">更新时间</label>
-                                        <div class="controls">
-                                            <label>{{ formatTime(updateTime) }}</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-actions">
-                                        <button class="btn blue" type="button" @click="showConfirmDialog">
-                                            <i class="icon-ok" style="margin-right: 10px;"></i>{{ btnSave }}
-                                        </button>
-                                        <button class="btn red" type="button" @click="showDeleteDialog">
-                                            <i class="icon-remove" style="margin-right: 10px;"></i>删除
-                                        </button>
-                                        <button class="btn gray" type="button" @click="clone">
-                                            <i class="icon-copy" style="margin-right: 10px;"></i>复制
-                                        </button>
-                                    </div>
-                                </form>
-                                <!-- END FORM-->
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- END SAMPLE FORM PORTLET-->
                 </div>
             </div>
-            <!-- END SAMPLE FORM PORTLET-->
         </div>
+        <div class="span6">
+        ##            <iframe  src="$!{configConstant.resourcesBasicUrl}/case_list.vm"></iframe>
+            #parse("case_list.vm")
+        </div>
+
     </div>
-</div>
 ##<script src="$!{configConstant.resourcesBasicUrl}/js/lib/bootstrap.js?v=${configConstant.srcVersion}"
 ##        type="text/javascript"></script>
-<script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
-        type="text/javascript"></script>
-<script type="text/javascript">
-    var vm = new Vue({
-        el: '#vmItem',
-        data: {
-            apiModule: '',
-            apiName: '',
-            apiVersion: '',
-            id: null,
-            caseName: '',
-            apiId: 0,
-            requestParameters: '',
-            expectedStateCode: 200,
-            actualStateCode: 0,
-            expectedContent: '',
-            actualContent: '',
-            contentJudgeLogic: 'contains',
-            durationTime: 0,
-            testResult: '',
-            addTime: 0, // '创建时间（Unix_timestamp）',
-            updateTime: 0, // '更新时间（Unix_timestamp）',
-            del: 0, // '是否删除',
-            formTitle: '新建表单',
-            btnSave: '保存',
-            result: '',
-            copyNum: 0,
-        },
-        computed: {},
-        methods: {
-            formatTime: function (time) {
-                return new Date(parseInt(time) * 1000).toLocaleString().replace(/\//g, '-').replace('下午', ' ')
+    <script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        var vmItem = new Vue({
+            el: '#vmItem',
+            data: {
+                apiModule: '',
+                apiName: '',
+                apiVersion: '',
+                id: null,
+                caseName: '',
+                apiId: 0,
+                requestParameters: '',
+                expectedStateCode: 200,
+                actualStateCode: 0,
+                expectedContent: '',
+                actualContent: '',
+                contentJudgeLogic: 'contains',
+                durationTime: 0,
+                testResult: '',
+                addTime: 0, // '创建时间（Unix_timestamp）',
+                updateTime: 0, // '更新时间（Unix_timestamp）',
+                del: 0, // '是否删除',
+                formTitle: '新建表单',
+                btnSave: '保存',
+                result: '',
+                copyNum: 0,
             },
-            showConfirmDialog: function () {
-                if (!this.caseName) {
-                    alert('请输入用例名称！')
-                    return
-                }
-                if (!this.expectedStateCode) {
-                    alert('请输入预期返回Code！')
-                    return
-                }
-                if (!this.expectedContent) {
-                    alert('请输入预期返回结果！')
-                    return
-                }
-                if (!this.contentJudgeLogic) {
-                    alert('请选择比较方式！')
-                    return
-                }
-                var mymessage = confirm('确认保存吗？');
-                if (mymessage == true) {
-                    this.item()
-                } else if (mymessage == false) {
-                    // Hide
-                }
-            },
-            /**
-             * 获取详情
-             */
-            loadDetail: function () {
-                var self = this
-                $('#loading').modal('show');
-                $.ajax({
-                    url: '/api/case/detail.do',
-                    type: 'POST',
-                    data: {
-                        id: self.id
-                    },
-                    cache: false,
-                    success: function (result) {
-                        result = JSON.parse(result)
-                        if (result.code == 0) {
-                            self.id = result.ret.id
-                            self.caseName = result.ret.caseName
-                            self.apiId = result.ret.apiId
-                            self.requestParameters = result.ret.requestParameters
-                            self.expectedStateCode = result.ret.expectedStateCode
-                            self.actualStateCode = result.ret.actualStateCode
-                            self.expectedContent = result.ret.expectedContent
-                            self.actualContent = result.ret.actualContent
-                            self.contentJudgeLogic = result.ret.contentJudgeLogic
-                            self.durationTime = result.ret.durationTime
-                            self.testResult = result.ret.testResult
-                            self.addTime = result.ret.addTime
-                            self.updateTime = result.ret.updateTime
-                            self.del = result.ret.del
-                            self.btnSave = '更新'
-                            self.formTitle = '更新表单'
-                            self.loadApiDetail(self.apiId)
-                        } else {
-                            alert(result.msg)
-                            window.location = '/case/list.html'
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+            computed: {},
+            methods: {
+                formatTime: function (time) {
+                    return new Date(parseInt(time) * 1000).toLocaleString().replace(/\//g, '-').replace('下午', ' ')
+                },
+                showConfirmDialog: function () {
+                    if (!this.caseName) {
+                        alert('请输入用例名称！')
+                        return
                     }
-                });
-            },
-            /**
-             * 获取Api详情
-             */
-            loadApiDetail: function (apiId) {
-                var self = this
-                $.ajax({
-                    url: '/api/doc/detail.do',
-                    type: 'POST',
-                    data: {
-                        id: apiId
-                    },
-                    cache: false,
-                    success: function (result) {
-                        result = JSON.parse(result)
-                        if (result.code == 0) {
-                            if (result.ret) {
-                                self.apiVersion = result.ret.version
-                                self.apiModule = result.ret.module
-                                self.apiName = result.ret.name
+                    if (!this.expectedStateCode) {
+                        alert('请输入预期返回Code！')
+                        return
+                    }
+                    if (!this.expectedContent) {
+                        alert('请输入预期返回结果！')
+                        return
+                    }
+                    if (!this.contentJudgeLogic) {
+                        alert('请选择比较方式！')
+                        return
+                    }
+                    var mymessage = confirm('确认保存吗？');
+                    if (mymessage == true) {
+                        this.item()
+                    } else if (mymessage == false) {
+                        // Hide
+                    }
+                },
+                /**
+                 * 获取详情
+                 */
+                loadDetail: function () {
+                    var self = this
+                    $('#loading').modal('show');
+                    $.ajax({
+                        url: '/api/case/detail.do',
+                        type: 'POST',
+                        data: {
+                            id: self.id
+                        },
+                        cache: false,
+                        success: function (result) {
+                            result = JSON.parse(result)
+                            if (result.code == 0) {
+                                self.id = result.ret.id
+                                self.caseName = result.ret.caseName
+                                self.apiId = result.ret.apiId
+                                self.requestParameters = result.ret.requestParameters
+                                self.expectedStateCode = result.ret.expectedStateCode
+                                self.actualStateCode = result.ret.actualStateCode
+                                self.expectedContent = result.ret.expectedContent
+                                self.actualContent = result.ret.actualContent
+                                self.contentJudgeLogic = result.ret.contentJudgeLogic
+                                self.durationTime = result.ret.durationTime
+                                self.testResult = result.ret.testResult
+                                self.addTime = result.ret.addTime
+                                self.updateTime = result.ret.updateTime
+                                self.del = result.ret.del
+                                self.btnSave = '更新'
+                                self.formTitle = '更新表单'
+                                self.loadApiDetail(self.apiId)
+                            } else {
+                                alert(result.msg)
+                                window.location = '/case/list.html'
                             }
-                            $('#loading').modal('hide');
-                        } else {
-                            alert(result.msg)
-                            $('#loading').modal('hide');
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $('#loading').modal('hide');
-                    }
-                });
-            },
-            intoApiDetail: function (apiId) {
-                window.location = '/item.html?id=' + apiId
-            },
-            /**
-             * 校验返回状态码是否"200"
-             */
-            checkStateCode: function (code) {
-                if (code == 200) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            /**
-             * 校验返回结果是否"Pass"
-             */
-            checkResult: function (result) {
-                if (result == 'Pass') {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            /**
-             * 新建编辑
-             */
-            item: function () {
-                var params = {
-                    id: this.id,
-                    caseName: this.caseName,
-                    apiId: this.apiId,
-                    requestParameters: this.requestParameters,
-                    expectedStateCode: this.expectedStateCode,
-                    actualStateCode: this.actualStateCode,
-                    expectedContent: this.expectedContent,
-                    actualContent: this.actualContent,
-                    contentJudgeLogic: this.contentJudgeLogic,
-                    durationTime: this.durationTime,
-                    testResult: this.testResult,
-                    addTime: this.addTime,
-                    updateTime: this.updateTime,
-                    del: this.del
-                }
-                var self = this
-                $('#loading').modal('show');
-                $.ajax({
-                    url: '/api/case/item.do',
-                    type: 'POST',
-                    data: {
-                        params: JSON.stringify(params)
-                    },
-                    cache: false,
-                    success: function (result) {
-                        self.result = result
-                        result = JSON.parse(result)
-                        if (result.code == 0) {
-                            self.id = result.ret.id
-                            self.btnSave = '更新'
-                            self.formTitle = '更新表单'
-                            alert('保存成功！')
-                            $('#loading').modal('hide');
-                        } else {
-                            alert(result.msg)
-                            $('#loading').modal('hide');
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $('#loading').modal('hide');
-                    }
-                });
-            },
-            showDeleteDialog: function () {
-                var mymessage = confirm('确认删除吗？');
-                if (mymessage == true) {
-                    this.delete()
-                } else if (mymessage == false) {
-                    // Hide
-                }
-            },
-            /**
-             * 删除
-             */
-            delete: function () {
-                var that = this;
-                $('#loading').modal('show');
-                $.ajax({
-                    url: '/api/case/delete.do',
-                    type: 'POST',
-                    data: {
-                        id: that.id
-                    },
-                    cache: false,
-                    success: function (result) {
-                        result = JSON.parse(result)
-                        if (result.code == 0) {
-                            alert('删除成功')
-                            self.location = document.referrer;
-                            $('#loading').modal('hide');
-                        } else {
-                            alert(result.msg)
-                            $('#loading').modal('hide');
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $('#loading').modal('hide');
-                    }
-                });
-            },
-            /**
-             * 复制一份测试用例
-             */
-            clone: function () {
-                var params = {
-                    id: this.id,
-                    caseName: this.caseName,
-                    apiId: this.apiId,
-                    requestParameters: this.requestParameters,
-                    expectedStateCode: this.expectedStateCode,
-                    actualStateCode: this.actualStateCode,
-                    expectedContent: this.expectedContent,
-                    actualContent: this.actualContent,
-                    contentJudgeLogic: this.contentJudgeLogic,
-                    durationTime: this.durationTime,
-                    testResult: this.testResult,
-                    addTime: this.addTime,
-                    updateTime: this.updateTime,
-                    del: this.del
-                }
-                var self = this
-                $('#loading').modal('show');
-                $.ajax({
-                    url: '/api/case/clone.do',
-                    type: 'POST',
-                    data: {
-                        params: JSON.stringify(params),
-                        copyNum: (++self.copyNum)
-                    },
-                    cache: false,
-                    success: function (result) {
-                        result = JSON.parse(result)
-                        if (result.code == 0) {
-                            var mymessage = confirm(result.ret.msg);
-                            if (mymessage == true) {
-                                window.location = '/case/item.html?id=' + result.ret.id
-                            } else if (mymessage == false) {
+                    });
+                },
+                /**
+                 * 获取Api详情
+                 */
+                loadApiDetail: function (apiId) {
+                    var self = this
+                    $.ajax({
+                        url: '/api/doc/detail.do',
+                        type: 'POST',
+                        data: {
+                            id: apiId
+                        },
+                        cache: false,
+                        success: function (result) {
+                            result = JSON.parse(result)
+                            if (result.code == 0) {
+                                if (result.ret) {
+                                    self.apiVersion = result.ret.version
+                                    self.apiModule = result.ret.module
+                                    self.apiName = result.ret.name
+                                }
                                 $('#loading').modal('hide');
-                                // Hide
+                            } else {
+                                alert(result.msg)
+                                $('#loading').modal('hide');
                             }
-                        } else {
-                            alert(result.msg)
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                             $('#loading').modal('hide');
                         }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $('#loading').modal('hide');
+                    });
+                },
+                intoApiDetail: function (apiId) {
+                    window.location = '/item.html?id=' + apiId
+                },
+                /**
+                 * 校验返回状态码是否"200"
+                 */
+                checkStateCode: function (code) {
+                    if (code == 200) {
+                        return true;
+                    } else {
+                        return false;
                     }
-                });
+                },
+                /**
+                 * 校验返回结果是否"Pass"
+                 */
+                checkResult: function (result) {
+                    if (result == 'Pass') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                /**
+                 * 新建编辑
+                 */
+                item: function () {
+                    var params = {
+                        id: this.id,
+                        caseName: this.caseName,
+                        apiId: this.apiId,
+                        requestParameters: this.requestParameters,
+                        expectedStateCode: this.expectedStateCode,
+                        actualStateCode: this.actualStateCode,
+                        expectedContent: this.expectedContent,
+                        actualContent: this.actualContent,
+                        contentJudgeLogic: this.contentJudgeLogic,
+                        durationTime: this.durationTime,
+                        testResult: this.testResult,
+                        addTime: this.addTime,
+                        updateTime: this.updateTime,
+                        del: this.del
+                    }
+                    var self = this
+                    $('#loading').modal('show');
+                    $.ajax({
+                        url: '/api/case/item.do',
+                        type: 'POST',
+                        data: {
+                            params: JSON.stringify(params)
+                        },
+                        cache: false,
+                        success: function (result) {
+                            self.result = result
+                            result = JSON.parse(result)
+                            if (result.code == 0) {
+                                self.id = result.ret.id
+                                self.btnSave = '更新'
+                                self.formTitle = '更新表单'
+                                alert('保存成功！')
+                                $('#loading').modal('hide');
+                            } else {
+                                alert(result.msg)
+                                $('#loading').modal('hide');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                            $('#loading').modal('hide');
+                        }
+                    });
+                },
+                showDeleteDialog: function () {
+                    var mymessage = confirm('确认删除吗？');
+                    if (mymessage == true) {
+                        this.delete()
+                    } else if (mymessage == false) {
+                        // Hide
+                    }
+                },
+                /**
+                 * 删除
+                 */
+                delete: function () {
+                    var that = this;
+                    $('#loading').modal('show');
+                    $.ajax({
+                        url: '/api/case/delete.do',
+                        type: 'POST',
+                        data: {
+                            id: that.id
+                        },
+                        cache: false,
+                        success: function (result) {
+                            result = JSON.parse(result)
+                            if (result.code == 0) {
+                                alert('删除成功')
+                                self.location = document.referrer;
+                                $('#loading').modal('hide');
+                            } else {
+                                alert(result.msg)
+                                $('#loading').modal('hide');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                            $('#loading').modal('hide');
+                        }
+                    });
+                },
+                /**
+                 * 复制一份测试用例
+                 */
+                clone: function () {
+                    var params = {
+                        id: this.id,
+                        caseName: this.caseName,
+                        apiId: this.apiId,
+                        requestParameters: this.requestParameters,
+                        expectedStateCode: this.expectedStateCode,
+                        actualStateCode: this.actualStateCode,
+                        expectedContent: this.expectedContent,
+                        actualContent: this.actualContent,
+                        contentJudgeLogic: this.contentJudgeLogic,
+                        durationTime: this.durationTime,
+                        testResult: this.testResult,
+                        addTime: this.addTime,
+                        updateTime: this.updateTime,
+                        del: this.del
+                    }
+                    var self = this
+                    $('#loading').modal('show');
+                    $.ajax({
+                        url: '/api/case/clone.do',
+                        type: 'POST',
+                        data: {
+                            params: JSON.stringify(params),
+                            copyNum: (++self.copyNum)
+                        },
+                        cache: false,
+                        success: function (result) {
+                            result = JSON.parse(result)
+                            if (result.code == 0) {
+                                var mymessage = confirm(result.ret.msg);
+                                if (mymessage == true) {
+                                    window.location = '/case/item.html?id=' + result.ret.id
+                                } else if (mymessage == false) {
+                                    location.reload()
+                                    $('#loading').modal('hide');
+                                    // Hide
+                                }
+                            } else {
+                                alert(result.msg)
+                                $('#loading').modal('hide');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                            $('#loading').modal('hide');
+                        }
+                    });
+                }
             }
+        });
+    </script>
+    <script type="text/javascript">
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)return unescape(r[2]);
+            return null;
         }
-    });
-</script>
-<script type="text/javascript">
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null)return unescape(r[2]);
-        return null;
-    }
 
-    if (getQueryString('id')) {
-        vm.id = getQueryString('id')
-        vm.loadDetail()
-    }
-</script>
+        if (getQueryString('id')) {
+            vmItem.id = getQueryString('id')
+            vmItem.loadDetail()
+        }
+    </script>

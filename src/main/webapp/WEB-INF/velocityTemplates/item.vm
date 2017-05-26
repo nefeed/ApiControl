@@ -448,7 +448,8 @@
                 {key: 'https://testdingtalk2.xbongbong.com/', value: 'WEB项目开发版'},
                 {key: 'https://testdingtalkapi2.xbongbong.com/', value: 'Dingtalk项目开发版'},
                 {key: 'https://testdingtalk3.xbongbong.com/', value: 'WEB项目测试版'},
-                {key: 'https://testdingtalkapi3.xbongbong.com/', value: 'Dingtalk项目测试版'}
+                {key: 'https://testdingtalkapi3.xbongbong.com/', value: 'Dingtalk项目测试版'},
+				{key: 'https://dingtalk4.hz.taeapp.com/', value: 'Dingtalk项目内测版'}
             ],
             versionArray: [
                 {key: '3.7', value: '3.7'},
