@@ -117,6 +117,7 @@
                                                             v-model="contentJudgeLogic">
                                                         <option value="contains" selected>contains</option>
                                                         <option value="equal">equal</option>
+                                                        <option value="useCode">useCode</option>
                                                     </select>
                                                 </div>
                                             </div>

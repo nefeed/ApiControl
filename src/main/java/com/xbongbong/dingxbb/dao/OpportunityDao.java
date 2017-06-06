@@ -1,12 +1,11 @@
  
 package com.xbongbong.dingxbb.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import com.xbongbong.dingxbb.entity.OpportunityEntity;
 import org.apache.ibatis.annotations.Param;
 
-import com.xbongbong.dingxbb.entity.OpportunityEntity;
+import java.util.List;
+import java.util.Map;
 
  
  
@@ -38,7 +37,6 @@ public interface OpportunityDao {
 	public Integer getEntitysJoinOpportunityUserCount(@Param("param")Map<String ,Object>  param);
 	/**
 	 * 批量更新销售机会列表中某公司某客户的客户名称
-	 * @param key
 	 * @param corpid
 	 * @return
 	 */

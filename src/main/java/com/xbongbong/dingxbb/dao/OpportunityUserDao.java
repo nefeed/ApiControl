@@ -1,12 +1,11 @@
  
 package com.xbongbong.dingxbb.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import com.xbongbong.dingxbb.entity.OpportunityUserEntity;
 import org.apache.ibatis.annotations.Param;
 
-import com.xbongbong.dingxbb.entity.OpportunityUserEntity;
+import java.util.List;
+import java.util.Map;
 
 public interface OpportunityUserDao {
 
@@ -43,7 +42,7 @@ public interface OpportunityUserDao {
 	 * @param param
 	 * @return
 	 * @author hongxiao.liu
-	 * @time 2016-7-14 ����10:46:56
+	 * @time 2016-7-14
 	 */
 	public List<OpportunityUserEntity>  findEntitysJoinOpportunity(@Param("param")Map<String ,Object>  param);
 
