@@ -202,6 +202,18 @@ public class ApiDocController extends BasicController {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少请求 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
         }
+//        if (!(apiDoc.getParamsDemo().startsWith("{") && apiDoc.getParamsDemo().endsWith("}"))) {
+//            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请求 Demo 必须是 Json 格式字符串！", modelMap);
+//            return null;
+//        }
+//        JSONObject json = JSON.parseObject(apiDoc.getParamsDemo());
+//        if (!json.containsKey("corpid")) {
+//            json.put("corpid", "1");
+//        }
+//        if (!json.containsKey("nowUserId")) {
+//            json.put("nowUserId", "1");
+//        }
+//        apiDoc.setParamsDemo(JSON.toJSONString(json));
         if (StringUtil.isEmpty(apiDoc.getResponseDemo())) {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少返回 Demo，请务必填写，生成用例必须！", modelMap);
             return null;
