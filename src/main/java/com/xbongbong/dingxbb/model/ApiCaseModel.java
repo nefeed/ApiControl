@@ -72,6 +72,7 @@ public class ApiCaseModel extends BaseModel implements IModel {
         params.put("pageNum", pageNum);
         params.put("orderByStr", "api_id DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params.put("del", 0);
+        params.put("columns", "id,case_name,api_id,expected_state_code,test_result,duration_time,update_time");
         PageHelper pageHelper = getPageHelper(params, pageNum, this);
         return (List<ApiCaseEntity>) getEntityList(
                 params, pageHelper, this);

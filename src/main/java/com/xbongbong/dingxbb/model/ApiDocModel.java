@@ -80,6 +80,7 @@ public class ApiDocModel extends BaseModel implements IModel {
         params.put("pageNum", pageNum);
         params.put("orderByStr", "module ASC, version DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params.put("del", 0);
+        params.put("columns", "id,module,version,name,url,username,update_time");
         PageHelper pageHelper = getPageHelper(params, pageNum, this);
         return (List<ApiDocEntity>) getEntityList(
                 params, pageHelper, this);
@@ -89,6 +90,7 @@ public class ApiDocModel extends BaseModel implements IModel {
         Map<String, Object> params = new HashMap<>();
         params.put("idIn", apiIdList);
         params.put("del", 0);
+        params.put("columns", "id,module,version,name");
         return findEntitys(params);
     }
 
