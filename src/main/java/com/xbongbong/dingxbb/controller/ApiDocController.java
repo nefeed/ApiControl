@@ -99,12 +99,11 @@ public class ApiDocController extends BasicController {
     }
 
     @RequestMapping(value = "/list", produces = "application/json")
-    public void list(HttpServletRequest request,
+    public void list(@RequestParam(required = false) int page,
+                     @RequestParam(required = false) int pageSize,
+                     HttpServletRequest request,
                      HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
-
-        Integer page = Integer.parseInt(request.getParameter("page"));
-        Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
         if (page == 0) {
             page = 1;
         }
@@ -116,11 +115,10 @@ public class ApiDocController extends BasicController {
     }
 
     @RequestMapping(value = "/detail", produces = "application/json")
-    public void detail(HttpServletRequest request,
+    public void detail(@RequestParam(required = true) int id,
+                       HttpServletRequest request,
                        HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
-
-        Integer id = Integer.parseInt(request.getParameter("id"));
         if (id == 0) {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 文档主键", modelMap);
             return;
@@ -138,6 +136,7 @@ public class ApiDocController extends BasicController {
         if (apiDoc == null) {
             return;
         }
+
         modelMap.put("code", apiDocModel.save(apiDoc));
         modelMap.put("id", apiDoc.getId());
 
