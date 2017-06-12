@@ -1,8 +1,6 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
-<style>
-    .listsearch .control-group{display: inline-block;float: left; margin-right: 10px;}
-</style>
+<link rel="stylesheet" href="/css/fuzzy_search.css" />
 <div id="vmList">
     <!-- loading -->
     <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
