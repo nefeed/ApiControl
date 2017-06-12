@@ -129,8 +129,7 @@
                                                 <template v-for="(item, index) in versionArray">
                                                     <option v-if="index === 0" selected :value="item.key">{{ item.value }}
                                                     </option>
-                                                    <option v-else :value="item.key"
-                                                            :selected="{selected: (index == 0)}">{{ item.value }}
+                                                    <option v-else :value="item.key">{{ item.value }}
                                                     </option>
                                                 </template>
                                             </select>
@@ -145,8 +144,7 @@
                                                 <template v-for="(item, index) in moduleArray">
                                                     <option v-if="index === 0" selected :value="item.key">{{ item.value }}
                                                     </option>
-                                                    <option v-else :value="item.key"
-                                                            :selected="{selected: (index == 0)}">{{ item.value }}
+                                                    <option v-else :value="item.key">{{ item.value }}
                                                     </option>
                                                 </template>
                                             </select>
@@ -433,6 +431,8 @@
 ##        type="text/javascript"></script>
 <script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
+<script src="$!{configConstant.resourcesBasicUrl}/js/jsonFormatter.js?v=${configConstant.srcVersion}"
+        type="text/javascript"></script>
 <script type="text/javascript">
     var vm = new Vue({
         el: '#vmItem',
@@ -451,14 +451,7 @@
                 {key: 'https://testdingtalkapi3.xbongbong.com/', value: 'Dingtalk项目测试版'},
 				{key: 'https://dingtalk4.hz.taeapp.com/', value: 'Dingtalk项目内测版'}
             ],
-            versionArray: [
-                {key: '3.7', value: '3.7'},
-                {key: '3.6', value: '3.6'},
-                {key: '3.5', value: '3.5'},
-                {key: '3.4', value: '3.4'},
-                {key: '3.3', value: '3.3'},
-                {key: '3.2', value: '3.2'}
-            ],
+            versionArray: [],
             newVersion: '',
             moduleArray: [],
             newModule: '',
@@ -724,6 +717,8 @@
                 });
             },
             item: function () {
+                this.paramsDemo = formatJson(this.paramsDemo)
+                this.responseDemo = formatJson(this.responseDemo)
                 var params = {
                     id: this.id,
                     version: this.version,
@@ -814,6 +809,8 @@
              * 导出 Markdown 文本，输出在 result
              */
             outputMarkdown: function () {
+                this.paramsDemo = formatJson(this.paramsDemo)
+                this.responseDemo = formatJson(this.responseDemo)
                 var params = {
                     id: this.id,
                     version: this.version,

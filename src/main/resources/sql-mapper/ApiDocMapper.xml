@@ -135,11 +135,20 @@
   		<if test="param.name!=null">
   			AND  name = #{param.name}
   		</if>
-  		<if test="param.url!=null">
+		<if test="param.apiNameLike!=null">
+			AND  name LIKE CONCAT('%',#{param.apiNameLike},'%' )
+		</if>
+		<if test="param.url!=null">
   			AND  url = #{param.url}
+  		</if>
+		<if test="param.urlLike!=null">
+  			AND  url LIKE CONCAT('%',#{param.urlLike},'%' )
   		</if>
   		<if test="param.username!=null">
   			AND  username = #{param.username}
+  		</if>
+  		<if test="param.authorNameLike!=null">
+  			AND  username LIKE CONCAT('%',#{param.authorNameLike},'%' )
   		</if>
   		<if test="param.method!=null">
   			AND  method = #{param.method}
@@ -168,6 +177,12 @@
   		<if test="param.updateTime!=null">
   			AND  update_time = #{param.updateTime}
   		</if>
+		<if test="param.updateTimeStart!=null">
+			<![CDATA[AND  update_time >= #{param.updateTimeStart}]]>
+		</if>
+		<if test="param.updateTimeEnd!=null">
+			<![CDATA[AND  update_time < #{param.updateTimeEnd}]]>
+		</if>
   		<if test="param.del!=null">
   			AND  del = #{param.del}
   		</if>

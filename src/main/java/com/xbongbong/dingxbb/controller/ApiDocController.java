@@ -5,6 +5,7 @@ import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
+import com.xbongbong.dingxbb.pojo.ApiFuzzySearchPojo;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class ApiDocController extends BasicController {
 
     @RequestMapping(value = "/version/item", produces = "application/json")
     public void versionItem(@RequestParam(required = true) String version, HttpServletRequest request,
-                           HttpServletResponse response, Map<String, Object> modelMap)
+                            HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         if (apiDocModel.itemVersion(version) != -1) {
             returnSuccessJsonData(request, response, version);
@@ -65,7 +66,7 @@ public class ApiDocController extends BasicController {
 
     @RequestMapping(value = "/module/item", produces = "application/json")
     public void moduleItem(@RequestParam(required = true) String module, HttpServletRequest request,
-                       HttpServletResponse response, Map<String, Object> modelMap)
+                           HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         if (apiDocModel.itemModule(module) != -1) {
             returnSuccessJsonData(request, response, module);
@@ -171,6 +172,45 @@ public class ApiDocController extends BasicController {
         }
 
         modelMap.put("markdown", markdownContent);
+        returnSuccessJsonData(request, response, modelMap);
+    }
+
+
+    @RequestMapping(value = "/search", produces = "application/json")
+    public void fuzzySearch(ApiFuzzySearchPojo fuzzySearchPojo,
+                            HttpServletRequest request,
+                            HttpServletResponse response, Map<String, Object> modelMap)
+            throws Exception {
+        if (fuzzySearchPojo.getPage() == 0) {
+            fuzzySearchPojo.setPage(1);
+        }
+        if (fuzzySearchPojo.getPageSize() == 0) {
+            fuzzySearchPojo.setPageSize(20);
+        }
+        if (StringUtil.isEmpty(fuzzySearchPojo.getVersion()) && StringUtil.isEmpty(fuzzySearchPojo.getModule())
+                && StringUtil.isEmpty(fuzzySearchPojo.getApiNameLike()) && StringUtil.isEmpty(fuzzySearchPojo.getUrlLike())
+                && StringUtil.isEmpty(fuzzySearchPojo.getAuthorNameLike()) && fuzzySearchPojo.getUpdateTimeStart() == 0
+                && fuzzySearchPojo.getUpdateTimeEnd() == 0) {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请至少选择一个搜索项", modelMap);
+            return;
+        }
+        if (fuzzySearchPojo.getUpdateTimeStart() > 0 && fuzzySearchPojo.getUpdateTimeEnd() > 0 &&
+                fuzzySearchPojo.getUpdateTimeEnd() <= fuzzySearchPojo.getUpdateTimeStart()) {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "更新时间区间格式错误", modelMap);
+            return;
+        }
+        List<ApiDocEntity> apiDocList = apiDocModel.fuzzySearchList(fuzzySearchPojo);
+        returnSuccessJsonData(request, response, apiDocList);
+    }
+
+    @RequestMapping(value = "/search/count", produces = "application/json")
+    public void fuzzySearchCount(ApiFuzzySearchPojo fuzzySearchPojo,
+                            HttpServletRequest request,
+                            HttpServletResponse response, Map<String, Object> modelMap)
+            throws Exception {
+        Integer count = apiDocModel.getFuzzySearchCount(fuzzySearchPojo);
+        modelMap.clear();
+        modelMap.put("count", count);
         returnSuccessJsonData(request, response, modelMap);
     }
 

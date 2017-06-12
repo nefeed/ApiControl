@@ -9,6 +9,7 @@ import com.xbongbong.dingxbb.entity.SysModuleEntity;
 import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo;
 import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo;
 import com.xbongbong.dingxbb.pojo.ApiDocWrongCodePojo;
+import com.xbongbong.dingxbb.pojo.ApiFuzzySearchPojo;
 import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.PageHelper;
 import com.xbongbong.util.StringUtil;
@@ -237,6 +238,61 @@ public class ApiDocModel extends BaseModel implements IModel {
             content.append("<br />");
         }
         return content.toString();
+    }
+
+    /**
+     * 模糊搜索 Api 文档列表
+     *
+     * @param fuzzySearchPojo
+     * @return
+     */
+    public List<ApiDocEntity> fuzzySearchList(ApiFuzzySearchPojo fuzzySearchPojo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", fuzzySearchPojo.getPage());
+        params.put("pageNum", fuzzySearchPojo.getPageSize());
+        params.put("orderByStr", "module ASC, version DESC, update_time DESC");
+        params.put("columns", "id,module,version,name,url,username,update_time");
+        params = initFuzzySearchMap(params, fuzzySearchPojo);
+        PageHelper pageHelper = getPageHelper(params, fuzzySearchPojo.getPageSize(), this);
+        return (List<ApiDocEntity>) getEntityList(
+                params, pageHelper, this);
+    }
+
+    /**
+     * 模糊搜索 Api 文档列表总数
+     *
+     * @param fuzzySearchPojo
+     * @return
+     */
+    public Integer getFuzzySearchCount(ApiFuzzySearchPojo fuzzySearchPojo) {
+        Map<String, Object> params = new HashMap<>();
+        params = initFuzzySearchMap(params, fuzzySearchPojo);
+        return apiDocDao.getEntitysCount(params);
+    }
+
+    private Map<String, Object> initFuzzySearchMap(Map<String, Object> params, ApiFuzzySearchPojo fuzzySearchPojo) {
+        params.put("del", 0);
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getModule())) {
+            params.put("module", fuzzySearchPojo.getModule());
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getVersion())) {
+            params.put("version", fuzzySearchPojo.getVersion());
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getUrlLike())) {
+            params.put("urlLike", fuzzySearchPojo.getUrlLike());
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getApiNameLike())) {
+            params.put("apiNameLike", fuzzySearchPojo.getApiNameLike());
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getAuthorNameLike())) {
+            params.put("authorNameLike", fuzzySearchPojo.getAuthorNameLike());
+        }
+        if (fuzzySearchPojo.getUpdateTimeStart() > 0 && fuzzySearchPojo.getUpdateTimeEnd() > 0 &&
+                fuzzySearchPojo.getUpdateTimeEnd() > fuzzySearchPojo.getUpdateTimeStart()) {
+            params.put("updateTimeStart", fuzzySearchPojo.getUpdateTimeStart());
+            params.put("updateTimeEnd", fuzzySearchPojo.getUpdateTimeEnd());
+        }
+        return params;
     }
 }
 
