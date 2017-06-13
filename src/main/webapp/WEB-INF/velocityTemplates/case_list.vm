@@ -1,6 +1,6 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
-<link rel="stylesheet" href="/css/fuzzy_search.css" />
+<link rel="stylesheet" href="/css/fuzzy_search.css"/>
 <div id="vmList">
     <!-- loadingList -->
     <div class="modal fade" id="loadingList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -34,7 +34,7 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="row-fluid">
         <div class="span12">
             <!-- BEGIN SAMPLE FORM PORTLET-->
@@ -52,10 +52,62 @@
                             <tr>
                                 <th>用例名</th>
                                 <th>Api</th>
-                                <th>预期返回</th>
-                                <th>验证结果</th>
-                                <th>请求耗时</th>
-                                <th>修改时间</th>
+                                <th @click="expectedStateCodeSortClick()">预期返回
+                                    <span v-if="expectedStateCodeSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="expectedStateCodeSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
+                                <th @click="testResultSortClick()">验证结果
+                                    <span v-if="testResultSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="testResultSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
+                                <th @click="durationTimeSortClick()">请求耗时
+                                    <span v-if="durationTimeSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="durationTimeSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
+                                <th @click="updateTimeSortClick()">修改时间
+                                    <span v-if="updateTimeSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="updateTimeSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -118,7 +170,8 @@
 <script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
 <script type="text/javascript">
-    var $loading = $('#loadingList');
+    var loadingListView =
+            $('#loadingList');
     var vmList = new Vue({
         el: '#vmList',
         data: {
@@ -126,7 +179,11 @@
             pageSize: 20,
             count: 0,
             pageCount: 1,
-            list: []
+            list: [],
+            expectedStateCodeSort: '',
+            testResultSort: '',
+            durationTimeSort: '',
+            updateTimeSort: ''
         },
         computed: {},
         methods: {
@@ -137,8 +194,7 @@
              * 获取测试用例总数
              */
             loadCount: function () {
-                var self = this
-                $loading.modal('show');
+                loadingListView.modal('show');
                 $.ajax({
                     url: "/api/case/count.do",
                     type: "POST",
@@ -147,20 +203,20 @@
                     success: function (result) {
                         result = JSON.parse(result)
                         if (result.code == 0) {
-                            self.count = result.ret.count
-                            if (self.count % self.pageSize == 0) {
-                                self.pageCount = self.count / self.pageSize
+                            vmList.count = result.ret.count
+                            if (vmList.count % vmList.pageSize == 0) {
+                                vmList.pageCount = vmList.count / vmList.pageSize
                             } else {
-                                self.pageCount = self.count / self.pageSize + 1
+                                vmList.pageCount = vmList.count / vmList.pageSize + 1
                             }
-                            if (self.pageCount == 0) {
-                                self.pageCount = 1
+                            if (vmList.pageCount == 0) {
+                                vmList.pageCount = 1
                             }
-                            self.pageCount = Math.floor(self.pageCount)
-                            self.loadCaseList()
+                            vmList.pageCount = Math.floor(vmList.pageCount)
+                            vmList.loadCaseList()
                         } else {
                             alert(result.msg)
-                            $loading.modal('hide');
+                            loadingListView.modal('hide');
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -173,10 +229,13 @@
              */
             loadCaseList: function () {
                 var params = {
-                    page: this.page,
-                    pageSize: this.pageSize
+                    page: vmList.page,
+                    pageSize: vmList.pageSize,
+                    expectedStateCodeSort: vmList.expectedStateCodeSort,
+                    testResultSort: vmList.testResultSort,
+                    durationTimeSort: vmList.durationTimeSort,
+                    updateTimeSort: vmList.updateTimeSort
                 }
-                var self = this
                 $.ajax({
                     url: "/api/case/list.do",
                     type: "POST",
@@ -185,16 +244,16 @@
                     success: function (result) {
                         result = JSON.parse(result)
                         if (result.code == 0) {
-                            self.list = result.ret
-                            $loading.modal('hide');
+                            vmList.list = result.ret;
+                            loadingListView.modal('hide');
                         } else {
-                            alert(result.msg)
-                            $loading.modal('hide');
+                            alert(result.msg);
+                            loadingListView.modal('hide');
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $loading.modal('hide');
+                        loadingListView.modal('hide');
                     }
                 });
             },
@@ -203,12 +262,13 @@
              * @param index
              */
             intoPage: function (index) {
-                if (index < 1 || index > this.pageCount) {
+                if (index < 1 || index > vmList.pageCount) {
                     // alert('翻页操作无效！')
                     return
                 }
-                this.page = index
-                this.loadCaseList()
+                loadingListView.modal('show');
+                vmList.page = index
+                vmList.loadCaseList()
             },
             /**
              * 校验返回结果是否"Pass"
@@ -230,7 +290,7 @@
             showDeleteDialog: function (id) {
                 var mymessage = confirm('确认删除吗？');
                 if (mymessage == true) {
-                    this.delete(id)
+                    vmList.delete(id)
                 } else if (mymessage == false) {
                     // Hide
                 }
@@ -239,7 +299,7 @@
              * 删除
              */
             delete: function (id) {
-                $loading.modal('show');
+                loadingListView.modal('show');
                 $.ajax({
                     url: '/api/case/delete.do',
                     type: 'POST',
@@ -254,14 +314,74 @@
                             location.reload()
                         } else {
                             alert(result.msg)
-                            $loading.modal('hide');
+                            loadingListView.modal('hide');
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $loading.modal('hide');
+                        loadingListView.modal('hide');
                     }
                 });
+            },
+            expectedStateCodeSortClick: function() {
+                switch (vmList.expectedStateCodeSort) {
+                    case '':
+                    default:
+                        vmList.expectedStateCodeSort = 'ASC'
+                        break
+                    case 'ASC':
+                        vmList.expectedStateCodeSort = 'DESC'
+                        break
+                    case 'DESC':
+                        vmList.expectedStateCodeSort = ''
+                        break
+                }
+                vmList.intoPage(1)
+            },
+            testResultSortClick: function() {
+                switch (vmList.testResultSort) {
+                    case '':
+                    default:
+                        vmList.testResultSort = 'ASC'
+                        break
+                    case 'ASC':
+                        vmList.testResultSort = 'DESC'
+                        break
+                    case 'DESC':
+                        vmList.testResultSort = ''
+                        break
+                }
+                vmList.intoPage(1)
+            },
+            durationTimeSortClick: function() {
+                switch (vmList.durationTimeSort) {
+                    case '':
+                    default:
+                        vmList.durationTimeSort = 'ASC'
+                        break
+                    case 'ASC':
+                        vmList.durationTimeSort = 'DESC'
+                        break
+                    case 'DESC':
+                        vmList.durationTimeSort = ''
+                        break
+                }
+                vmList.intoPage(1)
+            },
+            updateTimeSortClick: function() {
+                switch (vmList.updateTimeSort) {
+                    case '':
+                    default:
+                        vmList.updateTimeSort = 'ASC'
+                        break
+                    case 'ASC':
+                        vmList.updateTimeSort = 'DESC'
+                        break
+                    case 'DESC':
+                        vmList.updateTimeSort = ''
+                        break
+                }
+                vmList.intoPage(1)
             }
         }
     });

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiCaseModel;
+import com.xbongbong.dingxbb.pojo.ApiCaseListPojo;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,19 +71,17 @@ public class ApiCaseController extends BasicController {
     }
 
     @RequestMapping(value = "/list", produces = "application/json")
-    public void list(HttpServletRequest request,
+    public void list(ApiCaseListPojo apiCaseListPojo,
+            HttpServletRequest request,
                      HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
-
-        Integer page = Integer.parseInt(request.getParameter("page"));
-        Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
-        if (page == 0) {
-            page = 1;
+        if (apiCaseListPojo.getPage() == 0) {
+            apiCaseListPojo.setPage(1);
         }
-        if (pageSize == 0) {
-            pageSize = 20;
+        if (apiCaseListPojo.getPageSize() == 0) {
+            apiCaseListPojo.setPageSize(20);
         }
-        List<ApiCaseEntity> apiCaseList = apiCaseModel.findApiCaseList(page, pageSize);
+        List<ApiCaseEntity> apiCaseList = apiCaseModel.findApiCaseList(apiCaseListPojo);
         returnSuccessJsonData(request, response, apiCaseModel.formatCasePojoList(apiCaseList));
     }
 

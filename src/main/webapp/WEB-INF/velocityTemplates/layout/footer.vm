@@ -1,5 +1,5 @@
 <div class="footer">
-    <div class="footer-inner">
+    <div class="footer-inner" style="width: 100%; margin-top: 50px; margin-bottom: 20px; text-align:center;">
         Copyright © 2016 , All Rights Reserved  浙ICP备15012475号-1 杭州逍邦网络科技有限公司 版权所有
     </div>
     <div class="footer-tools">

@@ -1,1 +1,61 @@
-.listsearch .control-group{display: inline-block;float: left; margin-right: 10px;}
+.search-group .control-group {
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+
+.search-group .search-small {
+    width: 12%;
+}
+
+.search-group .search-big {
+    width: 20%;
+}
+
+.search-group .search-btn {
+    width: 8%;
+    margin-left: 2%;
+}
+
+table .caret-wrapper {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    margin-top: -2px;
+    width: 16px;
+    height: 30px;
+    overflow: visible;
+    overflow: initial;
+}
+table .sort-caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: 0;
+    content: "";
+    position: absolute;
+    left: 3px;
+    z-index: 2;
+}
+table .sort-caret.ascending {
+    top: 13px;
+    border-top: none;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgb(151, 168, 190);
+    border-left: 5px solid transparent;
+}
+table .sort-caret.descending {
+    bottom: 4px;
+    border-top: 5px solid rgb(151, 168, 190);
+    border-right: 5px solid transparent;
+    border-bottom: none;
+    border-left: 5px solid transparent;
+}
+table .ascending .sort-caret.ascending {
+    border-bottom-color: rgb(72, 87, 106);
+}
+table .descending .sort-caret.descending {
+    border-top-color: rgb(72, 87, 106);
+}

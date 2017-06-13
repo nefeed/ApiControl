@@ -7,8 +7,10 @@ import com.xbongbong.dingxbb.dao.ApiCaseDao;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.pojo.ApiCaseListItemPojo;
+import com.xbongbong.dingxbb.pojo.ApiCaseListPojo;
 import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.PageHelper;
+import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,14 +68,35 @@ public class ApiCaseModel extends BaseModel implements IModel {
         return apiCaseDao.getEntitysCount(param);
     }
 
-    public List<ApiCaseEntity> findApiCaseList(Integer page, Integer pageNum) {
+    public List<ApiCaseEntity> findApiCaseList(ApiCaseListPojo apiCaseListPojo) {
         Map<String, Object> params = new HashMap<>();
-        params.put("page", page);
-        params.put("pageNum", pageNum);
-        params.put("orderByStr", "api_id DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
+        params.put("page", apiCaseListPojo.getPage());
+        params.put("pageNum", apiCaseListPojo.getPageSize());
+        if (StringUtil.isEmpty(apiCaseListPojo.getExpectedStateCodeSort()) &&
+                StringUtil.isEmpty(apiCaseListPojo.getTestResultSort()) &&
+                StringUtil.isEmpty(apiCaseListPojo.getDurationTimeSort()) &&
+                StringUtil.isEmpty(apiCaseListPojo.getUpdateTimeSort())) {
+            params.put("orderByStr", "api_id DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
+        }
+        StringBuilder sort = new StringBuilder();
+        if (!StringUtil.isEmpty(apiCaseListPojo.getExpectedStateCodeSort())) {
+            sort.append("expected_state_code").append(" ").append(apiCaseListPojo.getExpectedStateCodeSort()).append(",");
+        }
+        if (!StringUtil.isEmpty(apiCaseListPojo.getTestResultSort())) {
+            sort.append("test_result").append(" ").append(apiCaseListPojo.getTestResultSort()).append(",");
+        }
+        if (!StringUtil.isEmpty(apiCaseListPojo.getDurationTimeSort())) {
+            sort.append("duration_time").append(" ").append(apiCaseListPojo.getDurationTimeSort()).append(",");
+        }
+        if (!StringUtil.isEmpty(apiCaseListPojo.getUpdateTimeSort())) {
+            sort.append("update_time").append(" ").append(apiCaseListPojo.getUpdateTimeSort()).append(",");
+        }
+        if (sort.length() > 0) {
+            params.put("orderByStr", sort.append("api_id DESC").toString());
+        }
         params.put("del", 0);
         params.put("columns", "id,case_name,api_id,expected_state_code,test_result,duration_time,update_time");
-        PageHelper pageHelper = getPageHelper(params, pageNum, this);
+        PageHelper pageHelper = getPageHelper(params, apiCaseListPojo.getPageSize(), this);
         return (List<ApiCaseEntity>) getEntityList(
                 params, pageHelper, this);
     }
