@@ -22,6 +22,10 @@ class ApiDocListPojoKt : Serializable {
     var authorNameLike: String = ""
     var updateTimeStart = 0
     var updateTimeEnd = 0
+    var moduleSort = ""
+    var versionSort = ""
+    var authorSort = ""
+    var updateTimeSort = ""
 
     companion object {
 

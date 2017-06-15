@@ -228,6 +228,29 @@ public class ApiDocModel extends BaseModel implements IModel {
         params.put("page", fuzzySearchPojo.getPage());
         params.put("pageNum", fuzzySearchPojo.getPageSize());
         params.put("orderByStr", "module ASC, version DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
+        if (StringUtil.isEmpty(fuzzySearchPojo.getModuleSort()) &&
+                StringUtil.isEmpty(fuzzySearchPojo.getVersionSort()) &&
+                StringUtil.isEmpty(fuzzySearchPojo.getAuthorSort()) &&
+                StringUtil.isEmpty(fuzzySearchPojo.getUpdateTimeSort())) {
+            params.put("orderByStr", "module ASC, version DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
+        }
+        StringBuilder sort = new StringBuilder();
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getModuleSort())) {
+            sort.append("module").append(" ").append(fuzzySearchPojo.getModuleSort()).append(",");
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getVersionSort())) {
+            sort.append("version").append(" ").append(fuzzySearchPojo.getVersionSort()).append(",");
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getAuthorSort())) {
+            sort.append("username").append(" ").append(fuzzySearchPojo.getAuthorSort()).append(",");
+        }
+        if (!StringUtil.isEmpty(fuzzySearchPojo.getUpdateTimeSort())) {
+            sort.append("update_time").append(" ").append(fuzzySearchPojo.getUpdateTimeSort()).append(",");
+        }
+        if (sort.length() > 0) {
+//            params.put("orderByStr", sort.append("id DESC").toString());
+            params.put("orderByStr", sort.substring(0, sort.length() - 1));
+        }
         params = initFuzzySearchMap(params, fuzzySearchPojo);
         params.put("columns", "id,module,version,name,url,username,update_time");
         PageHelper pageHelper = getPageHelper(params, fuzzySearchPojo.getPageSize(), this);

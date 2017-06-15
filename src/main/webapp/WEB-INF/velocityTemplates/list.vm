@@ -103,12 +103,64 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>模块</th>
-                                <th>版本</th>
+                                <th @click="moduleSortClick()">模块
+                                    <span v-if="moduleSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="moduleSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
+                                <th @click="versionSortClick()">版本
+                                    <span v-if="versionSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="versionSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
                                 <th>Api名</th>
                                 <th>URL</th>
-                                <th>作者</th>
-                                <th>修改时间</th>
+                                <th @click="authorSortClick()">作者
+                                    <span v-if="authorSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="authorSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
+                                <th @click="updateTimeSortClick()">修改时间
+                                    <span v-if="updateTimeSort == 'ASC'" class="caret-wrapper ascending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else-if="updateTimeSort == 'DESC'" class="caret-wrapper descending">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                    <span v-else class="caret-wrapper">
+                                        <i class="sort-caret ascending"></i>
+                                        <i class="sort-caret descending"></i>
+                                    </span>
+                                </th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -186,6 +238,10 @@
             old_authorNameLike: "",
             old_updateTimeStart: 0,
             old_updateTimeEnd: 0,
+            moduleSort: '',
+            versionSort: '',
+            authorSort: '',
+            updateTimeSort: ''
         },
         computed: {},
         methods: {
@@ -234,15 +290,19 @@
             loadApiList: function () {
                 $('#loading').modal('show');
                 var params = {
-                    page: this.page,
-                    pageSize: this.pageSize,
-                    version: this.old_version,
-                    module: this.old_module,
-                    apiNameLike: this.old_apiNameLike,
-                    urlLike: this.old_urlLike,
-                    authorNameLike: this.old_authorNameLike,
-                    updateTimeStart: this.old_updateTimeStart,
-                    updateTimeEnd: this.old_updateTimeEnd,
+                    page: vm.page,
+                    pageSize: vm.pageSize,
+                    version: vm.old_version,
+                    module: vm.old_module,
+                    apiNameLike: vm.old_apiNameLike,
+                    urlLike: vm.old_urlLike,
+                    authorNameLike: vm.old_authorNameLike,
+                    updateTimeStart: vm.old_updateTimeStart,
+                    updateTimeEnd: vm.old_updateTimeEnd,
+                    moduleSort: vm.moduleSort,
+                    versionSort: vm.versionSort,
+                    authorSort: vm.authorSort,
+                    updateTimeSort: vm.updateTimeSort
                 }
                 $.ajax({
                     url: '/api/doc/list.do',
@@ -270,12 +330,12 @@
              * @param index
              */
             intoPage: function (index) {
-                if (index < 1 || index > this.pageCount) {
+                if (index < 1 || index > vm.pageCount) {
                     // alert('翻页操作无效！')
                     return
                 }
-                this.page = index
-                this.loadApiList()
+                vm.page = index
+                vm.loadApiList()
             },
             /**
              * 跳转到详情页
@@ -287,7 +347,7 @@
             showDeleteDialog: function (id) {
                 var mymessage = confirm('确认删除吗？');
                 if (mymessage == true) {
-                    this.delete(id)
+                    vm.delete(id)
                 } else if (mymessage == false) {
                     // Hide
                 }
@@ -422,13 +482,13 @@
                     url: "/api/doc/search/count.do",
                     type: "POST",
                     data: {
-                        version: this.version,
-                        module: this.module,
-                        apiNameLike: this.apiNameLike,
-                        urlLike: this.urlLike,
-                        authorNameLike: this.authorNameLike,
-                        updateTimeStart: this.updateTimeStart,
-                        updateTimeEnd: this.updateTimeEnd,
+                        version: vm.version,
+                        module: vm.module,
+                        apiNameLike: vm.apiNameLike,
+                        urlLike: vm.urlLike,
+                        authorNameLike: vm.authorNameLike,
+                        updateTimeStart: vm.updateTimeStart,
+                        updateTimeEnd: vm.updateTimeEnd,
                     },
                     cache: false,
                     success: function (result) {
@@ -453,7 +513,57 @@
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
+            },
+            /**
+             *  模块排序
+             */
+            moduleSortClick: function () {
+                vm.moduleSort = vm.changeSort(vm.moduleSort)
+                vm.intoPage(1)
+            },
+            /**
+             *  版本排序
+             */
+            versionSortClick: function () {
+                vm.versionSort = vm.changeSort(vm.versionSort)
+                vm.intoPage(1)
+            },
+            /**
+             *  作者排序
+             */
+            authorSortClick: function () {
+                vm.authorSort = vm.changeSort(vm.authorSort)
+                vm.intoPage(1)
+            },
+            /**
+             *  更新时间排序
+             */
+            updateTimeSortClick: function () {
+                vm.updateTimeSort = vm.changeSort(vm.updateTimeSort)
+                vm.intoPage(1)
+            },
+            /**
+             * 返回排序字符
+             *
+             * @param sort
+             * @return {*}
+             */
+            changeSort: function (sort) {
+                switch (sort) {
+                    case '':
+                    default:
+                        sort = 'ASC'
+                        break
+                    case 'ASC':
+                        sort = 'DESC'
+                        break
+                    case 'DESC':
+                        sort = ''
+                        break
+                }
+                return sort
             }
+
         }
     });
 </script>
