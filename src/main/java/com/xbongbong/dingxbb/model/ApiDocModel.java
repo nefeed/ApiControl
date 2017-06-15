@@ -6,10 +6,7 @@ import com.xbongbong.dingxbb.dao.ApiDocDao;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.entity.ApiVersionEntity;
 import com.xbongbong.dingxbb.entity.SysModuleEntity;
-import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo;
-import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo;
-import com.xbongbong.dingxbb.pojo.ApiDocWrongCodePojo;
-import com.xbongbong.dingxbb.pojo.ApiFuzzySearchPojo;
+import com.xbongbong.dingxbb.pojo.*;
 import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.PageHelper;
 import com.xbongbong.util.StringUtil;
@@ -73,26 +70,6 @@ public class ApiDocModel extends BaseModel implements IModel {
 
     public Integer getEntitysCount(Map<String, Object> param) {
         return apiDocDao.getEntitysCount(param);
-    }
-
-    public List<ApiDocEntity> findApiDocList(Integer page, Integer pageNum) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("page", page);
-        params.put("pageNum", pageNum);
-        params.put("orderByStr", "module ASC, version DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
-        params.put("del", 0);
-        params.put("columns", "id,module,version,name,url,username,update_time");
-        PageHelper pageHelper = getPageHelper(params, pageNum, this);
-        return (List<ApiDocEntity>) getEntityList(
-                params, pageHelper, this);
-    }
-
-    public List<ApiDocEntity> findApiDocList(List<Integer> apiIdList) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("idIn", apiIdList);
-        params.put("del", 0);
-        params.put("columns", "id,module,version,name");
-        return findEntitys(params);
     }
 
     /**
@@ -241,21 +218,36 @@ public class ApiDocModel extends BaseModel implements IModel {
     }
 
     /**
-     * 模糊搜索 Api 文档列表
+     * 获取 Api 文档列表
      *
      * @param fuzzySearchPojo
      * @return
      */
-    public List<ApiDocEntity> fuzzySearchList(ApiFuzzySearchPojo fuzzySearchPojo) {
+    public List<ApiDocEntity> findApiDocList(ApiDocListPojoKt fuzzySearchPojo) {
         Map<String, Object> params = new HashMap<>();
         params.put("page", fuzzySearchPojo.getPage());
         params.put("pageNum", fuzzySearchPojo.getPageSize());
-        params.put("orderByStr", "module ASC, version DESC, update_time DESC");
-        params.put("columns", "id,module,version,name,url,username,update_time");
+        params.put("orderByStr", "module ASC, version DESC, update_time DESC"); // 按是否已读正序排列，推送时间倒叙排列
         params = initFuzzySearchMap(params, fuzzySearchPojo);
+        params.put("columns", "id,module,version,name,url,username,update_time");
         PageHelper pageHelper = getPageHelper(params, fuzzySearchPojo.getPageSize(), this);
         return (List<ApiDocEntity>) getEntityList(
                 params, pageHelper, this);
+    }
+
+    /**
+     * 根据 Api 文档 id 列表获取 Api 文档列表
+     *
+     * @param apiIdList
+     * @return
+     */
+    public List<ApiDocEntity> findApiDocList(List<Integer> apiIdList) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("idIn", apiIdList);
+        params.put("del", 0);
+        params.put("limitNum", apiIdList.size());
+        params.put("columns", "id,module,version,name");
+        return findEntitys(params);
     }
 
     /**
@@ -264,13 +256,13 @@ public class ApiDocModel extends BaseModel implements IModel {
      * @param fuzzySearchPojo
      * @return
      */
-    public Integer getFuzzySearchCount(ApiFuzzySearchPojo fuzzySearchPojo) {
+    public Integer getApiDocCount(ApiDocListPojoKt fuzzySearchPojo) {
         Map<String, Object> params = new HashMap<>();
         params = initFuzzySearchMap(params, fuzzySearchPojo);
         return apiDocDao.getEntitysCount(params);
     }
 
-    private Map<String, Object> initFuzzySearchMap(Map<String, Object> params, ApiFuzzySearchPojo fuzzySearchPojo) {
+    private Map<String, Object> initFuzzySearchMap(Map<String, Object> params, ApiDocListPojoKt fuzzySearchPojo) {
         params.put("del", 0);
         if (!StringUtil.isEmpty(fuzzySearchPojo.getModule())) {
             params.put("module", fuzzySearchPojo.getModule());

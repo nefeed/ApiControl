@@ -101,7 +101,8 @@
 		
 		using(id)
 			<if test="param.groupByStr!=null"> group by ${param.groupByStr} </if>
-			<if test="param.orderByStrGroup!=null"> order by ${param.orderByStrGroup} </if>	
+			<if test="param.orderByStrGroup!=null"> order by ${param.orderByStrGroup} </if>
+			<if test="param.limitNum!=null"> LIMIT #{param.limitNum} </if>
 			<if test="param.startGroup!=null and param.pageNumGroup!=null"> LIMIT #{param.startGroup},#{param.pageNumGroup} </if>
     		 
 	</select>

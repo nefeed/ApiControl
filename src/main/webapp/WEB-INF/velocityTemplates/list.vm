@@ -1,6 +1,6 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
-<link rel="stylesheet" href="/css/fuzzy_search.css" />
+<link rel="stylesheet" href="/css/fuzzy_search.css"/>
 <div id="vmList">
     <!-- loading -->
     <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -179,7 +179,6 @@
             authorNameLike: "",
             updateTimeStart: 0,
             updateTimeEnd: 0,
-            isFuzzySearch: false,
             old_version: "",
             old_module: "",
             old_apiNameLike: "",
@@ -234,64 +233,37 @@
              */
             loadApiList: function () {
                 $('#loading').modal('show');
-                if (vm.isFuzzySearch) {
-                    var params = {
-                        page: this.page,
-                        pageSize: this.pageSize,
-                        version: this.old_version,
-                        module: this.old_module,
-                        apiNameLike: this.old_apiNameLike,
-                        urlLike: this.old_urlLike,
-                        authorNameLike: this.old_authorNameLike,
-                        updateTimeStart: this.old_updateTimeStart,
-                        updateTimeEnd: this.old_updateTimeEnd,
-                    }
-                    $.ajax({
-                        url: "/api/doc/search.do",
-                        type: "POST",
-                        data: params,
-                        cache: false,
-                        success: function (result) {
-                            result = JSON.parse(result)
-                            if (result.code == 0) {
-                                vm.list = result.ret
-                                $('#loading').modal('hide');
-                            } else {
-                                alert(result.msg)
-                                $('#loading').modal('hide');
-                            }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                            $('#loading').modal('hide');
-                        }
-                    });
-                } else {
-                    var params = {
-                        page: this.page,
-                        pageSize: this.pageSize
-                    }
-                    $.ajax({
-                        url: "/api/doc/list.do",
-                        type: "POST",
-                        data: params,
-                        cache: false,
-                        success: function (result) {
-                            result = JSON.parse(result)
-                            if (result.code == 0) {
-                                vm.list = result.ret
-                                $('#loading').modal('hide');
-                            } else {
-                                alert(result.msg)
-                                $('#loading').modal('hide');
-                            }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                            $('#loading').modal('hide');
-                        }
-                    });
+                var params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    version: this.old_version,
+                    module: this.old_module,
+                    apiNameLike: this.old_apiNameLike,
+                    urlLike: this.old_urlLike,
+                    authorNameLike: this.old_authorNameLike,
+                    updateTimeStart: this.old_updateTimeStart,
+                    updateTimeEnd: this.old_updateTimeEnd,
                 }
+                $.ajax({
+                    url: '/api/doc/list.do',
+                    type: "POST",
+                    data: params,
+                    cache: false,
+                    success: function (result) {
+                        result = JSON.parse(result)
+                        if (result.code == 0) {
+                            vm.list = result.ret
+                            $('#loading').modal('hide');
+                        } else {
+                            alert(result.msg)
+                            $('#loading').modal('hide');
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
+                    }
+                });
             },
             /**
              * 跳转到指定页并获取数据
@@ -423,48 +395,24 @@
                     alert('请认真填写筛选的更新时间！')
                     return
                 }
-                $('#loading').modal('show');
-                var params = {
-                    page: 1,
-                    pageSize: vm.pageSize,
-                    version: vm.version,
-                    module: vm.module,
-                    apiNameLike: vm.apiNameLike,
-                    urlLike: vm.urlLike,
-                    authorNameLike: vm.authorNameLike,
-                    updateTimeStart: vm.updateTimeStart,
-                    updateTimeEnd: vm.updateTimeEnd,
+                if (vm.version == vm.old_version && vm.module == vm.old_module && vm.apiNameLike == vm.old_apiNameLike
+                        && vm.urlLike == vm.old_urlLike && vm.authorNameLike == vm.old_authorNameLike
+                        && vm.updateTimeStart == vm.old_updateTimeStart && vm.updateTimeEnd == vm.old_updateTimeEnd) {
+                    alert('请修改后搜索内容后再进行搜索！')
+                    return
                 }
-                $.ajax({
-                    url: "/api/doc/search.do",
-                    type: "POST",
-                    data: params,
-                    cache: false,
-                    success: function (result) {
-                        result = JSON.parse(result)
-                        if (result.code == 0) {
-                            vm.page = 1;
-                            vm.list = result.ret
-                            vm.isFuzzySearch = true
-                            vm.loadFuzzySearchCount()
-                            $('#loading').modal('hide');
-                            vm.old_version = vm.version
-                            vm.old_module = vm.module
-                            vm.old_apiNameLike = vm.apiNameLike
-                            vm.old_urlLike = vm.urlLike
-                            vm.old_authorNameLike = vm.authorNameLike
-                            vm.old_updateTimeStart = vm.updateTimeStart
-                            vm.old_updateTimeEnd = vm.updateTimeEnd
-                        } else {
-                            alert(result.msg)
-                            $('#loading').modal('hide');
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
-                        $('#loading').modal('hide');
-                    }
-                });
+                $('#loading').modal('show');
+
+                vm.old_version = vm.version
+                vm.old_module = vm.module
+                vm.old_apiNameLike = vm.apiNameLike
+                vm.old_urlLike = vm.urlLike
+                vm.old_authorNameLike = vm.authorNameLike
+                vm.old_updateTimeStart = vm.updateTimeStart
+                vm.old_updateTimeEnd = vm.updateTimeEnd
+
+                vm.loadFuzzySearchCount()
+                vm.intoPage(1)
             },
             /**
              * 获取Api文档总数

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiCaseModel;
-import com.xbongbong.dingxbb.pojo.ApiCaseListPojo;
+import com.xbongbong.dingxbb.pojo.ApiCaseListPojoKt;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,8 +71,8 @@ public class ApiCaseController extends BasicController {
     }
 
     @RequestMapping(value = "/list", produces = "application/json")
-    public void list(ApiCaseListPojo apiCaseListPojo,
-            HttpServletRequest request,
+    public void list(ApiCaseListPojoKt apiCaseListPojo,
+                     HttpServletRequest request,
                      HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
         if (apiCaseListPojo.getPage() == 0) {

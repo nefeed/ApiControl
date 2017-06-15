@@ -7,7 +7,7 @@ import com.xbongbong.dingxbb.dao.ApiCaseDao;
 import com.xbongbong.dingxbb.entity.ApiCaseEntity;
 import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.pojo.ApiCaseListItemPojo;
-import com.xbongbong.dingxbb.pojo.ApiCaseListPojo;
+import com.xbongbong.dingxbb.pojo.ApiCaseListPojoKt;
 import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.PageHelper;
 import com.xbongbong.util.StringUtil;
@@ -68,7 +68,7 @@ public class ApiCaseModel extends BaseModel implements IModel {
         return apiCaseDao.getEntitysCount(param);
     }
 
-    public List<ApiCaseEntity> findApiCaseList(ApiCaseListPojo apiCaseListPojo) {
+    public List<ApiCaseEntity> findApiCaseList(ApiCaseListPojoKt apiCaseListPojo) {
         Map<String, Object> params = new HashMap<>();
         params.put("page", apiCaseListPojo.getPage());
         params.put("pageNum", apiCaseListPojo.getPageSize());

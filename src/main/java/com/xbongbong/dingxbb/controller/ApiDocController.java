@@ -5,7 +5,7 @@ import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
-import com.xbongbong.dingxbb.pojo.ApiFuzzySearchPojo;
+import com.xbongbong.dingxbb.pojo.ApiDocListPojoKt;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,26 +92,36 @@ public class ApiDocController extends BasicController {
     public void count(HttpServletRequest request,
                       HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
-        modelMap.put("del", 0);
-        Integer count = apiDocModel.getEntitysCount(modelMap);
+        Integer count = apiDocModel.getApiDocCount(new ApiDocListPojoKt());
         modelMap.clear();
         modelMap.put("count", count);
         returnSuccessJsonData(request, response, modelMap);
     }
 
     @RequestMapping(value = "/list", produces = "application/json")
-    public void list(@RequestParam(required = false) int page,
-                     @RequestParam(required = false) int pageSize,
+    public void list(ApiDocListPojoKt fuzzySearchPojo,
                      HttpServletRequest request,
                      HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
-        if (page == 0) {
-            page = 1;
+        if (fuzzySearchPojo.getPage() == 0) {
+            fuzzySearchPojo.setPage(1);
         }
-        if (pageSize == 0) {
-            pageSize = 20;
+        if (fuzzySearchPojo.getPageSize() == 0) {
+            fuzzySearchPojo.setPageSize(20);
         }
-        List<ApiDocEntity> apiDocList = apiDocModel.findApiDocList(page, pageSize);
+//        if (StringUtil.isEmpty(fuzzySearchPojo.getVersion()) && StringUtil.isEmpty(fuzzySearchPojo.getModule())
+//                && StringUtil.isEmpty(fuzzySearchPojo.getApiNameLike()) && StringUtil.isEmpty(fuzzySearchPojo.getUrlLike())
+//                && StringUtil.isEmpty(fuzzySearchPojo.getAuthorNameLike()) && fuzzySearchPojo.getUpdateTimeStart() == 0
+//                && fuzzySearchPojo.getUpdateTimeEnd() == 0) {
+//            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请至少选择一个搜索项", modelMap);
+//            return;
+//        }
+        if (fuzzySearchPojo.getUpdateTimeStart() > 0 && fuzzySearchPojo.getUpdateTimeEnd() > 0 &&
+                fuzzySearchPojo.getUpdateTimeEnd() <= fuzzySearchPojo.getUpdateTimeStart()) {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "更新时间区间格式错误", modelMap);
+            return;
+        }
+        List<ApiDocEntity> apiDocList = apiDocModel.findApiDocList(fuzzySearchPojo);
         returnSuccessJsonData(request, response, apiDocList);
     }
 
@@ -175,45 +185,6 @@ public class ApiDocController extends BasicController {
         returnSuccessJsonData(request, response, modelMap);
     }
 
-
-    @RequestMapping(value = "/search", produces = "application/json")
-    public void fuzzySearch(ApiFuzzySearchPojo fuzzySearchPojo,
-                            HttpServletRequest request,
-                            HttpServletResponse response, Map<String, Object> modelMap)
-            throws Exception {
-        if (fuzzySearchPojo.getPage() == 0) {
-            fuzzySearchPojo.setPage(1);
-        }
-        if (fuzzySearchPojo.getPageSize() == 0) {
-            fuzzySearchPojo.setPageSize(20);
-        }
-        if (StringUtil.isEmpty(fuzzySearchPojo.getVersion()) && StringUtil.isEmpty(fuzzySearchPojo.getModule())
-                && StringUtil.isEmpty(fuzzySearchPojo.getApiNameLike()) && StringUtil.isEmpty(fuzzySearchPojo.getUrlLike())
-                && StringUtil.isEmpty(fuzzySearchPojo.getAuthorNameLike()) && fuzzySearchPojo.getUpdateTimeStart() == 0
-                && fuzzySearchPojo.getUpdateTimeEnd() == 0) {
-            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请至少选择一个搜索项", modelMap);
-            return;
-        }
-        if (fuzzySearchPojo.getUpdateTimeStart() > 0 && fuzzySearchPojo.getUpdateTimeEnd() > 0 &&
-                fuzzySearchPojo.getUpdateTimeEnd() <= fuzzySearchPojo.getUpdateTimeStart()) {
-            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "更新时间区间格式错误", modelMap);
-            return;
-        }
-        List<ApiDocEntity> apiDocList = apiDocModel.fuzzySearchList(fuzzySearchPojo);
-        returnSuccessJsonData(request, response, apiDocList);
-    }
-
-    @RequestMapping(value = "/search/count", produces = "application/json")
-    public void fuzzySearchCount(ApiFuzzySearchPojo fuzzySearchPojo,
-                            HttpServletRequest request,
-                            HttpServletResponse response, Map<String, Object> modelMap)
-            throws Exception {
-        Integer count = apiDocModel.getFuzzySearchCount(fuzzySearchPojo);
-        modelMap.clear();
-        modelMap.put("count", count);
-        returnSuccessJsonData(request, response, modelMap);
-    }
-
     private ApiDocEntity analysisRequest(HttpServletRequest request, HttpServletResponse response, Map<String, Object> modelMap) {
         String params = request.getParameter("params");
         if (StringUtil.isEmpty(params)) {
@@ -266,6 +237,17 @@ public class ApiDocController extends BasicController {
         apiDoc.setUrl(StringUtil.trim(apiDoc.getUrl()))
                 .setModule(StringUtil.trim(apiDoc.getModule()));
         return apiDoc;
+    }
+
+    @RequestMapping(value = "/search/count", produces = "application/json")
+    public void fuzzySearchCount(ApiDocListPojoKt fuzzySearchPojo,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response, Map<String, Object> modelMap)
+            throws Exception {
+        Integer count = apiDocModel.getApiDocCount(fuzzySearchPojo);
+        modelMap.clear();
+        modelMap.put("count", count);
+        returnSuccessJsonData(request, response, modelMap);
     }
 
     @RequestMapping(value = "/delete", produces = "application/json")
