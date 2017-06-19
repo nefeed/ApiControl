@@ -9,7 +9,7 @@ import java.io.Serializable
  * Date: 2017-06-14
  * Time: 14:22
  */
-class ApiCaseListPojoKt : Serializable {
+class ApiCaseListPojo : Serializable {
 
     var page = 1
     var pageSize = 20

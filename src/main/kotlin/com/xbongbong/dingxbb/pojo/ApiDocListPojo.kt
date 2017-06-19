@@ -11,7 +11,7 @@ import java.io.Serializable
  */
 
 
-class ApiDocListPojoKt : Serializable {
+class ApiDocListPojo : Serializable {
 
     var page = 1
     var pageSize = 20

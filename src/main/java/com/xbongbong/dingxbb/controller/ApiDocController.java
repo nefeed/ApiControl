@@ -5,7 +5,7 @@ import com.xbongbong.dingxbb.entity.ApiDocEntity;
 import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
-import com.xbongbong.dingxbb.pojo.ApiDocListPojoKt;
+import com.xbongbong.dingxbb.pojo.ApiDocListPojo;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,14 +92,14 @@ public class ApiDocController extends BasicController {
     public void count(HttpServletRequest request,
                       HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
-        Integer count = apiDocModel.getApiDocCount(new ApiDocListPojoKt());
+        Integer count = apiDocModel.getApiDocCount(new ApiDocListPojo());
         modelMap.clear();
         modelMap.put("count", count);
         returnSuccessJsonData(request, response, modelMap);
     }
 
     @RequestMapping(value = "/list", produces = "application/json")
-    public void list(ApiDocListPojoKt fuzzySearchPojo,
+    public void list(ApiDocListPojo fuzzySearchPojo,
                      HttpServletRequest request,
                      HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {
@@ -240,7 +240,7 @@ public class ApiDocController extends BasicController {
     }
 
     @RequestMapping(value = "/search/count", produces = "application/json")
-    public void fuzzySearchCount(ApiDocListPojoKt fuzzySearchPojo,
+    public void fuzzySearchCount(ApiDocListPojo fuzzySearchPojo,
                                  HttpServletRequest request,
                                  HttpServletResponse response, Map<String, Object> modelMap)
             throws Exception {

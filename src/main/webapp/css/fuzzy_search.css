@@ -40,14 +40,14 @@ table .sort-caret {
     z-index: 2;
 }
 table .sort-caret.ascending {
-    top: 13px;
+    top: 8px;
     border-top: none;
     border-right: 5px solid transparent;
     border-bottom: 5px solid rgb(151, 168, 190);
     border-left: 5px solid transparent;
 }
 table .sort-caret.descending {
-    bottom: 4px;
+    bottom: 7px;
     border-top: 5px solid rgb(151, 168, 190);
     border-right: 5px solid transparent;
     border-bottom: none;
