@@ -91,8 +91,8 @@ class JsonFormatTool {
             //1、获取当前字符。
             key = json[i]
 
-            //2、如果当前字符是前方括号、前花括号做如下处理：
-            if (key == '[' || key == '{') {
+            //2、如果当前字符是前花括号、前方括号做如下处理：
+            if (key == '{') {
                 //（1）如果前面还有字符，并且字符为“：”，打印：换行和缩进字符字符串。
                 if (i - 1 > 0 && json[i - 1] == ':') {
                     result.append(lineBreak)
@@ -110,6 +110,20 @@ class JsonFormatTool {
                 result.append(indent(number, type))
 
                 //（5）进行下一次循环。
+                continue
+            }
+            if (key == '[') {
+                //（1）打印：当前字符。
+                result.append(key)
+
+                //（2）前方括号、前花括号，的后面必须换行。打印：换行。
+                result.append(lineBreak)
+
+                //（3）每出现一次前方括号、前花括号；缩进次数增加一次。打印：新行缩进。
+                number++
+                result.append(indent(number, type))
+
+                //（4）进行下一次循环。
                 continue
             }
 
