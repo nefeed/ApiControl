@@ -10,9 +10,9 @@ var formatJson = function(json, options) {
     // optional settings
     options = options || {};
     // remove newline where '{' or '[' follows ':'
-    options.newlineAfterColonIfBeforeBraceOrBracket = (options.newlineAfterColonIfBeforeBraceOrBracket === true) ? true : false;
+    options.newlineAfterColonIfBeforeBraceOrBracket = (options.newlineAfterColonIfBeforeBraceOrBracket === true);
     // use a space after a colon
-    options.spaceAfterColon = (options.spaceAfterColon === false) ? false : true;
+    options.spaceAfterColon = (options.spaceAfterColon !== false);
 
     // begin formatting...
     if (typeof json !== 'string') {

@@ -9,6 +9,7 @@ import com.xbongbong.dingxbb.pojo.ApiDocListPojo
 import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo
 import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo
 import com.xbongbong.dingxbb.pojo.ApiDocWrongCodePojo
+import com.xbongbong.dingxbb.tool.JsonFormatTool
 import com.xbongbong.util.DateUtil
 import com.xbongbong.util.StringUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,6 +34,8 @@ open class ApiDocModel : BaseModel(), IModel {
     private val sysModuleModel: SysModuleModel? = null
     @Autowired
     private val apiCaseModel: ApiCaseModel? = null
+    @Autowired
+    private val jsonFormatTool: JsonFormatTool ?= null
 
     override fun insert(entity: Any): Int? {
         val now = DateUtil.getInt()
@@ -144,15 +147,15 @@ open class ApiDocModel : BaseModel(), IModel {
 
     fun formatMarkdownContent(entity: ApiDocEntity): String {
         val content = StringBuffer()
-        content.append("## 【" + entity.module + "】" + entity.name + " - v" + entity.version + "<br />")
+        content.append("# 【" + entity.module + "】" + entity.name + " - v" + entity.version + "<br />")
         content.append("> " + entity.memo + "<br />")
         content.append("<br />")
         var index = 0
-        content.append("#### " + ++index + ". url：" + entity.url + "<br />")
+        content.append("### " + ++index + ". url：" + entity.url + "<br />")
         content.append("<br />")
-        content.append("#### " + ++index + ". 请求方式：" + entity.method + "<br />")
+        content.append("### " + ++index + ". 请求方式：" + entity.method + "<br />")
         content.append("<br />")
-        content.append("#### " + ++index + ". 请求参数" + "<br />")
+        content.append("### " + ++index + ". 请求参数" + "<br />")
         val params = JSON.parseArray(entity.params, ApiDocParamsPojo::class.java)
         if (params != null && params.size > 0) {
             content.append("|参数 Key|参数名称|参数类型|长度上限|是否必填|说明|" + "<br />")
@@ -165,14 +168,14 @@ open class ApiDocModel : BaseModel(), IModel {
         }
         content.append("<br />")
         if (!StringUtil.isEmpty(entity.paramsDemo)) {
-            content.append("#### " + ++index + ". 请求实例" + "<br />")
+            content.append("### " + ++index + ". 请求实例" + "<br />")
             content.append("```JSON" + "<br />")
-            content.append(entity.paramsDemo + "<br />")
+            content.append(jsonFormatTool!!.formatJson2Html(entity.paramsDemo) + "<br />")
             content.append("```" + "<br />")
             content.append("<br />")
         }
         val responses = JSON.parseArray(entity.response, ApiDocResponsePojo::class.java)
-        content.append("#### " + ++index + ". 主要返回内容" + "<br />")
+        content.append("### " + ++index + ". 主要返回内容" + "<br />")
         if (responses != null && responses.size > 0) {
             content.append("|参数 Key|参数名称|参数类型|说明|" + "<br />")
             content.append("|:-----------|:-----------|:---------|:---------|:---------|:-----------|" + "<br />")
@@ -185,7 +188,7 @@ open class ApiDocModel : BaseModel(), IModel {
         content.append("<br />")
         val wrongCodes = JSON.parseArray(entity.wrongCode, ApiDocWrongCodePojo::class.java)
         if (wrongCodes != null && wrongCodes.size > 0) {
-            content.append("#### " + ++index + ". 错误Code" + "<br />")
+            content.append("### " + ++index + ". 错误Code" + "<br />")
             content.append("|Code|内容|" + "<br />")
             content.append("|:-----------|:-----------|" + "<br />")
             for (item in wrongCodes) {
@@ -194,9 +197,9 @@ open class ApiDocModel : BaseModel(), IModel {
         }
         content.append("<br />")
         if (!StringUtil.isEmpty(entity.responseDemo)) {
-            content.append("#### " + ++index + ". 返回实例" + "<br />")
+            content.append("### " + ++index + ". 返回实例" + "<br />")
             content.append("```JSON" + "<br />")
-            content.append(entity.responseDemo + "<br />")
+            content.append(jsonFormatTool!!.formatJson2Html(entity.responseDemo) + "<br />")
             content.append("```" + "<br />")
             content.append("<br />")
         }

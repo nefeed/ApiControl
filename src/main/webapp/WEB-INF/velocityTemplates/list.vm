@@ -1,5 +1,6 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
+<title>API列表 | #if($title) $!title #else 销帮帮 #end</title>
 <link rel="stylesheet" href="/css/fuzzy_search.css"/>
 <div id="vmList">
     <!-- loading -->
@@ -39,7 +40,7 @@
             <div class="control-group search-small">
                 <label class="control-label">模块</label>
                 <div class="controls">
-                    <select class="m-wrap small" v-model="module">
+                    <select class="m-wrap small" v-model="module" @change="fuzzySearch">
                         <template v-for="(item, index) in moduleArray">
                             <option v-if="index === 0" selected :value="item.key">{{ item.value }}
                             </option>
@@ -52,7 +53,7 @@
             <div class="control-group search-small">
                 <label class="control-label">版本</label>
                 <div class="controls">
-                    <select class="m-wrap small" v-model="version">
+                    <select class="m-wrap small" v-model="version" @change="fuzzySearch">
                         <template v-for="(item, index) in versionArray">
                             <option v-if="index === 0" selected :value="item.key">{{ item.value }}
                             </option>

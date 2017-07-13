@@ -1,5 +1,7 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
+
+<title>用例列表 | #if($title) $!title #else 销帮帮 #end</title>
 <link rel="stylesheet" href="/css/fuzzy_search.css"/>
 <div id="vmList">
     <!-- loadingList -->

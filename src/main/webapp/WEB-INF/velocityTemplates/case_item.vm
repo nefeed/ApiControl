@@ -1,5 +1,7 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
+
+<title>编辑用例 | #if($title) $!title #else 销帮帮 #end</title>
 <div>
     <!-- loading -->
     <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
