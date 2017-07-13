@@ -267,7 +267,8 @@
                                     <div class="control-group">
                                         <label class="control-label">请求 Demo</label>
                                         <div class="controls">
-                                            <textarea rows="3" class="large m-wrap" name="apiParamsDemo"
+                                            <textarea rows="6" style="width: 500px;"
+                                                      name="apiParamsDemo"
                                                       v-model="paramsDemo"></textarea>
                                         </div>
                                     </div>
@@ -332,7 +333,8 @@
                                     <div class="control-group">
                                         <label class="control-label">返回 Demo</label>
                                         <div class="controls">
-                                            <textarea rows="5" class="large m-wrap" name="apiResponseDemo"
+                                            <textarea rows="10" style="width: 500px;"
+                                                      name="apiResponseDemo"
                                                       v-model="responseDemo"></textarea>
                                         </div>
                                     </div>
@@ -489,7 +491,7 @@
                 required: true,
                 memo: ''
             },
-            paramsDemo: '', // 'Api Doc 请求参数 Demo',
+            paramsDemo: '{}', // 'Api Doc 请求参数 Demo',
             response: [{
                 key: '',
                 name: '',
@@ -502,7 +504,7 @@
                 type: 'String',
                 memo: ''
             },
-            responseDemo: '', // 'Api Doc 返回 Response 的 body 的 demo',
+            responseDemo: '{}', // 'Api Doc 返回 Response 的 body 的 demo',
             wrongCode: [], // '错误代码： {"code": "错误代码 Code", "msg": "错误说明"}',
             wrongCodeItem: {
                 code: '',
@@ -720,6 +722,9 @@
             item: function () {
 //                this.paramsDemo = formatJson(this.paramsDemo)
 //                this.responseDemo = formatJson(this.responseDemo)
+                if (!this.paramsDemo || this.paramsDemo.length < 2) {
+                    this.paramsDemo = '{}'
+                }
                 var params = {
                     id: this.id,
                     version: this.version,
@@ -752,6 +757,14 @@
                             self.id = result.ret.id
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
+                            if (self.paramsDemo.length > 2) {
+                                var paramsDemoJson = formatJson(self.paramsDemo)
+                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            }
+                            if (self.responseDemo.length > 2) {
+                                var responseDemoJson = formatJson(self.responseDemo)
+                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            }
                             alert('保存成功！')
                         } else {
                             alert(result.msg)
@@ -812,6 +825,9 @@
             outputMarkdown: function () {
 //                this.paramsDemo = formatJson(this.paramsDemo)
 //                this.responseDemo = formatJson(this.responseDemo)
+                if (!this.paramsDemo || this.paramsDemo.length < 2) {
+                    this.paramsDemo = '{}'
+                }
                 var params = {
                     id: this.id,
                     version: this.version,
@@ -846,6 +862,8 @@
                             self.id = result.ret.id
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
+                            self.paramsDemo = result.ret.paramsDemo
+                            self.responseDemo = result.ret.responseDemo
                             var markdownContentDiv = document.getElementById('markdownContent')
                             markdownContentDiv.innerHTML = result.ret.markdown
                             self.isMarkdownShown = true

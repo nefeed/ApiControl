@@ -79,12 +79,12 @@ class JsonFormatTool {
      * *
      * @return 格式化的JSON字符串。
      */
-    private fun formatJson(json: String, lineBreak: String): String {
+    private fun formatJson(json: String, type: String): String {
         val result = StringBuffer()
-
+        val lineBreak = if (TYPE_NORMAL.equals(type)) ENTER_NORMAL else ENTER_WEB
         val length = json.length
         var number = 0
-        var key: Char = 0.toChar()
+        var key: Char
 
         //遍历输入字符串。
         for (i in 0..length - 1) {
@@ -96,7 +96,7 @@ class JsonFormatTool {
                 //（1）如果前面还有字符，并且字符为“：”，打印：换行和缩进字符字符串。
                 if (i - 1 > 0 && json[i - 1] == ':') {
                     result.append(lineBreak)
-                    result.append(indent(number))
+                    result.append(indent(number, type))
                 }
 
                 //（2）打印：当前字符。
@@ -107,7 +107,7 @@ class JsonFormatTool {
 
                 //（4）每出现一次前方括号、前花括号；缩进次数增加一次。打印：新行缩进。
                 number++
-                result.append(indent(number))
+                result.append(indent(number, type))
 
                 //（5）进行下一次循环。
                 continue
@@ -120,7 +120,7 @@ class JsonFormatTool {
 
                 //（2）每出现一次后方括号、后花括号；缩进次数减少一次。打印：缩进。
                 number--
-                result.append(indent(number))
+                result.append(indent(number, type))
 
                 //（3）打印：当前字符。
                 result.append(key)
@@ -138,7 +138,7 @@ class JsonFormatTool {
             if (key == ',') {
                 result.append(key)
                 result.append(lineBreak)
-                result.append(indent(number))
+                result.append(indent(number, type))
                 continue
             }
 
@@ -153,14 +153,14 @@ class JsonFormatTool {
      * 格式化Json字符串输出换行的字符串
      */
     fun formatJson2Str(json: String): String {
-        return formatJson(json, "\n")
+        return formatJson(json, TYPE_NORMAL)
     }
 
     /**
      * 格式化Json字符串输出网页使用换行的字符串
      */
     fun formatJson2Html(json: String): String {
-        return formatJson(json, "<br />")
+        return formatJson(json, TYPE_WEB)
     }
 
 
@@ -171,18 +171,27 @@ class JsonFormatTool {
      * *
      * @return 指定缩进次数的字符串。
      */
-    private fun indent(number: Int): String {
+    private fun indent(number: Int, type: String): String {
         val result = StringBuffer()
+        val space = if (TYPE_NORMAL.equals(type)) SPACE_NORMAL else SPACE_WEB
         for (i in 0..number - 1) {
-            result.append(SPACE)
+            result.append(space)
         }
         return result.toString()
     }
 
     companion object {
+        private val TYPE_NORMAL = "normal"
+        private val TYPE_WEB = "web"
+        /**
+         * 换行付
+         */
+        private val ENTER_NORMAL = "\n"
+        private val ENTER_WEB = "<br />"
         /**
          * 单位缩进字符串。
          */
-        private val SPACE = "   "
+        private val SPACE_NORMAL = "    "
+        private val SPACE_WEB = "&nbsp;&nbsp;&nbsp;&nbsp;"
     }
 }
