@@ -1,4 +1,4 @@
-package com.xbongbong.dingxbb.tool
+package com.xbongbong.dingxbb.util
 
 import org.springframework.stereotype.Service
 
@@ -69,7 +69,7 @@ import org.springframework.stereotype.Service
  * @version  [版本号, 2014年9月29日]
  */
 @Service
-class JsonFormatTool {
+class JsonFormatUtil {
 
     /**
      * 返回格式化JSON字符串。

@@ -7,7 +7,7 @@ import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
 import com.xbongbong.dingxbb.pojo.ApiDocListPojo;
-import com.xbongbong.dingxbb.tool.JsonFormatTool;
+import com.xbongbong.dingxbb.util.JsonFormatUtil;
 import com.xbongbong.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ public class ApiDocController extends BasicController {
     @Autowired
     private SysModuleModel sysModuleModel;
     @Autowired
-    private JsonFormatTool jsonFormatTool;
+    private JsonFormatUtil jsonFormatUtil;
 
     @RequestMapping(value = "/version", produces = "application/json")
     public void version(HttpServletRequest request,
@@ -227,7 +227,7 @@ public class ApiDocController extends BasicController {
             return null;
         }
         apiDoc.setParamsDemo(apiDoc.getParamsDemo().replaceAll("\r|\n", ""));
-        apiDoc.setParamsDemo(jsonFormatTool.formatJson2Str(apiDoc.getParamsDemo().trim()));
+        apiDoc.setParamsDemo(jsonFormatUtil.formatJson2Str(apiDoc.getParamsDemo().trim()));
 
 //        if (!(apiDoc.getParamsDemo().startsWith("{") && apiDoc.getParamsDemo().endsWith("}"))) {
 //            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请求 Demo 必须是 Json 格式字符串！", modelMap);
@@ -253,7 +253,7 @@ public class ApiDocController extends BasicController {
                 return null;
             }
             apiDoc.setResponseDemo(apiDoc.getResponseDemo().replaceAll("\r|\n", ""));
-            apiDoc.setResponseDemo(jsonFormatTool.formatJson2Str(apiDoc.getResponseDemo().trim()));
+            apiDoc.setResponseDemo(jsonFormatUtil.formatJson2Str(apiDoc.getResponseDemo().trim()));
         }
         // TODO 2017-05-25 因为返回 Demo 并非正确的 json 格式，无法解析
 //        ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);

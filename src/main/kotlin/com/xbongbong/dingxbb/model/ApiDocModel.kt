@@ -9,7 +9,7 @@ import com.xbongbong.dingxbb.pojo.ApiDocListPojo
 import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo
 import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo
 import com.xbongbong.dingxbb.pojo.ApiDocWrongCodePojo
-import com.xbongbong.dingxbb.tool.JsonFormatTool
+import com.xbongbong.dingxbb.util.JsonFormatUtil
 import com.xbongbong.util.DateUtil
 import com.xbongbong.util.StringUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +35,7 @@ open class ApiDocModel : BaseModel(), IModel {
     @Autowired
     private val apiCaseModel: ApiCaseModel? = null
     @Autowired
-    private val jsonFormatTool: JsonFormatTool ?= null
+    private val jsonFormatUtil: JsonFormatUtil?= null
 
     override fun insert(entity: Any): Int? {
         val now = DateUtil.getInt()
@@ -170,7 +170,7 @@ open class ApiDocModel : BaseModel(), IModel {
         if (!StringUtil.isEmpty(entity.paramsDemo)) {
             content.append("### " + ++index + ". 请求实例" + "<br />")
             content.append("```JSON" + "<br />")
-            content.append(jsonFormatTool!!.formatJson2Html(entity.paramsDemo) + "<br />")
+            content.append(jsonFormatUtil!!.formatJson2Html(entity.paramsDemo) + "<br />")
             content.append("```" + "<br />")
             content.append("<br />")
         }
@@ -199,7 +199,7 @@ open class ApiDocModel : BaseModel(), IModel {
         if (!StringUtil.isEmpty(entity.responseDemo)) {
             content.append("### " + ++index + ". 返回实例" + "<br />")
             content.append("```JSON" + "<br />")
-            content.append(jsonFormatTool!!.formatJson2Html(entity.responseDemo) + "<br />")
+            content.append(jsonFormatUtil!!.formatJson2Html(entity.responseDemo) + "<br />")
             content.append("```" + "<br />")
             content.append("<br />")
         }
