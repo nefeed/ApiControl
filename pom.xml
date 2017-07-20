@@ -4,7 +4,7 @@
 
     <groupId>com.xbongbong</groupId>
     <artifactId>xbb-dingtalk-api</artifactId>
-    <version>0.0.7-Beta</version>
+    <version>0.0.8-Beta</version>
     <packaging>war</packaging>
 
     <name>xbb-dingtalk-api</name>

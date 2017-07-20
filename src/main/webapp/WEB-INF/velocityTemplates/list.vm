@@ -193,16 +193,24 @@
                             </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div class="pagination pagination-right" style="margin-right: 10px; margin-bottom: 5px;">
-                        <ul>
-                            <li><a href="#" @click="intoPage((page-1))">Prev</a></li>
-                            <template v-for="index in pageCount">
-                                <li v-if="index == page" class="disabled"><a href="#">{{ index }}</a></li>
-                                <li v-else class="active"><a href="#" @click="intoPage(index)">{{ index }}</a></li>
-                            </template>
-                            <li><a href="#" @click="intoPage((page+1))">Next</a></li>
-                        </ul>
+                        <div class="pagination" style="margin-right: 10px; margin-bottom: 5px;">
+                            <div style="text-align: left; float: left;">
+                                <button class="btn green" type="button" style="margin-left: 12px;margin-bottom: 12px;"
+                                        @click="exportExcel()">
+                                    <i class="icon-download" style="margin-right: 10px;"></i>导出excel
+                                </button>
+                            </div>
+                            <div style="text-align: right; float: right;">
+                                <ul>
+                                    <li><a href="#" @click="intoPage((page-1))">Prev</a></li>
+                                    <template v-for="index in pageCount">
+                                        <li v-if="index == page" class="disabled"><a href="#">{{ index }}</a></li>
+                                        <li v-else class="active"><a href="#" @click="intoPage(index)">{{ index }}</a></li>
+                                    </template>
+                                    <li><a href="#" @click="intoPage((page+1))">Next</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -563,6 +571,12 @@
                         break
                 }
                 return sort
+            },
+            /**
+             * 导出全部列表的Excel
+             */
+            exportExcel: function () {
+                window.location.href = '/api/doc/export4Testing.do';
             }
 
         }

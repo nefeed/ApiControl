@@ -134,14 +134,18 @@ public final class DateUtil {
 	public static String getString(Long datetime,String formatStr) {
 		return  getString(datetime,new SimpleDateFormat(formatStr));
 	}
-	
+
+	public static String getString(int datetime,String formatStr) {
+		return  getString(datetime*1000L, new SimpleDateFormat(formatStr));
+	}
+
 	public static String getString(Integer time,SimpleDateFormat format) {
 		if(time == null) return null;
-		return getString(1000L*time,format);
+		return getString(1000L*time, format);
 	}
 	
 	public static String getString(Integer time,String formatStr) {
-		return  getString(time,new SimpleDateFormat(formatStr));
+		return  getString(time, new SimpleDateFormat(formatStr));
 	}
 	
 	

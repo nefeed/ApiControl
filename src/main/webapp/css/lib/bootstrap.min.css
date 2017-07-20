@@ -4565,6 +4565,10 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini {
 	text-align: center
 }
 
+.pagination-left {
+	text-align: left
+}
+
 .pagination-right {
 	text-align: right
 }

@@ -7,18 +7,21 @@ import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
 import com.xbongbong.dingxbb.pojo.ApiDocListPojo;
+import com.xbongbong.dingxbb.util.ExcelUtil;
 import com.xbongbong.dingxbb.util.JsonFormatUtil;
+import com.xbongbong.util.DateUtil;
 import com.xbongbong.util.StringUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +43,8 @@ public class ApiDocController extends BasicController {
     private SysModuleModel sysModuleModel;
     @Autowired
     private JsonFormatUtil jsonFormatUtil;
+    @Autowired
+    private ExcelUtil excelUtil;
 
     @RequestMapping(value = "/version", produces = "application/json")
     public void version(HttpServletRequest request,
@@ -288,5 +293,69 @@ public class ApiDocController extends BasicController {
             return;
         }
         returnSuccessJsonData(request, response, apiDocModel.deleteByKey(id));
+    }
+
+    @RequestMapping(value = "/export4Testing")
+    @ResponseBody
+    public void exportFeedBack(HttpServletRequest request,
+                               HttpServletResponse response) {
+
+        String fileName = "Api列表校验-" + DateUtil.getString(DateUtil.getInt(), DateUtil.SDFMonthDay) + ".xls"; //文件名
+        String sheetName = "Api列表校验";//sheet名
+
+        String[] title = new String[]{"主键Id", "所属模块", "接口名称", "接口地址", "接口维护负责人", "更新时间", "接口备注", "校验"}; // 标题
+
+        // TODO 获取需要导出到Excel的对象队列
+        Map<String, Object> param = new HashMap<>();
+        param.put("del", 0);
+        param.put("orderByStr", "id DESC");
+        param.put("groupByStr", "module");
+        List<ApiDocEntity> list = apiDocModel.findEntitys(param);
+
+        String[][] values = new String[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            values[i] = new String[title.length];
+            //将对象内容转换成string
+            ApiDocEntity apiDoc = list.get(i);
+            values[i][0] = "" + apiDoc.getId();
+            values[i][1] = apiDoc.getModule();
+            values[i][2] = apiDoc.getName();
+            values[i][3] = apiDoc.getUrl();
+            values[i][4] = apiDoc.getUsername();
+            values[i][5] = DateUtil.getString(apiDoc.getUpdateTime());
+            values[i][6] = apiDoc.getMemo();
+            values[i][7] = "";
+
+        }
+
+        HSSFWorkbook wb = excelUtil.getHSSFWorkbook(sheetName, title, values, null);
+
+        //将文件存到指定位置
+        try {
+            this.setResponseHeader(response, fileName);
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        returnSuccessJsonData(request, response, "");
+    }
+
+    private void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+            try {
+                fileName = new String(fileName.getBytes(), "ISO8859-1");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            response.setContentType("application/octet-stream;charset=ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
