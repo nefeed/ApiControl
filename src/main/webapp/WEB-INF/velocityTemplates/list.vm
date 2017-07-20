@@ -195,7 +195,11 @@
                         </table>
                         <div class="pagination" style="margin-right: 10px; margin-bottom: 5px;">
                             <div style="text-align: left; float: left;">
-                                <button class="btn green" type="button" style="margin-left: 12px;margin-bottom: 12px;"
+                                <button class="btn blue" type="button" style="margin-left: 10px;margin-bottom: 10px;"
+                                        @click="addApiDoc()">
+                                    <i class="icon-edit" style="margin-right: 10px;"></i>新建接口
+                                </button>
+                                <button class="btn green" type="button" style="margin-left: 10px;margin-bottom: 10px;"
                                         @click="exportExcel()">
                                     <i class="icon-download" style="margin-right: 10px;"></i>导出excel
                                 </button>
@@ -204,8 +208,12 @@
                                 <ul>
                                     <li><a href="#" @click="intoPage((page-1))">Prev</a></li>
                                     <template v-for="index in pageCount">
-                                        <li v-if="index == page" class="disabled"><a href="#">{{ index }}</a></li>
-                                        <li v-else class="active"><a href="#" @click="intoPage(index)">{{ index }}</a></li>
+                                        <li v-if="index == page" class="disabled">
+                                            <a href="#">{{ index }}</a>
+                                        </li>
+                                        <li v-else class="active">
+                                            <a href="#" @click="intoPage(index)">{{ index }}</a>
+                                        </li>
                                     </template>
                                     <li><a href="#" @click="intoPage((page+1))">Next</a></li>
                                 </ul>
@@ -577,6 +585,12 @@
              */
             exportExcel: function () {
                 window.location.href = '/api/doc/export4Testing.do';
+            },
+            /**
+             * 新建Api文档
+             */
+            addApiDoc: function () {
+                window.location.href = '/item.html';
             }
 
         }

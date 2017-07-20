@@ -213,6 +213,17 @@ public class ApiDocController extends BasicController {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 请求地址", modelMap);
             return null;
         }
+        if (StringUtil.isEmpty(apiDoc.getMemo())) {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请至少在简要说明中填写Api的使用场景！", modelMap);
+            return null;
+        } else {
+            String memo = apiDoc.getMemo();
+            memo = StringUtil.replaceBlank(memo.replaceAll("使用场景：", ""));
+            if (StringUtil.isEmpty(memo.trim())) {
+                jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请至少在简要说明中填写Api的使用场景！", modelMap);
+                return null;
+            }
+        }
         if (StringUtil.isEmpty(apiDoc.getUsername())) {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 作者大名", modelMap);
             return null;
@@ -343,6 +354,12 @@ public class ApiDocController extends BasicController {
 //        returnSuccessJsonData(request, response, "");
     }
 
+    /**
+     * 输出excel文件
+     *
+     * @param response 请求返回
+     * @param fileName 文件名
+     */
     private void setResponseHeader(HttpServletResponse response, String fileName) {
         try {
             try {

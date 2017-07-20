@@ -1003,4 +1003,19 @@ public final class StringUtil {
 		
 		return star + lastCode;
 	}
+
+	/**
+	 * 清空换行符、空格等字符
+	 * @param str
+	 * @return
+	 */
+	public static String replaceBlank(String str) {
+		String dest = "";
+		if (str!=null) {
+			Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+			Matcher m = p.matcher(str);
+			dest = m.replaceAll("");
+		}
+		return dest;
+	}
 }

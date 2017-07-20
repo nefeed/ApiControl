@@ -474,7 +474,7 @@
             url: '', // 'Api Doc 请求地址，不包含域名部分',
             username: '', // 'Api Doc 创建者名称',
             method: 'POST', // 'Api Doc 请求方式：POST或GET',
-            memo: '', // 'Api Doc 说明',
+            memo: '使用场景： \n', // 'Api Doc 说明',
             params: [{
                 key: '',
                 name: '',
