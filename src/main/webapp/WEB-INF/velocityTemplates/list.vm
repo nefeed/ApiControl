@@ -298,6 +298,7 @@
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },
@@ -425,6 +426,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },
@@ -456,6 +459,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },
@@ -528,6 +533,7 @@
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },

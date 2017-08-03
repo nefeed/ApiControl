@@ -176,7 +176,7 @@
                                     <div class="control-group">
                                         <label class="control-label">请求方式</label>
                                         <div class="controls">
-                                            <select class="large m-wrap" name="apiMethod" v-model="method">
+                                            <select class="mediun m-wrap" name="apiMethod" v-model="method">
                                                 <option value="POST" selected>POST</option>
                                                 <option value="GET">GET</option>
                                             </select>
@@ -636,6 +636,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },
@@ -672,6 +674,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },
@@ -862,8 +866,14 @@
                             self.id = result.ret.id
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
-                            self.paramsDemo = result.ret.paramsDemo
-                            self.responseDemo = result.ret.responseDemo
+                            if (self.paramsDemo.length > 2) {
+                                var paramsDemoJson = formatJson(self.paramsDemo)
+                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            }
+                            if (self.responseDemo.length > 2) {
+                                var responseDemoJson = formatJson(self.responseDemo)
+                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            }
                             var markdownContentDiv = document.getElementById('markdownContent')
                             markdownContentDiv.innerHTML = result.ret.markdown
                             self.isMarkdownShown = true
@@ -910,6 +920,8 @@
                         self.newVersion = ''
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             },
@@ -941,6 +953,8 @@
                         self.newModule = ''
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
+                        $('#loading').modal('hide');
                     }
                 });
             }
