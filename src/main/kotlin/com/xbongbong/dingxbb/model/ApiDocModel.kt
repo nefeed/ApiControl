@@ -53,6 +53,20 @@ open class ApiDocModel : BaseModel(), IModel {
 
     fun save(entity: ApiDocEntity): Int? {
         val code: Int?
+        if (!StringUtil.isEmpty(entity.params)) {
+            val paramList = JSON.parseArray(entity.params, ApiDocParamsPojo::class.java)
+            paramList
+                    .filter { StringUtil.isEmpty(it.key) }
+                    .forEach { paramList.remove(it) }
+            entity.params = JSON.toJSONString(paramList)
+        }
+        if (!StringUtil.isEmpty(entity.response)) {
+            val responseList = JSON.parseArray(entity.response, ApiDocResponsePojo::class.java)
+            responseList
+                    .filter { StringUtil.isEmpty(it.key) }
+                    .forEach { responseList.remove(it) }
+            entity.response = JSON.toJSONString(responseList)
+        }
         if (entity.id == null || entity.id == 0) {
             code = insert(entity)
         } else {
@@ -164,7 +178,7 @@ open class ApiDocModel : BaseModel(), IModel {
                 content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.limit + "|" + item.required!!.toString() + "|" + item.memo + "|" + "<br />")
             }
         } else {
-            content.append("无请求参数<br />")
+            content.append("无需要详细说明的请求参数<br />")
         }
         content.append("<br />")
         if (!StringUtil.isEmpty(entity.paramsDemo)) {
@@ -183,7 +197,7 @@ open class ApiDocModel : BaseModel(), IModel {
                 content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.memo + "|" + "<br />")
             }
         } else {
-            content.append("无主要返回内容<br />")
+            content.append("无需要详细说明的主要返回内容<br />")
         }
         content.append("<br />")
         val wrongCodes = JSON.parseArray(entity.wrongCode, ApiDocWrongCodePojo::class.java)
