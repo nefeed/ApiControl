@@ -759,6 +759,8 @@
                         result = JSON.parse(result)
                         if (result.code == 0) {
                             self.id = result.ret.id
+                            self.params = result.ret.params
+                            self.response = result.ret.response
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             if (self.paramsDemo.length > 2) {
@@ -864,6 +866,8 @@
                         result = JSON.parse(result)
                         if (result.code == 0) {
                             self.id = result.ret.id
+                            self.params = result.ret.params
+                            self.response = result.ret.response
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             if (self.paramsDemo.length > 2) {

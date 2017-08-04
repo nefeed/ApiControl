@@ -7,6 +7,8 @@ import com.xbongbong.dingxbb.enums.ErrcodeEnum;
 import com.xbongbong.dingxbb.model.ApiDocModel;
 import com.xbongbong.dingxbb.model.SysModuleModel;
 import com.xbongbong.dingxbb.pojo.ApiDocListPojo;
+import com.xbongbong.dingxbb.pojo.ApiDocParamsPojo;
+import com.xbongbong.dingxbb.pojo.ApiDocResponsePojo;
 import com.xbongbong.dingxbb.util.ExcelUtil;
 import com.xbongbong.dingxbb.util.JsonFormatUtil;
 import com.xbongbong.util.DateUtil;
@@ -94,6 +96,8 @@ public class ApiDocController extends BasicController {
         }
         modelMap.put("code", apiDocModel.save(apiDoc));
         modelMap.put("id", apiDoc.getId());
+        modelMap.put("params", JSON.parseArray(apiDoc.getParams(), ApiDocParamsPojo.class));
+        modelMap.put("response", JSON.parseArray(apiDoc.getResponse(), ApiDocResponsePojo.class));
         returnSuccessJsonData(request, response, modelMap);
     }
 
@@ -159,6 +163,8 @@ public class ApiDocController extends BasicController {
 
         modelMap.put("code", apiDocModel.save(apiDoc));
         modelMap.put("id", apiDoc.getId());
+        modelMap.put("params", JSON.parseArray(apiDoc.getParams(), ApiDocParamsPojo.class));
+        modelMap.put("response", JSON.parseArray(apiDoc.getResponse(), ApiDocResponsePojo.class));
 
         String rootPath = System.getProperty("xbb-dingtalk-api");
 
