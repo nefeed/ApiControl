@@ -1,5 +1,7 @@
 ##<link type="text/css" rel="stylesheet"
 ##      href="$!{configConstant.resourcesBasicUrl}/css/lib/bootstrap.min.css?v=${configConstant.srcVersion}"/>
+<link type="text/css" rel="stylesheet"
+      href="$!{configConstant.resourcesBasicUrl}/css/notie.min.css?v=${configConstant.srcVersion}"/>
 <title>编辑API | #if($title) $!title #else 销帮帮 #end</title>
 <div id="vmItem">
     <!-- loading -->
@@ -134,7 +136,8 @@
                                                     </option>
                                                 </template>
                                             </select>
-                                            <button class="btn blue" type="button" data-toggle="modal" data-target="#newVersionDialog"><i class="icon-plus"></i></button>
+                                            <button class="btn blue" type="button" data-toggle="modal"
+                                                    data-target="#newVersionDialog"><i class="icon-plus"></i></button>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -149,7 +152,8 @@
                                                     </option>
                                                 </template>
                                             </select>
-                                            <button class="btn blue" type="button" data-toggle="modal" data-target="#newModuleDialog"><i class="icon-plus"></i></button>
+                                            <button class="btn blue" type="button" data-toggle="modal"
+                                                    data-target="#newModuleDialog"><i class="icon-plus"></i></button>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -423,7 +427,16 @@
                         <a class="collapse" href="javascript:;"></a>
                     </div>
                 </div>
-                <div class="portlet-body" id="markdownContent">
+                <!-- Target -->
+                <textarea id="markdownContentArea" rows="10" style="width: 800px;"
+                          name="markdownContent"
+                          v-model="markdownContent"></textarea>
+                <div>
+                    <!-- Trigger -->
+                    <button class="btn gray" id="clipboardBtn"
+                            data-clipboard-target="#markdownContentArea">
+                        <img src="/images/clippy.svg" alt="Copy to clipboard" style="width:16px; height: 18px; margin-right: 10px;">一键复制
+                    </button>
                 </div>
             </div>
             <!-- END Portlet PORTLET-->
@@ -435,6 +448,12 @@
 <script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
 <script src="$!{configConstant.resourcesBasicUrl}/js/jsonFormatter.js?v=${configConstant.srcVersion}"
+        type="text/javascript"></script>
+## 复制到剪切板的功能代码
+<script src="$!{configConstant.resourcesBasicUrl}/js/clipboard.min.js?v=${configConstant.srcVersion}"
+        type="text/javascript"></script>
+## toast
+<script src="$!{configConstant.resourcesBasicUrl}/js/notie.min.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
 <script type="text/javascript">
     var vm = new Vue({
@@ -452,7 +471,7 @@
                 {key: 'https://testdingtalkapi2.xbongbong.com/', value: 'Dingtalk项目开发版'},
                 {key: 'https://testdingtalk3.xbongbong.com/', value: 'WEB项目测试版'},
                 {key: 'https://testdingtalkapi3.xbongbong.com/', value: 'Dingtalk项目测试版'},
-				{key: 'https://dingtalk4.hz.taeapp.com/', value: 'Dingtalk项目内测版'}
+                {key: 'https://dingtalk4.hz.taeapp.com/', value: 'Dingtalk项目内测版'}
             ],
             versionArray: [],
             newVersion: '',
@@ -517,7 +536,8 @@
             formTitle: '新建表单',
             btnSave: '保存',
             accessToken: '', // 请求需要的token   1b5f9765a8e55b18af0cf35fc04b2176
-            isMarkdownShown: false
+            isMarkdownShown: false,
+            markdownContent: ''
         },
         computed: {},
         methods: {
@@ -632,7 +652,7 @@
                                 vm.loadModuleList()
                             }
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -670,7 +690,7 @@
                                 vm.loadDetail()
                             }
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -713,7 +733,8 @@
                             self.formTitle = '更新表单'
                             $('#loading').modal('hide');
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            $('#loading').modal('hide');
                             window.location = '/list.html'
                         }
                     },
@@ -758,6 +779,11 @@
                         self.result = result
                         result = JSON.parse(result)
                         if (result.code == 0) {
+                            if (self.id) {
+                                notie.alert({type: 'success', text: '更新成功', time: 2})
+                            } else {
+                                notie.alert({type: 'success', text: '保存成功', time: 2})
+                            }
                             self.id = result.ret.id
                             self.params = result.ret.params
                             self.response = result.ret.response
@@ -771,9 +797,8 @@
                                 var responseDemoJson = formatJson(self.responseDemo)
                                 self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
                             }
-                            alert('保存成功！')
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
                         }
                         $('#loading').modal('hide');
                     },
@@ -878,15 +903,17 @@
                                 var responseDemoJson = formatJson(self.responseDemo)
                                 self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
                             }
-                            var markdownContentDiv = document.getElementById('markdownContent')
-                            markdownContentDiv.innerHTML = result.ret.markdown
+                            self.markdownContent = result.ret.markdown
+                            var clipboardBtn = document.getElementById("clipboardBtn"); // 得到element标签
+                            clipboardBtn.setAttribute('data-clipboard-text', result.ret.markdown)
                             self.isMarkdownShown = true
                             setTimeout(function () {
                                 $('body').scrollTop($('body').height());
                             }, 300)
                             $('#loading').modal('hide');
+                            notie.alert({ type: 'success', text: '导出Markdown成功，请自行复制并保存', time: 2 })
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
                             $('#loading').modal('hide');
                         }
                     },
@@ -916,9 +943,9 @@
                                 key: self.newVersion,
                                 value: self.newVersion
                             })
-                            alert('新建版本成功，请查看列表')
+                            notie.alert({ type: 'success', text: '新建版本成功，请查看列表', time: 2 })
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
                         }
                         $('#loading').modal('hide');
                         self.newVersion = ''
@@ -949,9 +976,9 @@
                                 key: self.newModule,
                                 value: self.newModule
                             })
-                            alert('新建模块成功，请查看列表')
+                            notie.alert({ type: 'success', text: '新建模块成功，请查看列表', time: 2 })
                         } else {
-                            alert(result.msg)
+                            notie.alert({ type: 'error', text: result.msg, stay: true })
                         }
                         $('#loading').modal('hide');
                         self.newModule = ''
@@ -969,8 +996,18 @@
     function getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
-        if (r != null)return unescape(r[2]);
+        if (r != null) return unescape(r[2]);
         return null;
     }
+
     vm.loadVersionList()
+    var clipboard = new Clipboard('#clipboardBtn');
+
+    clipboard.on('success', function(e) {
+        notie.alert({ type: 'success', text: '复制到剪贴板成功', time: 2 })
+    });
+
+    clipboard.on('error', function(e) {
+        notie.alert({ type: 'warning', text: '复制失败' })
+    });
 </script>

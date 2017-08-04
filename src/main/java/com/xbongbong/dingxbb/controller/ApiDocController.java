@@ -196,7 +196,7 @@ public class ApiDocController extends BasicController {
             e.printStackTrace();
         }
 
-        modelMap.put("markdown", markdownContent);
+        modelMap.put("markdown", markdownContent.replaceAll("<br />", "\n"));
         returnSuccessJsonData(request, response, modelMap);
     }
 

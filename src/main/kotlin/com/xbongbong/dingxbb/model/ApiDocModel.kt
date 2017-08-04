@@ -214,8 +214,7 @@ open class ApiDocModel : BaseModel(), IModel {
             content.append("### " + ++index + ". 返回实例" + "<br />")
             content.append("```JSON" + "<br />")
             content.append(jsonFormatUtil!!.formatJson2Html(entity.responseDemo) + "<br />")
-            content.append("```" + "<br />")
-            content.append("<br />")
+            content.append("```")
         }
         return content.toString()
     }
