@@ -187,16 +187,16 @@ public class ApiDocController extends BasicController {
             e.printStackTrace();
         }
         // 下面是向文件file2里面写数据
-        String markdownContent = apiDocModel.formatMarkdownContent(apiDoc);
+        String markdownContent = apiDocModel.formatMarkdownContent(apiDoc, jsonFormatUtil.getTYPE_NORMAL());
         try {
             FileWriter fileWriter = new FileWriter(apiDocFile);
-            fileWriter.write(markdownContent.replaceAll("<br />", "\n"));
+            fileWriter.write(markdownContent);
             fileWriter.close(); // 关闭数据流
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        modelMap.put("markdown", markdownContent.replaceAll("<br />", "\n"));
+        modelMap.put("markdown", markdownContent);
         returnSuccessJsonData(request, response, modelMap);
     }
 
@@ -248,7 +248,7 @@ public class ApiDocController extends BasicController {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请求 Demo 必须为 JSON 格式字符串，请校验！", modelMap);
             return null;
         }
-        apiDoc.setParamsDemo(apiDoc.getParamsDemo().replaceAll("\r|\n", ""));
+        apiDoc.setParamsDemo(apiDoc.getParamsDemo().replaceAll("\r|\n", "").replaceAll(" ", ""));
         apiDoc.setParamsDemo(jsonFormatUtil.formatJson2Str(apiDoc.getParamsDemo().trim()));
 
 //        if (!(apiDoc.getParamsDemo().startsWith("{") && apiDoc.getParamsDemo().endsWith("}"))) {
@@ -274,7 +274,7 @@ public class ApiDocController extends BasicController {
                 jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "返回 Demo 必须为 JSON 格式字符串，请校验！", modelMap);
                 return null;
             }
-            apiDoc.setResponseDemo(apiDoc.getResponseDemo().replaceAll("\r|\n", ""));
+            apiDoc.setResponseDemo(apiDoc.getResponseDemo().replaceAll("\r|\n", "").replaceAll(" ", ""));
             apiDoc.setResponseDemo(jsonFormatUtil.formatJson2Str(apiDoc.getResponseDemo().trim()));
         }
         // TODO 2017-05-25 因为返回 Demo 并非正确的 json 格式，无法解析

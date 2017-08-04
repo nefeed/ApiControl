@@ -79,9 +79,9 @@ class JsonFormatUtil {
      * *
      * @return 格式化的JSON字符串。
      */
-    private fun formatJson(json: String, type: String): String {
+    fun formatJson(json: String, type: String): String {
         val result = StringBuffer()
-        val lineBreak = if (TYPE_NORMAL.equals(type)) ENTER_NORMAL else ENTER_WEB
+        val lineBreak = if (TYPE_NORMAL == type) ENTER_NORMAL else ENTER_WEB
         val length = json.length
         var number = 0
         var key: Char
@@ -177,7 +177,6 @@ class JsonFormatUtil {
         return formatJson(json, TYPE_WEB)
     }
 
-
     /**
      * 返回指定次数的缩进字符串。每一次缩进三个空格，即SPACE。
 
@@ -187,25 +186,24 @@ class JsonFormatUtil {
      */
     private fun indent(number: Int, type: String): String {
         val result = StringBuffer()
-        val space = if (TYPE_NORMAL.equals(type)) SPACE_NORMAL else SPACE_WEB
+        val space = if (TYPE_NORMAL == type) SPACE_NORMAL else SPACE_WEB
         for (i in 0..number - 1) {
             result.append(space)
         }
         return result.toString()
     }
 
-    companion object {
-        private val TYPE_NORMAL = "normal"
-        private val TYPE_WEB = "web"
-        /**
-         * 换行付
-         */
-        private val ENTER_NORMAL = "\n"
-        private val ENTER_WEB = "<br />"
-        /**
-         * 单位缩进字符串。
-         */
-        private val SPACE_NORMAL = "    "
-        private val SPACE_WEB = "&nbsp;&nbsp;&nbsp;&nbsp;"
-    }
+    val TYPE_NORMAL by lazy { "normal" }
+    val TYPE_WEB by lazy { "web" }
+    /**
+     * 换行付
+     */
+    val ENTER_NORMAL by lazy { "\n" }
+    val ENTER_WEB by lazy { "<br />" }
+    /**
+     * 单位缩进字符串。
+     */
+    val SPACE_NORMAL by lazy { "  " }
+    val SPACE_WEB by lazy { "&nbsp;&nbsp;" }
+
 }

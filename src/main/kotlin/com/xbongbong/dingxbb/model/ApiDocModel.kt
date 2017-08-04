@@ -159,61 +159,65 @@ open class ApiDocModel : BaseModel(), IModel {
         }
     }
 
-    fun formatMarkdownContent(entity: ApiDocEntity): String {
+    /**
+     * 将API文档转化为Markdown格式文本
+     */
+    fun formatMarkdownContent(entity: ApiDocEntity, shownType: String): String {
+        val enterStr = if ( shownType == jsonFormatUtil!!.TYPE_NORMAL ) jsonFormatUtil.ENTER_NORMAL else jsonFormatUtil.ENTER_WEB
         val content = StringBuffer()
-        content.append("# 【" + entity.module + "】" + entity.name + " - v" + entity.version + "<br />")
-        content.append("> " + entity.memo + "<br />")
-        content.append("<br />")
+        content.append("# 【" + entity.module + "】" + entity.name + " - v" + entity.version + enterStr)
+        content.append("> " + entity.memo + enterStr)
+        content.append(enterStr)
         var index = 0
-        content.append("### " + ++index + ". url：" + entity.url + "<br />")
-        content.append("<br />")
-        content.append("### " + ++index + ". 请求方式：" + entity.method + "<br />")
-        content.append("<br />")
-        content.append("### " + ++index + ". 请求参数" + "<br />")
+        content.append("### " + ++index + ". url：" + entity.url + enterStr)
+        content.append(enterStr)
+        content.append("### " + ++index + ". 请求方式：" + entity.method + enterStr)
+        content.append(enterStr)
+        content.append("### " + ++index + ". 请求参数" + enterStr)
         val params = JSON.parseArray(entity.params, ApiDocParamsPojo::class.java)
         if (params != null && params.size > 0) {
-            content.append("|参数 Key|参数名称|参数类型|长度上限|是否必填|说明|" + "<br />")
-            content.append("|:-----------|:-----------|:---------|:---------|:---------|:-----------|" + "<br />")
+            content.append("|参数 Key|参数名称|参数类型|长度上限|是否必填|说明|" + enterStr)
+            content.append("|:-----------|:-----------|:---------|:---------|:---------|:-----------|" + enterStr)
             for (item in params) {
-                content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.limit + "|" + item.required!!.toString() + "|" + item.memo + "|" + "<br />")
+                content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.limit + "|" + item.required!!.toString() + "|" + item.memo + "|" + enterStr)
             }
         } else {
             content.append("无需要详细说明的请求参数<br />")
         }
-        content.append("<br />")
+        content.append(enterStr)
         if (!StringUtil.isEmpty(entity.paramsDemo)) {
-            content.append("### " + ++index + ". 请求实例" + "<br />")
-            content.append("```JSON" + "<br />")
-            content.append(jsonFormatUtil!!.formatJson2Html(entity.paramsDemo) + "<br />")
-            content.append("```" + "<br />")
-            content.append("<br />")
+            content.append("### " + ++index + ". 请求实例" + enterStr)
+            content.append("```JSON" + enterStr)
+            content.append(entity.paramsDemo + enterStr)
+            content.append("```" + enterStr)
+            content.append(enterStr)
         }
         val responses = JSON.parseArray(entity.response, ApiDocResponsePojo::class.java)
-        content.append("### " + ++index + ". 主要返回内容" + "<br />")
+        content.append("### " + ++index + ". 主要返回内容" + enterStr)
         if (responses != null && responses.size > 0) {
-            content.append("|参数 Key|参数名称|参数类型|说明|" + "<br />")
-            content.append("|:-----------|:-----------|:---------|:---------|:---------|:-----------|" + "<br />")
+            content.append("|参数 Key|参数名称|参数类型|说明|" + enterStr)
+            content.append("|:-----------|:-----------|:---------|:---------|:---------|:-----------|" + enterStr)
             for (item in responses) {
-                content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.memo + "|" + "<br />")
+                content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.memo + "|" + enterStr)
             }
         } else {
             content.append("无需要详细说明的主要返回内容<br />")
         }
-        content.append("<br />")
+        content.append(enterStr)
         val wrongCodes = JSON.parseArray(entity.wrongCode, ApiDocWrongCodePojo::class.java)
         if (wrongCodes != null && wrongCodes.size > 0) {
-            content.append("### " + ++index + ". 错误Code" + "<br />")
-            content.append("|Code|内容|" + "<br />")
-            content.append("|:-----------|:-----------|" + "<br />")
+            content.append("### " + ++index + ". 错误Code" + enterStr)
+            content.append("|Code|内容|" + enterStr)
+            content.append("|:-----------|:-----------|" + enterStr)
             for (item in wrongCodes) {
-                content.append("|" + item.code + "|" + item.msg + "|" + "<br />")
+                content.append("|" + item.code + "|" + item.msg + "|" + enterStr)
             }
         }
-        content.append("<br />")
+        content.append(enterStr)
         if (!StringUtil.isEmpty(entity.responseDemo)) {
-            content.append("### " + ++index + ". 返回实例" + "<br />")
-            content.append("```JSON" + "<br />")
-            content.append(jsonFormatUtil!!.formatJson2Html(entity.responseDemo) + "<br />")
+            content.append("### " + ++index + ". 返回实例" + enterStr)
+            content.append("```JSON" + enterStr)
+            content.append(entity.responseDemo + enterStr)
             content.append("```")
         }
         return content.toString()
@@ -324,4 +328,5 @@ open class ApiDocModel : BaseModel(), IModel {
         private val MODULE_COMPARATOR = Comparator<SysModuleEntity> { o1, o2 -> o2.id!!.compareTo(o1.id!!) }
     }
 }
+
 
