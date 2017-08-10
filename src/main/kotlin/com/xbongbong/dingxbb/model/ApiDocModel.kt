@@ -15,6 +15,7 @@ import com.xbongbong.util.StringUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * User: Gavin
@@ -140,6 +141,27 @@ open class ApiDocModel : BaseModel(), IModel {
         Collections.sort(apiModuleList, MODULE_COMPARATOR)
         val moduleList = apiModuleList.map { it.module }
         return moduleList
+    }
+
+    /**
+     * 校验api的url是否重复
+     *
+     * @param apiDoc 需要录入的api文档
+     * @return boolean 是否重复
+     */
+    fun checkUrlDuplicate(apiDoc: ApiDocEntity): Boolean {
+        val params = HashMap<String, Any>()
+        val shortUrl = apiDoc.url.substring(0, apiDoc.url.indexOf("."))
+        params.put("urlLike", shortUrl)
+        params.put("del", 0)
+        params.put("limitNum", 1)
+        val list = findEntitys(params)
+        if (list.isNotEmpty()) {
+            if (apiDoc.id != list[0].id) {
+                return true
+            }
+        }
+        return false
     }
 
     /**
