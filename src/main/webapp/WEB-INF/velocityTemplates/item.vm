@@ -435,7 +435,8 @@
                     <!-- Trigger -->
                     <button class="btn gray" id="clipboardBtn"
                             data-clipboard-target="#markdownContentArea">
-                        <img src="/images/clippy.svg" alt="Copy to clipboard" style="width:16px; height: 18px; margin-right: 10px;">一键复制
+                        <img src="/images/clippy.svg" alt="Copy to clipboard"
+                             style="width:16px; height: 18px; margin-right: 10px;">一键复制
                     </button>
                 </div>
             </div>
@@ -652,7 +653,7 @@
                                 vm.loadModuleList()
                             }
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -690,7 +691,7 @@
                                 vm.loadDetail()
                             }
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -732,16 +733,24 @@
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             $('#loading').modal('hide');
-                            if (self.paramsDemo.length > 2) {
-                                var paramsDemoJson = formatJson(self.paramsDemo)
-                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            try {
+                                if (self.paramsDemo.length > 2) {
+                                    var paramsDemoJson = formatJson(self.paramsDemo)
+                                    self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                                }
+                            } catch (e) {
+                                notie.alert({type: 'error', text: '请求参数Demo转换为JSON可读格式时出错！', stay: true})
                             }
-                            if (self.responseDemo.length > 2) {
-                                var responseDemoJson = formatJson(self.responseDemo)
-                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            try {
+                                if (self.responseDemo.length > 2) {
+                                    var responseDemoJson = formatJson(self.responseDemo)
+                                    self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                                }
+                            } catch (e) {
+                                notie.alert({type: 'error', text: '返回数据Demo转换为JSON可读格式时出错！', stay: true})
                             }
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                             $('#loading').modal('hide');
                             window.location = '/list.html'
                         }
@@ -796,16 +805,24 @@
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             $('#loading').modal('hide');
-                            if (self.paramsDemo.length > 2) {
-                                var paramsDemoJson = formatJson(self.paramsDemo)
-                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            try {
+                                if (self.paramsDemo.length > 2) {
+                                    var paramsDemoJson = formatJson(self.paramsDemo)
+                                    self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                                }
+                            } catch (e) {
+                                notie.alert({type: 'error', text: '请求参数Demo转换为JSON可读格式时出错！', stay: true})
                             }
-                            if (self.responseDemo.length > 2) {
-                                var responseDemoJson = formatJson(self.responseDemo)
-                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            try {
+                                if (self.responseDemo.length > 2) {
+                                    var responseDemoJson = formatJson(self.responseDemo)
+                                    self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                                }
+                            } catch (e) {
+                                notie.alert({type: 'error', text: '返回数据Demo转换为JSON可读格式时出错！', stay: true})
                             }
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                             $('#loading').modal('hide');
                         }
                     },
@@ -908,17 +925,25 @@
                                 $('body').scrollTop($('body').height());
                             }, 300)
                             $('#loading').modal('hide');
-                            notie.alert({ type: 'success', text: '导出Markdown成功，请自行复制并保存', time: 2 })
-                            if (self.paramsDemo.length > 2) {
-                                var paramsDemoJson = formatJson(self.paramsDemo)
-                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            notie.alert({type: 'success', text: '导出Markdown成功，请自行复制并保存', time: 2})
+                            try {
+                                if (self.paramsDemo.length > 2) {
+                                    var paramsDemoJson = formatJson(self.paramsDemo)
+                                    self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                                }
+                            } catch (e) {
+                                notie.alert({type: 'error', text: '请求参数Demo转换为JSON可读格式时出错！', stay: true})
                             }
-                            if (self.responseDemo.length > 2) {
-                                var responseDemoJson = formatJson(self.responseDemo)
-                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            try {
+                                if (self.responseDemo.length > 2) {
+                                    var responseDemoJson = formatJson(self.responseDemo)
+                                    self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                                }
+                            } catch (e) {
+                                notie.alert({type: 'error', text: '返回数据Demo转换为JSON可读格式时出错！', stay: true})
                             }
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                             $('#loading').modal('hide');
                         }
                     },
@@ -948,9 +973,9 @@
                                 key: self.newVersion,
                                 value: self.newVersion
                             })
-                            notie.alert({ type: 'success', text: '新建版本成功，请查看列表', time: 2 })
+                            notie.alert({type: 'success', text: '新建版本成功，请查看列表', time: 2})
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                         }
                         $('#loading').modal('hide');
                         self.newVersion = ''
@@ -981,9 +1006,9 @@
                                 key: self.newModule,
                                 value: self.newModule
                             })
-                            notie.alert({ type: 'success', text: '新建模块成功，请查看列表', time: 2 })
+                            notie.alert({type: 'success', text: '新建模块成功，请查看列表', time: 2})
                         } else {
-                            notie.alert({ type: 'error', text: result.msg, stay: true })
+                            notie.alert({type: 'error', text: result.msg, stay: true})
                         }
                         $('#loading').modal('hide');
                         self.newModule = ''
@@ -1008,11 +1033,11 @@
     vm.loadVersionList()
     var clipboard = new Clipboard('#clipboardBtn');
 
-    clipboard.on('success', function(e) {
-        notie.alert({ type: 'success', text: '复制到剪贴板成功', time: 2 })
+    clipboard.on('success', function (e) {
+        notie.alert({type: 'success', text: '复制到剪贴板成功', time: 2})
     });
 
-    clipboard.on('error', function(e) {
-        notie.alert({ type: 'warning', text: '复制失败' })
+    clipboard.on('error', function (e) {
+        notie.alert({type: 'warning', text: '复制失败'})
     });
 </script>
