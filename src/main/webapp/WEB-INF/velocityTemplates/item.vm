@@ -725,21 +725,21 @@
                             self.memo = result.ret.memo
                             self.params = JSON.parse(result.ret.params)
                             self.paramsDemo = result.ret.paramsDemo
-                            if (self.paramsDemo.length > 2) {
-                                var paramsDemoJson = formatJson(self.paramsDemo)
-                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
-                            }
                             self.response = JSON.parse(result.ret.response)
                             self.responseDemo = result.ret.responseDemo
-                            if (self.responseDemo.length > 2) {
-                                var responseDemoJson = formatJson(self.responseDemo)
-                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
-                            }
                             self.wrongCode = JSON.parse(result.ret.wrongCode)
                             self.del = result.ret.del
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
                             $('#loading').modal('hide');
+                            if (self.paramsDemo.length > 2) {
+                                var paramsDemoJson = formatJson(self.paramsDemo)
+                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            }
+                            if (self.responseDemo.length > 2) {
+                                var responseDemoJson = formatJson(self.responseDemo)
+                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            }
                         } else {
                             notie.alert({ type: 'error', text: result.msg, stay: true })
                             $('#loading').modal('hide');
@@ -753,8 +753,6 @@
                 });
             },
             item: function () {
-//                this.paramsDemo = formatJson(this.paramsDemo)
-//                this.responseDemo = formatJson(this.responseDemo)
                 if (!this.paramsDemo || this.paramsDemo.length < 2) {
                     this.paramsDemo = '{}'
                 }
@@ -797,6 +795,7 @@
                             self.response = result.ret.response
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
+                            $('#loading').modal('hide');
                             if (self.paramsDemo.length > 2) {
                                 var paramsDemoJson = formatJson(self.paramsDemo)
                                 self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
@@ -807,8 +806,8 @@
                             }
                         } else {
                             notie.alert({ type: 'error', text: result.msg, stay: true })
+                            $('#loading').modal('hide');
                         }
-                        $('#loading').modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         $('#loading').modal('hide');
@@ -862,8 +861,6 @@
              * 导出 Markdown 文本，输出在 result
              */
             outputMarkdown: function () {
-//                this.paramsDemo = formatJson(this.paramsDemo)
-//                this.responseDemo = formatJson(this.responseDemo)
                 if (!this.paramsDemo || this.paramsDemo.length < 2) {
                     this.paramsDemo = '{}'
                 }
@@ -903,14 +900,6 @@
                             self.response = result.ret.response
                             self.btnSave = '更新'
                             self.formTitle = '更新表单'
-                            if (self.paramsDemo.length > 2) {
-                                var paramsDemoJson = formatJson(self.paramsDemo)
-                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
-                            }
-                            if (self.responseDemo.length > 2) {
-                                var responseDemoJson = formatJson(self.responseDemo)
-                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
-                            }
                             self.markdownContent = result.ret.markdown
                             var clipboardBtn = document.getElementById("clipboardBtn"); // 得到element标签
                             clipboardBtn.setAttribute('data-clipboard-text', result.ret.markdown)
@@ -920,6 +909,14 @@
                             }, 300)
                             $('#loading').modal('hide');
                             notie.alert({ type: 'success', text: '导出Markdown成功，请自行复制并保存', time: 2 })
+                            if (self.paramsDemo.length > 2) {
+                                var paramsDemoJson = formatJson(self.paramsDemo)
+                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            }
+                            if (self.responseDemo.length > 2) {
+                                var responseDemoJson = formatJson(self.responseDemo)
+                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            }
                         } else {
                             notie.alert({ type: 'error', text: result.msg, stay: true })
                             $('#loading').modal('hide');
