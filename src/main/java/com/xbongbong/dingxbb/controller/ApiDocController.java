@@ -248,12 +248,13 @@ public class ApiDocController extends BasicController {
         try {
             JSON.parseObject(apiDoc.getParamsDemo(), JSONObject.class);
         } catch (Exception e) {
-            System.out.println("json格式有误");
+            System.out.println("请求 Demo json格式有误");
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请求 Demo 必须为 JSON 格式字符串，请校验！", modelMap);
             return null;
         }
+
         apiDoc.setParamsDemo(apiDoc.getParamsDemo().replaceAll("\r|\n", "").replaceAll(" ", ""));
-        apiDoc.setParamsDemo(jsonFormatUtil.formatJson2Str(apiDoc.getParamsDemo().trim()));
+//        apiDoc.setParamsDemo(jsonFormatUtil.formatJson2Str(apiDoc.getParamsDemo().trim()));
 
 //        if (!(apiDoc.getParamsDemo().startsWith("{") && apiDoc.getParamsDemo().endsWith("}"))) {
 //            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "请求 Demo 必须是 Json 格式字符串！", modelMap);
@@ -274,12 +275,12 @@ public class ApiDocController extends BasicController {
             try {
                 JSON.parseObject(apiDoc.getResponseDemo(), JSONObject.class);
             } catch (Exception e) {
-                System.out.println("json格式有误");
+                System.out.println("返回 Demo json格式有误");
                 jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "返回 Demo 必须为 JSON 格式字符串，请校验！", modelMap);
                 return null;
             }
             apiDoc.setResponseDemo(apiDoc.getResponseDemo().replaceAll("\r|\n", "").replaceAll(" ", ""));
-            apiDoc.setResponseDemo(jsonFormatUtil.formatJson2Str(apiDoc.getResponseDemo().trim()));
+//            apiDoc.setResponseDemo(jsonFormatUtil.formatJson2Str(apiDoc.getResponseDemo().trim()));
         }
         // TODO 2017-05-25 因为返回 Demo 并非正确的 json 格式，无法解析
 //        ResponseDemoPojo responseDemoPojo = JSON.parseObject(apiDoc.getResponseDemo(), ResponseDemoPojo.class);

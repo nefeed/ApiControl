@@ -656,8 +656,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             },
@@ -694,8 +694,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             },
@@ -725,8 +725,16 @@
                             self.memo = result.ret.memo
                             self.params = JSON.parse(result.ret.params)
                             self.paramsDemo = result.ret.paramsDemo
+                            if (self.paramsDemo.length > 2) {
+                                var paramsDemoJson = formatJson(self.paramsDemo)
+                                self.paramsDemo = paramsDemoJson.substring(2, paramsDemoJson.length - 2)
+                            }
                             self.response = JSON.parse(result.ret.response)
                             self.responseDemo = result.ret.responseDemo
+                            if (self.responseDemo.length > 2) {
+                                var responseDemoJson = formatJson(self.responseDemo)
+                                self.responseDemo = responseDemoJson.substring(2, responseDemoJson.length - 2)
+                            }
                             self.wrongCode = JSON.parse(result.ret.wrongCode)
                             self.del = result.ret.del
                             self.btnSave = '更新'
@@ -739,8 +747,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             },
@@ -803,8 +811,8 @@
                         $('#loading').modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             },
@@ -829,8 +837,8 @@
                             $('#loading').modal('hide');
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                             $('#loading').modal('hide');
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         }
                     });
                 } else {
@@ -844,8 +852,8 @@
                             $('#loading').modal('hide');
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                             $('#loading').modal('hide');
+                            alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         }
                     });
                 }
@@ -918,8 +926,8 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             },
@@ -951,8 +959,8 @@
                         self.newVersion = ''
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             },
@@ -984,8 +992,8 @@
                         self.newModule = ''
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                         $('#loading').modal('hide');
+                        alert('请求返回错误\nStatus：' + textStatus + '\nerrorThrown：' + errorThrown)
                     }
                 });
             }

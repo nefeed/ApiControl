@@ -1,5 +1,8 @@
 package com.xbongbong.dingxbb.util
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONArray
+import com.alibaba.fastjson.JSONObject
 import org.springframework.stereotype.Service
 
 /**
@@ -175,6 +178,57 @@ class JsonFormatUtil {
      */
     fun formatJson2Html(json: String): String {
         return formatJson(json, TYPE_WEB)
+    }
+
+
+    private val OBJECT_TYPE_JSON by lazy { "json" }
+    private val OBJECT_TYPE_ARRAY by lazy { "array" }
+    /**
+     * 查询json并去除过多的Array内容
+     */
+    fun checkJsonChildNode(json: JSONObject): JSONObject {
+        for (key in json.keys) {
+            val value = JSON.toJSONString(json[key])
+            val type = getObjectType(value)
+            if (OBJECT_TYPE_JSON == type) {
+                checkJsonChildNode(JSON.parseObject(value))
+            } else if (OBJECT_TYPE_ARRAY == type) {
+                json.put(key, removeArrayIterator(JSON.parseArray(value)))
+            }
+        }
+        return json
+    }
+
+    /**
+     * 查询json并去除过多的Array内容
+     */
+    private fun getObjectType(value: String): String {
+        if (value.length > 1) {
+            val valueFirstChar = value.substring(0, 1).toCharArray()[0]
+            val valueEndChar = value.substring(value.length - 1, value.length).toCharArray()[0]
+            if ('{' == valueFirstChar && '}' == valueEndChar) {
+                return OBJECT_TYPE_JSON
+            } else if ('[' == valueFirstChar && ']' == valueEndChar) {
+                return OBJECT_TYPE_ARRAY
+            }
+        }
+        return "unknown"
+    }
+
+    /**
+     * 去除Array中过多的内容
+     */
+    private fun removeArrayIterator(array: JSONArray): JSONArray {
+        if (array.size > 2) {
+            if (OBJECT_TYPE_JSON == getObjectType(JSON.toJSONString(array[0]))) {
+                val temp1 = array[0]
+                val temp2 = array[1]
+                array.clear()
+                array.add(temp1)
+                array.add(temp2)
+            }
+        }
+        return array
     }
 
     /**

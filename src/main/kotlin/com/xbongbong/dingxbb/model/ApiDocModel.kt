@@ -349,6 +349,7 @@ open class ApiDocModel : BaseModel(), IModel {
         // 按模块的 id 倒叙排列
         private val MODULE_COMPARATOR = Comparator<SysModuleEntity> { o1, o2 -> o2.id!!.compareTo(o1.id!!) }
     }
+
 }
 
 
