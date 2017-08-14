@@ -210,7 +210,7 @@ open class ApiDocModel : BaseModel(), IModel {
         if (!StringUtil.isEmpty(entity.paramsDemo)) {
             content.append("### " + ++index + ". 请求实例" + enterStr)
             content.append("```JSON" + enterStr)
-            content.append(entity.paramsDemo + enterStr)
+            content.append(jsonFormatUtil.formatJson2Str(entity.paramsDemo) + enterStr)
             content.append("```" + enterStr)
             content.append(enterStr)
         }
@@ -239,7 +239,7 @@ open class ApiDocModel : BaseModel(), IModel {
         if (!StringUtil.isEmpty(entity.responseDemo)) {
             content.append("### " + ++index + ". 返回实例" + enterStr)
             content.append("```JSON" + enterStr)
-            content.append(entity.responseDemo + enterStr)
+            content.append(jsonFormatUtil.formatJson2Str(entity.responseDemo) + enterStr)
             content.append("```")
         }
         return content.toString()
