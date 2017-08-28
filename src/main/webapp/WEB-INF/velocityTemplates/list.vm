@@ -66,20 +66,20 @@
             <div class="control-group search-big">
                 <label class="control-label">Api名</label>
                 <div class="controls">
-                    <input type="text" class="m-wrap medium" placeholder="Api名称" v-model="apiNameLike">
+                    <input type="text" class="m-wrap medium" placeholder="Api名称" v-model="apiNameLike" @keyup.enter="fuzzySearch">
                 </div>
 
             </div>
             <div class="control-group search-big">
                 <label class="control-label">URL</label>
                 <div class="controls">
-                    <input type="text" class="m-wrap medium" placeholder="地址" v-model="urlLike">
+                    <input type="text" class="m-wrap medium" placeholder="地址" v-model="urlLike" @keyup.enter="fuzzySearch">
                 </div>
             </div>
             <div class="control-group search-big">
                 <label class="control-label">作者</label>
                 <div class="controls">
-                    <input type="text" class="m-wrap medium" placeholder="作者" v-model="authorNameLike">
+                    <input type="text" class="m-wrap medium" placeholder="作者" v-model="authorNameLike" @keyup.enter="fuzzySearch">
                 </div>
             </div>
             <div class="control-group search-btn" style="margin-top: 26px;">
