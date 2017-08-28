@@ -219,6 +219,10 @@ public class ApiDocController extends BasicController {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "缺少 Api 请求地址", modelMap);
             return null;
         }
+        if (!(apiDoc.getUrl().contains(".html") || apiDoc.getUrl().contains(".do"))) {
+            jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "URL缺少 '.do' 或 '.html' 标志，请补全", modelMap);
+            return null;
+        }
         if (apiDocModel.checkUrlDuplicate(apiDoc)) {
             jsonOut(request, response, ErrcodeEnum.API_ERROR_100005.getCode(), "Api地址重复，请校验Api文档列表", modelMap);
             return null;
