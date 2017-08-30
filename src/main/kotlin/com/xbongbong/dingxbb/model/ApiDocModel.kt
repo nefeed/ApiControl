@@ -156,9 +156,16 @@ open class ApiDocModel : BaseModel(), IModel {
         params.put("del", 0)
         params.put("limitNum", 1)
         val list = findEntitys(params)
+        var itemShortUrl = ""
         if (list.isNotEmpty()) {
-            if (apiDoc.id != list[0].id) {
-                return true
+            list.forEach {
+                item ->
+                if (apiDoc.id != item.id) {
+                    itemShortUrl = item.url.substring(0, item.url.indexOf("."))
+                    if (Objects.equals(itemShortUrl, shortUrl)) {
+                        return true
+                    }
+                }
             }
         }
         return false
