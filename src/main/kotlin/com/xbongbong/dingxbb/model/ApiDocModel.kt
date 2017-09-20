@@ -225,7 +225,7 @@ open class ApiDocModel : BaseModel(), IModel {
         content.append("### " + ++index + ". 主要返回内容" + enterStr)
         if (responses != null && responses.size > 0) {
             content.append("|参数 Key|参数名称|参数类型|说明|" + enterStr)
-            content.append("|:-----------|:-----------|:---------|:---------|:---------|:-----------|" + enterStr)
+            content.append("|:---------|:-----------|:---------|:-----------|" + enterStr)
             for (item in responses) {
                 content.append("|" + item.key + "|" + item.name + "|" + item.type + "|" + item.memo + "|" + enterStr)
             }
