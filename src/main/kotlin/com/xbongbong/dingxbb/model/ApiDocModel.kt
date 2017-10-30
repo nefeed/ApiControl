@@ -15,7 +15,6 @@ import com.xbongbong.util.StringUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * User: Gavin
