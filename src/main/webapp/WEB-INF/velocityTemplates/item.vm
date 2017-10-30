@@ -200,9 +200,10 @@
                                             <div v-if="params.length === 0">
 
                                             </div>
-                                            <table v-else>
+                                            <table v-else class="drag-sort">
                                                 <thead>
                                                 <tr>
+                                                    <td width="50"></td>
                                                     <th>参数 Key</th>
                                                     <th>参数中文</th>
                                                     <th>参数类型</th>
@@ -212,8 +213,9 @@
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="sortList1">
                                                 <tr v-for="(item, index) in params">
+                                                    <td><span class="my-handle icon-move"></span></td>
                                                     <td>
                                                         <input type="text" class="m-wrap small" placeholder="Key"
                                                                v-model="item.key">
@@ -283,9 +285,10 @@
                                             <div v-if="response.length === 0">
 
                                             </div>
-                                            <table v-else>
+                                            <table v-else class="drag-sort">
                                                 <thead>
                                                 <tr>
+                                                    <td width="50"></td>
                                                     <th>参数 Key</th>
                                                     <th>参数中文</th>
                                                     <th>参数类型</th>
@@ -293,8 +296,9 @@
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="sortList2">
                                                 <tr v-for="(item, index) in response">
+                                                    <td><span class="my-handle icon-move"></span></td>
                                                     <td>
                                                         <input type="text" class="m-wrap small" placeholder="Key"
                                                                v-model="item.key">
@@ -349,16 +353,18 @@
                                             <div v-if="wrongCode.length === 0">
 
                                             </div>
-                                            <table v-else>
+                                            <table v-else class="drag-sort">
                                                 <thead>
                                                 <tr>
+                                                    <td width="50"></td>
                                                     <th>Code</th>
                                                     <th>解释<br/>（换行请用"&lt;br /&gt;"）</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="sortList3">
                                                 <tr v-for="(item, index) in wrongCode">
+                                                    <td><span class="my-handle icon-move"></span></td>
                                                     <td>
                                                         <input type="text" class="m-wrap small" placeholder="Code"
                                                                v-model="item.code">
@@ -444,6 +450,18 @@
         </div>
     </div>
 </div>
+<style>
+    .drag-sort tr {
+        background-color: #fff;
+    }
+    .drag-sort .my-handle {
+        padding: 6px;
+        font-size: 20px;
+        cursor: move;
+        cursor: -webkit-grabbing;
+        color: #666;
+    }
+</style>
 ##<script src="$!{configConstant.resourcesBasicUrl}/js/lib/bootstrap.js?v=${configConstant.srcVersion}"
 ##        type="text/javascript"></script>
 <script src="$!{configConstant.resourcesBasicUrl}/js/lib/vue.min.js?v=${configConstant.srcVersion}"
@@ -455,6 +473,8 @@
         type="text/javascript"></script>
 ## toast
 <script src="$!{configConstant.resourcesBasicUrl}/js/notie.min.js?v=${configConstant.srcVersion}"
+        type="text/javascript"></script>
+<script src="$!{configConstant.resourcesBasicUrl}/js/lib/Sortable.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
 <script type="text/javascript">
     var vm = new Vue({
@@ -525,7 +545,10 @@
                 memo: ''
             },
             responseDemo: '{}', // 'Api Doc 返回 Response 的 body 的 demo',
-            wrongCode: [], // '错误代码： {"code": "错误代码 Code", "msg": "错误说明"}',
+            wrongCode: [{
+                code: '',
+                msg: ''
+            }], // '错误代码： {"code": "错误代码 Code", "msg": "错误说明"}',
             wrongCodeItem: {
                 code: '',
                 msg: ''
@@ -541,6 +564,45 @@
             markdownContent: ''
         },
         computed: {},
+        mounted () {
+            const that = this
+            // 请求参数
+            Sortable.create(sortList1, {
+                animation: 150,
+                handle: '.my-handle',
+                onEnd: function (evt) {
+                    var nIndex = evt.newIndex;
+                    var oIndex = evt.oldIndex;
+                    var a = that.params;
+                    [a[nIndex], a[oIndex]] = [a[oIndex], a[nIndex]];
+                }
+            });
+
+            // 返回数据
+            Sortable.create(sortList2, {
+                animation: 150,
+                handle: '.my-handle',
+                onEnd: function (evt) {
+                    var nIndex = evt.newIndex;
+                    var oIndex = evt.oldIndex;
+                    var a = that.response;
+                    [a[nIndex], a[oIndex]] = [a[oIndex], a[nIndex]];
+                }
+            });
+
+            // 错误code
+            Sortable.create(sortList3, {
+                animation: 150,
+                handle: '.my-handle',
+                onEnd: function (evt) {
+                    var nIndex = evt.newIndex;
+                    var oIndex = evt.oldIndex;
+                    var a = that.wrongCode;
+                    [a[nIndex], a[oIndex]] = [a[oIndex], a[nIndex]];
+                }
+            });
+
+        },
         methods: {
             formatTime: function (time) {
                 return new Date(parseInt(time) * 1000).toLocaleString().replace(/\//g, '-').replace('下午', ' ')

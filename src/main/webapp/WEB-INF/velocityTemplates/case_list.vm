@@ -153,12 +153,21 @@
                     </div>
                     <div class="pagination pagination-right" style="margin-right: 10px; margin-bottom: 5px;">
                         <ul>
-                            <li><a href="#" @click="intoPage((page-1))">Prev</a></li>
-                            <template v-for="index in pageCount">
-                                <li v-if="index == page" class="disabled"><a href="#">{{ index }}</a></li>
-                                <li v-else class="active"><a href="#" @click="intoPage(index)">{{ index }}</a></li>
+                            <li v-if="page !== 1"><a href="#" @click="intoPage((page-1))">Prev</a></li>
+                            <li class="disabled" v-if="showFirstPage">
+                                <a href="#" @click="intoPage(1)">1</a>
+                            </li>
+                            <li class="disabled" v-if="showFirstDots"><a href="">...</a></li>
+                            <template v-for="index in showPageArray">
+                                <li v-if="index == page" class="active">
+                                    <a href="#">{{ index }}</a>
+                                </li>
+                                <li v-else class="disabled">
+                                    <a href="#" @click="intoPage(index)">{{ index }}</a>
+                                </li>
                             </template>
-                            <li><a href="#" @click="intoPage((page+1))">Next</a></li>
+                            <li class="disabled" v-if="showLastDots"><a href="">...</a></li>
+                            <li v-if="page !== pageCount"><a href="#" @click="intoPage((page+1))">Next</a></li>
                         </ul>
                     </div>
                 </div>
@@ -187,8 +196,51 @@
             durationTimeSort: '',
             updateTimeSort: ''
         },
-        computed: {},
+        computed: {
+            showFirstPage () {
+                if (this.page > 3 && this.pageCount >= 10) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+            // 是否显示第一组点
+            showFirstDots () {
+               if (this.page > 4 && this.pageCount >= 10) {
+                return true
+               } else {
+                return false
+               }
+            },
+            // 是否显示第二组点
+            showLastDots () {
+                if (this.page < (this.pageCount - 2) && this.pageCount >= 10) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+            // 当前要显示的page页
+            showPageArray () {
+                var pC = this.pageCount
+                if (pC >= 10) {
+                    if (this.page <= 3) {
+                        return this.makeArr(1, 5)
+                    } else if (this.page > (pC - 2)) {
+                        return this.makeArr(pC- 4, pC)
+                    } else {
+                        return this.makeArr(this.page - 2, this.page + 2)
+                    }
+                } else {
+                    return this.makeArr(1, pC)
+                }
+            }
+        },
         methods: {
+            // 生成一个数组
+            makeArr (start, end) {
+                return [...Array(end + 1).keys()].filter(num => num >= start)
+            },
             formatTime: function (time) {
                 return new Date(parseInt(time) * 1000).toLocaleString().replace(/\//g, '-').replace('下午', ' ')
             },
