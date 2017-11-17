@@ -161,6 +161,8 @@ open class ApiCaseModel : BaseModel(), IModel {
         when (type) {
             "String" -> json.put(key, "")
             "Integer" -> json.put(key, 0)
+            "Short" -> json.put(key, 0)
+            "Long" -> json.put(key, 0L)
             "Array" -> json.put(key, "[]")
             "Boolean" -> json.put(key, "true")
             "JsonObject" -> json.put(key, "{}")

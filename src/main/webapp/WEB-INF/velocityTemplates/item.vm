@@ -501,6 +501,8 @@
             typeOptions: [
                 {key: 'String', value: 'String'},
                 {key: 'Integer', value: 'Integer'},
+                {key: 'Long', value: 'Long'},
+                {key: 'Short', value: 'Short'},
                 {key: 'Array', value: 'Array'},
                 {key: 'Boolean', value: 'Boolean'},
                 {key: 'JsonObject', value: 'JsonObject'},
