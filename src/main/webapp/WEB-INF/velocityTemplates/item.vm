@@ -472,8 +472,9 @@
 <script src="$!{configConstant.resourcesBasicUrl}/js/clipboard.min.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
 ## toast
-<script src="$!{configConstant.resourcesBasicUrl}/js/notie.min.js?v=${configConstant.srcVersion}"
+<script src="$!{configConstant.resourcesBasicUrl}/js/lib/notie.min.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
+## 组件排序
 <script src="$!{configConstant.resourcesBasicUrl}/js/lib/Sortable.js?v=${configConstant.srcVersion}"
         type="text/javascript"></script>
 <script type="text/javascript">

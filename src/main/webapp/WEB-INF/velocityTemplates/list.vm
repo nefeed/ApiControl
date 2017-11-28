@@ -306,8 +306,10 @@
             }
         },
         methods: {
-            // 生成一个数组
-            makeArr (start, end) {
+            /**
+             * 生成一个数组
+             */
+            makeArr: function (start, end) {
                 return [...Array(end + 1).keys()].filter(num => num >= start)
             },
             formatTime: function (time) {
